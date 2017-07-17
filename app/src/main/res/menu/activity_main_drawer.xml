@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/app_bar_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"/>
+    <item android:title="Home">
+        <menu>
+            <item
+                android:id="@+id/nav_Home"
+                android:icon="@drawable/ic_action_home"
+                android:title="Home" />
+        </menu>
+    </item>
+
+
+    <item android:title="Categories">
+        <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_fingerspelling"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Fingerspelling" />
+            <item
+                android:id="@+id/nav_numbers"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Numbers" />
+            <item
+                android:id="@+id/nav_colours"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Colours" />
+            <item
+                android:id="@+id/nav_greetings"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Greetings" />
+            <item
+                android:id="@+id/nav_cities"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Cities + Countries" />
+            <item
+                android:id="@+id/nav_work"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Work" />
+            <item
+                android:id="@+id/nav_interest"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Interest" />
+            <item
+                android:id="@+id/nav_food"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Food + Drink" />
+        </group>
+        </menu>
+    </item>
+
+    <item android:title="Quiz">
+        <menu>
+            <item
+                android:id="@+id/nav_quiz"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Quiz" />
+            <item
+                android:id="@+id/nav_progress"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Progress" />
+        </menu>
+    </item>
+
+    <item android:title="Deaf Awareness">
+        <menu>
+            <item
+                android:id="@+id/nav_linguistics"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="BSL linguistics" />
+            <item
+                android:id="@+id/nav_awareness"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Deaf Awareness" />
+        </menu>
+    </item>
+
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_menu_send"
+                android:title="About Us" />
+        </menu>
+    </item>
+
+</menu>

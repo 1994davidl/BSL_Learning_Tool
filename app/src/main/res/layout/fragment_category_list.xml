@@ -4,10 +4,11 @@
              android:layout_height="match_parent"
              tools:context="com.example.davidalaw.bsllearningtool.CategoryListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/category_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is a fragment to list categories"/>
+        android:layout_height="wrap_content"
+        android:divider="#cacaca"
+        android:dividerHeight="1dip" />
 
 </FrameLayout>

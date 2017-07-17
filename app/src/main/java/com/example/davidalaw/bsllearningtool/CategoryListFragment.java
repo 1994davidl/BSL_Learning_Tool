@@ -1,13 +1,20 @@
 package com.example.davidalaw.bsllearningtool;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +33,9 @@ public class CategoryListFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static List<String> categories;
+
+    private ListView categoryListView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,17 +68,37 @@ public class CategoryListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_list, container, false);
+
+        ListView listview = (ListView) view.findViewById(R.id.category_list_view);
+
+        String [] cat = { "Fingerspelling", "Numbers", "Colours", "Greetings","Cities + Countries", "Work",
+                "Interest",
+                "Food & Drinks"};
+
+            ArrayAdapter<String> adapt = new ArrayAdapter<>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_activated_1,
+                    cat
+            );
+            listview.setAdapter(adapt);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -97,6 +127,8 @@ public class CategoryListFragment extends Fragment {
         mListener = null;
     }
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -111,4 +143,34 @@ public class CategoryListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void readCategoryTxtFile() {
+        categories = new ArrayList<>();
+        AssetManager assetManager = getContext().getAssets();
+
+        String [] cat = { "Fingerspelling", "Numbers", "Colours", "Greetings","Cities + Countries", "Work",
+                "Interest",
+                "Food & Drinks"};
+
+        // To load text file
+        InputStream input;
+
+        try {
+            input = assetManager.open("categories.txt");
+            int size = input.available();
+
+            byte[] buffer = new byte[size];
+            input.read(buffer);
+            input.close();
+
+            // byte buffer into a string
+            String text = new String(buffer);
+            categories.add(text); //add categories to List
+            System.out.println(categories);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

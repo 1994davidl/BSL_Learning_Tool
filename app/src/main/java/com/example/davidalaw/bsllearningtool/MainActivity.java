@@ -15,9 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +23,6 @@ public class MainActivity extends AppCompatActivity
         TutorialSignsFragment.OnFragmentInteractionListener, TutorialListFragment.OnFragmentInteractionListener, QuizFragment.OnFragmentInteractionListener, ProgressFragment.OnFragmentInteractionListener  {
 
     private Class fragmentClass = null;
-    private static List<String> categories;
     private NavigationView navigationView;
 
     @Override
@@ -158,32 +154,5 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-    public void readAvailableCategoriesTxt () {
-
-        categories = new ArrayList<>();
-        AssetManager assetManager = getAssets();
-
-        // To load text file
-        InputStream input;
-
-        try {
-            input = assetManager.open("categories.txt");
-            int size = input.available();
-
-            byte[] buffer = new byte[size];
-            input.read(buffer);
-            input.close();
-
-            // byte buffer into a string
-            String text = new String(buffer);
-            categories.add(text); //add categories to List
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

@@ -2,4 +2,4 @@
 
 A British Sign Language Learning Tool: Android App
 
-MSc Summer Project University of Glasgow
+MSc Summer Project: University of Glasgow

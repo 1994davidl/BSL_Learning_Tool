@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+    <LinearLayout android:id="@+id/linear_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:paddingBottom="16dp"
+                  android:paddingLeft="16dp"
+                  android:paddingRight="16dp"
+                  android:paddingTop="16dp"
+                  android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:padding="8dp"
+            android:divider="#1b1a1a">
+
+            <TextView
+                android:id="@+id/SignActivitys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:fontFamily="sans-serif"
+                android:text="Sign Activity Occurs: "
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:padding="8dp"
+            android:divider="#1b1a1a"
+            android:layout_weight="0.06">
+
+            <TextView
+                android:id="@+id/sign_occur_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Sign"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:padding="8dp"
+            android:divider="#1b1a1a"
+            android:dividerHeight="1dip">
+
+            <TextView
+                android:id="@+id/hand_shape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:autoText="false"
+                android:fontFamily="sans-serif"
+                android:text="Sign Hand Shape:"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:padding="8dp"
+            android:divider="#1b1a1a"
+            android:layout_weight="0.05">
+
+            <TextView
+                android:id="@+id/sign_shape_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Sign"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:divider="#1b1a1a"
+            android:dividerHeight="1dip"
+            android:padding="8dp"
+            android:layout_weight="0.04">
+
+            <TextView
+                android:id="@+id/sign_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:fontFamily="sans-serif"
+                android:text="Sign action:"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.14"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/signs_action_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Sign"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.06"
+            android:padding="8dp"
+            android:divider="#1b1a1a">
+
+            <TextView
+                android:id="@+id/expression"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:autoText="false"
+                android:fontFamily="sans-serif"
+                android:text="Facial + Body Language"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:layout_weight="0.60"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/expression_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="80dp"
+                android:text="Sign"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

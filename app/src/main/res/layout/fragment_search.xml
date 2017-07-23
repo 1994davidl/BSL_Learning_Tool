@@ -1,17 +1,52 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.example.davidalaw.bsllearningtool.SearchFragment">
 
-    <EditText xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/inputSearch"
-              android:layout_width="fill_parent"
-              android:layout_height="67dp"
-              android:inputType="textNoSuggestions"
-              android:paddingLeft="15dp"
-              android:paddingRight="15dp"
-              android:textColor="@android:color/black"
-              android:textColorHint="@android:color/black" />
 
-</FrameLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:weightSum="1">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="Search"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:padding="8dp"
+            android:divider="#1b1a1a"
+            android:dividerHeight="1dip">
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="400dp"
+                android:layout_weight="1.14"
+                android:padding="8dp">
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+

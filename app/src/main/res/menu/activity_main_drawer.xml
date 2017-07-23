@@ -13,6 +13,12 @@
                 android:id="@+id/nav_Home"
                 android:icon="@drawable/ic_action_home"
                 android:title="Home" />
+
+            <item
+                android:id="@+id/nav_favourite"
+                android:icon="@drawable/ic_checked_favourite"
+                android:title="Favourite" />
+
         </menu>
     </item>
 
@@ -41,9 +47,9 @@
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Cities + Countries" />
             <item
-                android:id="@+id/nav_work"
+                android:id="@+id/nav_family_members"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Work" />
+                android:title="Family Members" />
             <item
                 android:id="@+id/nav_interest"
                 android:icon="@drawable/ic_menu_slideshow"

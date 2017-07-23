@@ -1,18 +1,37 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.example.davidalaw.bsllearningtool.VideoViewFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+             tools:context="com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment"
+             android:id="@+id/container"
+             android:orientation="vertical"
+             android:weightSum="1">
 
     <VideoView
-        android:id="@+id/videoView4"
+        android:id="@+id/videoView2"
         android:layout_width="wrap_content"
-        android:layout_height="269dp"/>
+        android:layout_height="292dp"/>
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="80dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BSL Sign Order:"
+            android:textAlignment="center"
+
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="70dp"
+            tools:layout_editor_absoluteY="127dp"
+            android:layout_alignParentEnd="true"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

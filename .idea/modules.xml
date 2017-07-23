@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BSLLearningTool.iml" filepath="$PROJECT_DIR$/BSLLearningTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BSLearn.iml" filepath="$PROJECT_DIR$/BSLearn.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -47,7 +47,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_SIGN_TABLE = "CREATE TABLE " + TABLE_SIGN + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+        String CREATE_SIGN_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SIGN + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_CATEGORY_NAME + " TEXT," + KEY_NAME + " TEXT, " + KEY_BSL_ORDER + " TEXT," + KEY_SIGN_SYNONYM + " TEXT,"
                 +  KEY_SIGN_OCCUR + " TEXT," + KEY_SIGN_SHAPE + " TEXT," + KEY_SIGN_CONFIG + " TEXT, " + KEY_SIGN_EXPRESS + " TEXT, " + KEY_VIDEO_PATH + " TEXT," + KEY_FAVOURITES + " INT" + ")";
         db.execSQL(CREATE_SIGN_TABLE);

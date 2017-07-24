@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
@@ -9,29 +9,8 @@
 
     <VideoView
         android:id="@+id/videoView2"
-        android:layout_width="wrap_content"
-        android:layout_height="292dp"/>
-
-    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="80dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="match_parent"
+      />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="BSL Sign Order:"
-            android:textAlignment="center"
-
-            android:textSize="22sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="70dp"
-            tools:layout_editor_absoluteY="127dp"
-            android:layout_alignParentEnd="true"/>
-
-
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

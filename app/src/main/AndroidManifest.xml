@@ -4,12 +4,11 @@
 
     <!--
     Permissions : using MediaPlayer to stream network-based content,
-    your application must request network access
+    your application must request network access -->
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-      needed to save frames
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"

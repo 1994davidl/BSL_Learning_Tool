@@ -68,9 +68,8 @@ public class SignMaterialActivity extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager) {
         SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
-
-        adapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
         adapter.addFragment(new VideoViewFragment(signSelected), "Video");
+        adapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
         adapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
         viewPager.setAdapter(adapter);
 

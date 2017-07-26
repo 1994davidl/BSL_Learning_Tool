@@ -68,14 +68,16 @@ public class SignMaterialActivity extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager) {
         SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new VideoViewFragment(signSelected), "Video");
         adapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
+        adapter.addFragment(new VideoViewFragment(signSelected), "Video");
         adapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
         viewPager.setAdapter(adapter);
 
     }
 
-
+    /**
+     * Action listeners for the checkbox (favourite) button
+     */
     class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener {
 
         @Override
@@ -90,7 +92,6 @@ public class SignMaterialActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public void changeSignDataFavourite(boolean state) {
         mDBHandler = new DBHandler(this);

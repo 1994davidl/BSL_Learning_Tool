@@ -23,6 +23,7 @@ import com.example.davidalaw.bsllearningtool.mFragments.ProgressFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SearchFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignListFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.SignData;
 
@@ -34,7 +35,7 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchFragment.OnFragmentInteractionListener,
-        FavouriteListFragment.OnFragmentInteractionListener, CategoryListFragment.OnFragmentInteractionListener,
+        FavouriteListFragment.OnFragmentInteractionListener, CategoryListFragment.OnFragmentInteractionListener, VideoViewFragment.OnFragmentInteractionListener,
         SignListFragment.OnFragmentInteractionListener, QuizMenuFragment.OnFragmentInteractionListener,
         ProgressFragment.OnFragmentInteractionListener  {
 
@@ -99,15 +100,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
+    /**
+     * All fragment transactions are added to the back stack before commit.
+     */
     @Override
     public void onBackPressed() {
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
             super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -134,6 +139,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
+     * Navigate the user to the next UI fragment depending on what they've selected
+     *
      *
      * @param item
      * @return
@@ -155,15 +162,16 @@ public class MainActivity extends AppCompatActivity
         }  else if (id == R.id.nav_favourite) {
             fragmentClass = FavouriteListFragment.class;
         }else if (id == R.id.nav_fingerspelling) {
+            category = listCategory.get(0);
             fragmentClass = SignListFragment.class;
         }else if (id == R.id.nav_numbers) {
-            category = listCategory.get(0);
+            category = listCategory.get(1);
             fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_colours) {
             category = listCategory.get(2);
             fragmentClass =SignListFragment.class;
         } else if (id == R.id.nav_greetings) {
-            category = listCategory.get(1);
+            category = listCategory.get(3);
             fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_cities) {
             fragmentClass = SignListFragment.class;
@@ -195,7 +203,7 @@ public class MainActivity extends AppCompatActivity
         fragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

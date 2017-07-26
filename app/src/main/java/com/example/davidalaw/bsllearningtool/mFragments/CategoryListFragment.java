@@ -73,7 +73,7 @@ public class CategoryListFragment extends Fragment {
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
 
             }
         });

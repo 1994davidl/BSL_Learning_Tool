@@ -4,6 +4,7 @@ package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
  * Created by DavidALaw on 18/07/2017.
  */
 
+
 public class SignData {
 
     //Instance variables

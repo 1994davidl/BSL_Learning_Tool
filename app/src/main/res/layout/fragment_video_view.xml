@@ -1,16 +1,83 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingLeft="8dp"
+              android:paddingRight="8dp"
+              android:paddingTop="8dp"
+              android:weightSum="1"
              tools:context="com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment"
-             android:id="@+id/container"
-             android:orientation="vertical"
-             android:weightSum="1">
+             android:id="@+id/container">
 
-    <VideoView
-        android:id="@+id/videoView2"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed:"
+            android:textIsSelectable="false"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+            <TableRow>
+            <CheckBox
+                android:id="@+id/pointtwofivespeed"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0.25x"/>
+
+            <CheckBox
+                android:id="@+id/pointfivespeed"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="0.5x"/>
+
+            <CheckBox
+                android:id="@+id/pointSevenFivespeed"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="0.75x"/>
+
+            <CheckBox
+                android:id="@+id/fullspeed"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="1.0x"/>
+            </TableRow>
+        </TableLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-      />
+        android:layout_marginBottom="5dp">
 
-</RelativeLayout>
+    <net.protyposis.android.mediaplayer.VideoView
+        android:id="@+id/videoView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -23,6 +23,11 @@ import net.protyposis.android.mediaplayer.dash.DashSource;
 import net.protyposis.android.mediaplayer.dash.SimpleRateBasedAdaptationLogic;
 
 /**
+ * Code is sourced from Protyposis Mediaplayer library: https://github.com/protyposis/MediaPlayer-Extended
+ *
+ * This class is primarily used to Convert the Video URL into a media source in order to play the
+ * video file in the media player.
+ *
  * Created by DavidALaw on 24/07/2017.
  */
 
@@ -43,7 +48,6 @@ public class Utils {
                 uri = Uri.parse(uri.toString().substring(7));
             }
 
-            //adaptationLogic = new ConstantPropertyBasedLogic(ConstantPropertyBasedLogic.Mode.HIGHEST_BITRATE);
             adaptationLogic = new SimpleRateBasedAdaptationLogic();
 
             source = new DashSource(context, uri, adaptationLogic);
@@ -61,25 +65,6 @@ public class Utils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
-    }
-
-    public static void setActionBarSubtitleEllipsizeMiddle(Activity activity) {
-        // http://blog.wu-man.com/2011/12/actionbar-api-provided-by-google-on.html
-        int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
-        TextView subtitleView = (TextView) activity.findViewById(subtitleId);
-        subtitleView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
-    }
-
-    public static boolean saveBitmapToFile(Bitmap bmp, File file) {
-        try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
-            bos.close();
-            return true;
-        } catch (IOException e) {
-            Log.e(TAG, "failed to save frame", e);
-        }
-        return false;
     }
 
     private static class LoadMediaSourceAsyncTask extends AsyncTask<Uri, Void, MediaSource> {
@@ -118,26 +103,5 @@ public class Utils {
     public static interface MediaSourceAsyncCallbackHandler {
         void onMediaSourceLoaded(MediaSource mediaSource);
         void onException(Exception e);
-    }
-
-    /**
-     * Iterates a hierarchy of exceptions and combines their messages. Useful for compact
-     * error representation to the user during debugging/development.
-     */
-    public static String getExceptionMessageHistory(Throwable e) {
-        String messages = "";
-
-        String message = e.getMessage();
-        if(message != null) {
-            messages += message;
-        }
-        while((e = e.getCause()) != null) {
-            message = e.getMessage();
-            if(message != null) {
-                messages += " <- " + message;
-            }
-        }
-
-        return messages;
     }
 }

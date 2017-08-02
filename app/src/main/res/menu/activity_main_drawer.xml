@@ -82,9 +82,9 @@
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="BSL linguistics" />
             <item
-                android:id="@+id/nav_awareness"
+                android:id="@+id/nav_bsl_info"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Deaf Awareness" />
+                android:title="BSL Information" />
         </menu>
     </item>
 

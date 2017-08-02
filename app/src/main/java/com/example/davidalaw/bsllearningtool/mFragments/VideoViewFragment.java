@@ -36,6 +36,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private MediaController.MediaPlayerControl mMediaPlayerControl;
     private MediaController mMediaController;
 
+
     private ProgressBar mProgressBar;
     private VideoView mVideoView;
 
@@ -47,7 +48,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private float mVideoPlaybackSpeed;
     private boolean mVideoPlaying;
     private MediaSource mMediaSource;
-    private CheckBox mCheckBox1, mCheckBox2, mCheckBox3;
+    private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4;
 
     //Constructor
     public VideoViewFragment(String signSelected) {
@@ -62,6 +63,8 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
         mVideoView = (VideoView)view.findViewById(R.id.videoView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mVideoView.setMinimumHeight(400);
+        mVideoView.setMinimumWidth(200);
 
         mMediaPlayerControl = mVideoView;
 
@@ -83,10 +86,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         return view;
     }
 
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -106,6 +105,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 mProgressBar.setVisibility(View.GONE);
                 mp.setLooping(true); //Loop video continously
                 mMediaController.setEnabled(true);
+
             }
         });
 
@@ -251,19 +251,39 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         mCheckBox2.setOnCheckedChangeListener(VideoViewFragment.this);
         mCheckBox3 = (CheckBox) view.findViewById(R.id.pointSevenFivespeed);
         mCheckBox3.setOnCheckedChangeListener(VideoViewFragment.this);
+        mCheckBox4 = (CheckBox) view.findViewById(R.id.fullspeed);
+        mCheckBox4.setOnCheckedChangeListener(VideoViewFragment.this);
+        mCheckBox4.setChecked(true);
     }
-
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
 
         if(compoundButton.isChecked() == true) {
             if(compoundButton == mCheckBox1){
+                mCheckBox2.setChecked(false);
+                mCheckBox3.setChecked(false);
+                mCheckBox4.setChecked(false);
+                mCheckBox1.setChecked(true);
                 mVideoView.setPlaybackSpeed(0.25f);
             } else if (compoundButton == mCheckBox2) {
+                mCheckBox1.setChecked(false);
+                mCheckBox3.setChecked(false);
+                mCheckBox4.setChecked(false);
+                mCheckBox2.setChecked(true);
                 mVideoView.setPlaybackSpeed(0.50f);
-            } else {
+            } else if (compoundButton == mCheckBox3) {
+                mCheckBox1.setChecked(false);
+                mCheckBox2.setChecked(false);
+                mCheckBox4.setChecked(false);
+                mCheckBox3.setChecked(true);
                 mVideoView.setPlaybackSpeed(0.75f);
+            } else {
+                mCheckBox1.setChecked(false);
+                mCheckBox2.setChecked(false);
+                mCheckBox3.setChecked(false);
+                mCheckBox4.setChecked(true);
+                mVideoView.setPlaybackSpeed(1.00f);
             }
         } else {
             Log.d(TAG, "Speed undone " + compoundButton + " State: " + state);

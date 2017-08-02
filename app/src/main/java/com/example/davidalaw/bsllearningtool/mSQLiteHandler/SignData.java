@@ -3,8 +3,6 @@ package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
 /**
  * Created by DavidALaw on 18/07/2017.
  */
-
-
 public class SignData {
 
     //Instance variables
@@ -49,7 +47,6 @@ public class SignData {
     }
 
     public SignData(String line) {
-        System.out.print(line);
         String [] tokens = line.split(";");
 
         categoryName = tokens[0];

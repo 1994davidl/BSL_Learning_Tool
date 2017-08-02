@@ -65,6 +65,9 @@ public class BSLNotationFragment  extends Fragment {
         }
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     public String getSignSelected() {
         return signSelected;

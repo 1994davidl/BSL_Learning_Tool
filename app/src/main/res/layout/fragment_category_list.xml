@@ -8,7 +8,7 @@
         android:id="@+id/category_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#cacaca"
-        android:dividerHeight="1dip" />
+        android:divider="#ffffff"
+        android:dividerHeight="0.25dp" />
 
 </FrameLayout>

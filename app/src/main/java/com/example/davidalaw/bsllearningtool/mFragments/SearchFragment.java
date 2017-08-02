@@ -31,13 +31,6 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,8 +53,6 @@ public class SearchFragment extends Fragment {
         autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
                 mSignSelected = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(getActivity(), mSignSelected, Toast.LENGTH_SHORT).show();
 

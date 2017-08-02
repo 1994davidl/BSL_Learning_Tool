@@ -21,6 +21,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;  // Database Version
     private static final String DATABASE_NAME = "BSL_Learning_Tool";  // Database Name
     private static final String TABLE_SIGN = "SIGNS"; // Sign material table name
+    private static final String TABLE_QUIZ = "QUESTIONS_BANK";
 
     //Sign Tables Columns
     private static final String KEY_ID = "id";
@@ -32,9 +33,19 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_SIGN_SHAPE = "sign_shape";
     private static final String KEY_SIGN_CONFIG = "sign_config";
     private static final String KEY_SIGN_EXPRESS = "sign_express";
-
     private static final String KEY_VIDEO_PATH = "video_path";
     private static final String KEY_FAVOURITES="favourites";
+
+
+    //Quiz Tables Columns
+    private static final String KEY_QUIZ_ID = "id";
+    private static final String KEY_QUIZ_CATEGORY = "category_name";
+    private static final String KEY_QUIZ_URI ="video_uri";
+    private static final String KEY_CHOICE_A = "choice_A";
+    private static final String KEY_CHOICE_B = "choice_B";
+    private static final String KEY_CHOICE_C = "choice_C";
+    private static final String KEY_CHOICE_D = "choice_D";
+    private static final String KEY_CORRECT_ANSWER = "correct_answer";
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,8 +60,15 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_SIGN_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SIGN + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_CATEGORY_NAME + " TEXT," + KEY_NAME + " TEXT, " + KEY_BSL_ORDER + " TEXT," + KEY_SIGN_SYNONYM + " TEXT,"
-                +  KEY_SIGN_OCCUR + " TEXT," + KEY_SIGN_SHAPE + " TEXT," + KEY_SIGN_CONFIG + " TEXT, " + KEY_SIGN_EXPRESS + " TEXT, " + KEY_VIDEO_PATH + " TEXT," + KEY_FAVOURITES + " INT" + ")";
+                +  KEY_SIGN_OCCUR + " TEXT," + KEY_SIGN_SHAPE + " TEXT," + KEY_SIGN_CONFIG + " TEXT, "
+                + KEY_SIGN_EXPRESS + " TEXT, " + KEY_VIDEO_PATH + " TEXT," + KEY_FAVOURITES + " INT" + ")";
         db.execSQL(CREATE_SIGN_TABLE);
+
+        String CREATE_QUIZ_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_QUIZ + "(" + KEY_QUIZ_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_QUIZ_CATEGORY + " TEXT," + KEY_QUIZ_URI + " TEXT," + KEY_CHOICE_A + " TEXT," + KEY_CHOICE_B + " TEXT,"
+                + KEY_CHOICE_C + " TEXT,"  + KEY_CHOICE_D + " TEXT, "  + KEY_CORRECT_ANSWER + " TEXT " + ")";
+        db.execSQL(CREATE_QUIZ_TABLE);
+
     }
 
     /**
@@ -68,6 +86,39 @@ public class DBHandler extends SQLiteOpenHelper {
         // Creating tables again
         onCreate(db);
     }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade(db, oldVersion, newVersion);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGN);
+        onCreate(db);
+
+    }
+
+    /**
+     * Check if database already exist to avoid duplication of data showing in application
+     *
+     * @return dbExist
+     */
+    public boolean checkDBExist() {
+        boolean dbExist = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name =  '" + TABLE_SIGN + "'",null);
+
+        if(cursor != null) {
+            Log.d(TAG, "CURSOR NOT NULL");
+            if(cursor.getCount() > 0) {
+                dbExist = true;
+            }
+            cursor.close();
+        }
+        return dbExist;
+    }
+
+
+
+
 
     /**
      * This method is used to populate the Sign Table in the db
@@ -96,6 +147,28 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Populate the question bank DB table
+     *
+     * @param questionBank
+     */
+    public void addQuestion(QuestionBank questionBank) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_QUIZ_CATEGORY, questionBank.getCategory());
+        values.put(KEY_QUIZ_URI, questionBank.getVideoURI());
+        values.put(KEY_CHOICE_A, questionBank.getAnswerA());
+        values.put(KEY_CHOICE_B, questionBank.getAnswerB());
+        values.put(KEY_CHOICE_C, questionBank.getAnswerC());
+        values.put(KEY_CHOICE_D, questionBank.getAnswerD());
+        values.put(KEY_CORRECT_ANSWER, questionBank.getCorrectAnswer());
+        Log.d(TAG, "Add questions to Question Bank " + questionBank + " TO db TABLE: " + TABLE_QUIZ);
+
+        db.insert(TABLE_QUIZ, null, values);
+        db.close();
+    }
+
+    /**
      * Method will be used to collect a particular sign by it ID number.
      *
      * @param id
@@ -118,47 +191,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return sign;
     }
 
-    /**
-     * Getting All signs
-     * This method inserts all the data in the Sign Table into a Array List
-     *
-     * @return signlist
-     */
-    public List<SignData> getAllSigns() {
-        List<SignData> signList = new ArrayList<SignData>();
+    public Cursor getAllQuestions ()
+    {
 
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SIGN;
+        String query = "SELECT * FROM " + TABLE_QUIZ;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(query, null);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-
-            do {
-                SignData sign = new SignData();
-                sign.setId(Integer.parseInt(cursor.getString(0)));
-                sign.setCategoryName(cursor.getString(1));
-                sign.setSignName(cursor.getString(2));
-                sign.setbSLOrder(cursor.getString(3));
-                sign.setSignSynonym(cursor.getString(4));
-                sign.setSignOccurs(cursor.getString(5));
-                sign.setSignShape(cursor.getString(6));
-                sign.setSignConfig(cursor.getString(7));
-                sign.setSignExpress(cursor.getString(8));
-                sign.setVideo_file_path(cursor.getString(9));
-                sign.setFavourite(Integer.parseInt(cursor.getString(10)));
-
-                // Adding material to list
-                signList.add(sign);
-            } while (cursor.moveToNext());
-        }
-
-        // return contact list
-        return signList;
+        return cursor;
     }
-
 
     /**
      * This method returns all the Sign Names which will be displayed in the ListView
@@ -176,51 +218,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-
-
     /**
-     * Method returns the total number of signs available to learn
+     * In the event that the user favourites a sign, then that sign row in the db table must be updated.
      *
-     * @return cursor.getCount()
-     */
-    public int getSignCount() {
-
-        String countQuery = "SELECT * FROM " + TABLE_SIGN;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        // return count
-        return cursor.getCount();
-    }
-
-    /**
-     * Method is used to update an existing sign already populated in the table.
-     *
-     * @param sign
      * @return
      */
-    public int updateSign(SignData sign) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_CATEGORY_NAME, sign.getCategoryName());
-        values.put(KEY_NAME, sign.getSignName());
-        values.put(KEY_BSL_ORDER, sign.getbSLOrder());
-        values.put(KEY_SIGN_SYNONYM, sign.getSignSynonym());
-        values.put(KEY_SIGN_OCCUR, sign.getSignOccurs());
-        values.put(KEY_SIGN_SHAPE, sign.getSignShape());
-        values.put(KEY_SIGN_CONFIG, sign.getSignConfig());
-        values.put(KEY_SIGN_CONFIG, sign.getSignExpress());
-        values.put(KEY_VIDEO_PATH, sign.getVideo_file_path());
-        values.put(KEY_FAVOURITES, sign.getFavourite());
-
-        // updating row
-        return db.update(TABLE_SIGN, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(sign.getId())});
-    }
-
     public int updateSignFavourite(int id, String categoryName, String signName, String bSLOrder, String signSynonym,
                                    String signOccurs, String signShape, String signConfig, String signExpress,
                                    String video_file_path, int favourite ) {
@@ -242,13 +244,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return db.update(TABLE_SIGN, values, KEY_ID + "=" + id, null);
     }
 
-
-    public void deleteSign(SignData sign) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SIGN, KEY_ID + " = ?",
-                new String[] { String.valueOf(sign.getId()) });
-        db.close();
-    }
 
     public ArrayList<String> getAllSignNames() {
         ArrayList<String> allNames = new ArrayList<String>();

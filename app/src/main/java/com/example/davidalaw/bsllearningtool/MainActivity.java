@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import com.example.davidalaw.bsllearningtool.mFragments.CategoryListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.ProgressFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.QuizFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.ResourcesFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SearchFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment;
@@ -36,8 +38,8 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchFragment.OnFragmentInteractionListener,
         FavouriteListFragment.OnFragmentInteractionListener, CategoryListFragment.OnFragmentInteractionListener, VideoViewFragment.OnFragmentInteractionListener,
-        SignListFragment.OnFragmentInteractionListener, QuizMenuFragment.OnFragmentInteractionListener,
-        ProgressFragment.OnFragmentInteractionListener  {
+        SignListFragment.OnFragmentInteractionListener, QuizMenuFragment.OnFragmentInteractionListener, QuizFragment.OnFragmentInteractionListener,
+        ProgressFragment.OnFragmentInteractionListener, ResourcesFragment.OnFragmentInteractionListener  {
 
     private static final String TAG = "MainActivity";
     private static final String DB_PATH = "data/data/com.example.davidalaw.bsllearningtool/databases/BSL_Learning_Tool";
@@ -45,10 +47,9 @@ public class MainActivity extends AppCompatActivity
     private Class fragmentClass = null;
     private NavigationView navigationView;
 
-    SignData mSignData;
-    DBHandler mDBHandler;
+    private SignData mSignData;
+    private DBHandler mDBHandler;
     private ArrayList<String> listCategory;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +59,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        doDBCheck();
 
         this.readFileAddData(); //Read Text to populate database.
-        putAllCategoryInList();
 
-        /*
-         * A external source provide a solution on Using Fragments with the Navigation Drawer Activity
-         * Source: https://github.com/ChrisRisner/AndroidFragmentNavigationDrawer
-         */
         if (savedInstanceState == null) {
             Fragment fragment = null;
             fragmentClass = CategoryListFragment.class;
@@ -88,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     private void doDBCheck()
     {
@@ -185,6 +181,9 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = QuizMenuFragment.class;
         } else if (id == R.id.nav_progress) {
             fragmentClass = ProgressFragment.class;
+
+        }  else if (id == R.id.nav_bsl_info) {
+            fragmentClass = ResourcesFragment.class;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -243,22 +242,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    public void putAllCategoryInList() {
-        mDBHandler = new DBHandler(this);
-        Cursor cursor = mDBHandler.getAllData();
-
-        listCategory = new ArrayList<>();
-
-        //get the value from the database from column 1 (Category name)
-        //if Arraylist already contains the category then do not add to display
-        while(cursor.moveToNext()) {
-            if(!listCategory.contains(cursor.getString(1))) {
-                listCategory.add(cursor.getString(1));
-            }
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDBHandler.close();
+        super.onDestroy();
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

@@ -1,12 +1,111 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment">
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingLeft="8dp"
+              android:paddingRight="8dp"
+              android:paddingTop="8dp"
+              android:weightSum="1"
+             tools:context="com.example.davidalaw.bsllearningtool.mFragments.QuizFragment">
 
-    <VideoView
-        android:id="@+id/videoView"
+        <net.protyposis.android.mediaplayer.VideoView
+            android:id="@+id/videoView"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:padding="12dp"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@android:style/Widget.Holo.ProgressBar.Large"
+            android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_weight="0.26">
+
+        <TextView
+            android:id="@+id/score_textview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Score:"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/score_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="246dp"/>
+        android:layout_height="141dp"
+        android:layout_weight="0.45">
 
-</FrameLayout>
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true">
+
+            <RadioButton
+                android:id="@+id/choiceA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer A"/>
+
+            <RadioButton
+                android:id="@+id/choiceB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer B"/>
+
+            <RadioButton
+                android:id="@+id/choiceC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer C"/>
+
+            <RadioButton
+                android:id="@+id/choiceD"
+                android:layout_width="199dp"
+                android:layout_height="wrap_content"
+                android:text="Answer D"/>
+
+
+        </RadioGroup>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Next"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

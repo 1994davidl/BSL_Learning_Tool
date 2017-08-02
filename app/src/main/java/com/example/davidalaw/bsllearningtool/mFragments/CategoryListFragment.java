@@ -3,6 +3,7 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -89,6 +90,7 @@ public class CategoryListFragment extends Fragment {
      */
     private void displayListView(View view) {
                 listview = (ListView) view.findViewById(R.id.category_list_view);
+                listview.setCacheColorHint(Color.BLACK);
 
                 mDBHandler = new DBHandler(getActivity());
                 Cursor cursor = mDBHandler.getAllData();

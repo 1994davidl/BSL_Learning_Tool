@@ -40,8 +40,6 @@ public class SignListFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-
     public SignListFragment(String mCategorySelected) {
         this.categorySelected = mCategorySelected;
     }
@@ -70,13 +68,8 @@ public class SignListFragment extends Fragment {
                 intent.putExtra("sign", signSelected);
                 Log.d(TAG,"Sign Selected: " + signSelected);
                 startActivity(intent);
-
-
             }
         });
-
-
-
         return view;
     }
 
@@ -94,7 +87,9 @@ public class SignListFragment extends Fragment {
                     //get the value from the database from column 2 (Sign Name)
                     //then add it to the array list
                     if(categorySelected.equals(cursor.getString(1))) {
-                        listData.add(cursor.getString(2));
+                        if(!listData.contains(cursor.getString(2))) {
+                            listData.add(cursor.getString(2));
+                        }
                     } else {
                         continue;
                     }

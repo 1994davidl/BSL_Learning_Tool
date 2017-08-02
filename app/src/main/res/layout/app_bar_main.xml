@@ -26,7 +26,10 @@
         android:id="@+id/flContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:background="@color/colorPrimaryDark"
+        android:padding="8dp">
 
     </FrameLayout>
 

@@ -78,31 +78,23 @@
     <item android:title="Deaf Awareness">
         <menu>
             <item
-                android:id="@+id/nav_linguistics"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="BSL linguistics" />
-            <item
                 android:id="@+id/nav_bsl_info"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="BSL Information" />
+            <item
+                android:id="@+id/FAQ"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="FAQ" />
         </menu>
     </item>
 
-
-    <item android:title="Communicate">
+    <item android:title="Share">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
+                android:actionProviderClass="android.widget.ShareActionProvider"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-            <item
-                android:id="@+id/nav_about_us"
-                android:icon="@drawable/ic_menu_send"
-                android:title="About Us" />
         </menu>
     </item>
 

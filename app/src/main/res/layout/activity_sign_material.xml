@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
-                                                 android:id="@+id/main_content"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 android:fitsSystemWindows="true"
-                                                 tools:context="com.example.davidalaw.bsllearningtool.SignMaterialActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/main_content"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             tools:context="com.example.davidalaw.bsllearningtool.SignMaterialActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -15,6 +15,8 @@
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay"
         >
+
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -25,23 +27,31 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:weightSum="1">
 
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:padding="8dp">
+                <TableRow>
             <TextView
                 android:id="@+id/toolbar_title"
-                android:layout_width="243dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.82"
                 android:gravity="center"
                 android:text="BSLearn"
                 android:textAllCaps="false"
                 android:textColor="#FFFF"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp"/>
 
-            <CheckBox
-                android:id="@+id/favourite"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:button="@drawable/favourite"
-                android:gravity="left"/>
+                    <CheckBox
+                        android:id="@+id/favourite"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/favourite"
+                        android:gravity="left"/>
+                </TableRow>
+            </TableLayout>
+
 
         </android.support.v7.widget.Toolbar>
 
@@ -52,11 +62,31 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            app:itemTextColor="@color/colorPrimaryDark"
+            app:itemIconTint="@color/colorPrimaryDark"
+            app:menu="@menu/main"/>
+
+    </RelativeLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>

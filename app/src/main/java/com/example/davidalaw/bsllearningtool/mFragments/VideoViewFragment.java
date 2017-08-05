@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -34,11 +36,10 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private DBHandler mDBHandler;
 
     private MediaController.MediaPlayerControl mMediaPlayerControl;
-    private MediaController mMediaController;
-
 
     private ProgressBar mProgressBar;
     private VideoView mVideoView;
+    private TextView mTextView;
 
     private String VideoURL;
     private String signSelected;
@@ -56,6 +57,13 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     }
 
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_view, container, false);
@@ -63,16 +71,10 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
         mVideoView = (VideoView)view.findViewById(R.id.videoView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
-        mVideoView.setMinimumHeight(400);
-        mVideoView.setMinimumWidth(200);
+        mTextView =(TextView) view.findViewById(R.id.bsl_text);
+        getBSLSignOrder();
 
         mMediaPlayerControl = mVideoView;
-
-        mMediaController = new MediaController(getActivity());
-        mMediaController.setAnchorView(view.findViewById(R.id.container));
-        mMediaController.setMediaPlayer(mMediaPlayerControl);
-        mMediaController.setEnabled(false);
-
         mProgressBar.setVisibility(View.VISIBLE);
 
         mVideoURI = Uri.parse(VideoURL);
@@ -80,9 +82,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         mVideoPlaybackSpeed = 1;
         mVideoPlaying = true;
 
-
         checkBoxesStates(view);
-        onTouchListener(view);
         return view;
     }
 
@@ -103,13 +103,11 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mProgressBar.setVisibility(View.GONE);
+                mp.setPlaybackSpeed(1.0f);
                 mp.setLooping(true); //Loop video continously
-                mMediaController.setEnabled(true);
 
             }
         });
-
-
 
         //Display toast message and disable the media controller in the event
         //that the video is unable to load
@@ -120,14 +118,13 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                         "Cannot play the video for " + getSignSelected() + "Please try another sign",
                         Toast.LENGTH_LONG).show();
                 mProgressBar.setVisibility(View.GONE);
-                mMediaController.setEnabled(false);
                 return true;
             }
         });
 
         /**
          * Get information of video status
-         */
+
         mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mMediaPlayer, int i, int extra) {
@@ -149,7 +146,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 Log.d(TAG, "onInfo " + infoListener);
                 return false;
             }
-        });
+        }); */
 
         /**
          *
@@ -170,17 +167,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             public void onSeekComplete(MediaPlayer mp) {
                 Log.d(TAG, "onSeekComplete");
                 mProgressBar.setVisibility(View.GONE);
-            }
-        });
-
-
-        /**
-         * Print to logcat the percentage of buffer status
-         */
-        mVideoView.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                Log.d(TAG, "onBufferingUpdate " + percent + "%");
             }
         });
 
@@ -218,30 +204,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
     @Override
     public void onStop() {
-        mMediaController.hide();
         super.onStop();
-    }
-
-    /**
-     * Upon the user toucher the screen, the media controllor will either
-     * appear or disapear depending on whether it is showing
-     * @param view
-     */
-    private void onTouchListener(View view) {
-
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if(mMediaController.isShowing()) {
-                        mMediaController.hide();
-                    } else {
-                        mMediaController.show();
-                    }
-                }
-                return true;
-            }
-        });
     }
 
     public void checkBoxesStates(View view) {
@@ -294,7 +257,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
     private void getVideoURL() {
 
-        Log.d(TAG, "Populate BSL Notation View ");
+        Log.d(TAG, "Populate BSL Notation View");
         mDBHandler = new DBHandler(getActivity());
         Cursor cursor = mDBHandler.getAllData();
         while (cursor.moveToNext()) {
@@ -304,6 +267,17 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 } else {
                     VideoURL = cursor.getString(9);
                 }
+            }
+        }
+    }
+
+    private void getBSLSignOrder() {
+        Log.d(TAG, "Populate BSL Notation View");
+        mDBHandler = new DBHandler(getActivity());
+        Cursor cursor = mDBHandler.getAllData();
+        while (cursor.moveToNext()) {
+            if (getSignSelected().equals(cursor.getString(2))) {
+               mTextView.setText(cursor.getString(3));
             }
         }
     }

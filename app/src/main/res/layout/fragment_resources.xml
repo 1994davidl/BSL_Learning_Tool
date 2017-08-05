@@ -12,12 +12,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="What is British Sign Language (BSL)?"
+            android:text="What is British Sign Language?"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textSize="18sp"/>

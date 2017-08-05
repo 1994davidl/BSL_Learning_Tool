@@ -21,8 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:padding="8dp"
-            android:divider="#1b1a1a">
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/SignActivitys"
@@ -32,6 +31,7 @@
                 android:fontFamily="sans-serif"
                 android:text="Sign Activity Occurs: "
                 android:textSize="15sp"
+                android:textColor="@color/colourText"
                 android:textStyle="bold"/>
 
         </RelativeLayout>
@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:padding="8dp"
-            android:divider="#1b1a1a"
             android:layout_weight="0.06">
 
             <TextView
@@ -50,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Sign"
+                android:textColor="@color/colourText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>
@@ -59,7 +59,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:padding="8dp"
-            android:divider="#1b1a1a"
             android:dividerHeight="1dip">
 
             <TextView
@@ -67,9 +66,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:autoText="false"
                 android:fontFamily="sans-serif"
                 android:text="Sign Hand Shape:"
+                android:textColor="@color/colourText"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 
@@ -80,7 +79,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:padding="8dp"
-            android:divider="#1b1a1a"
             android:layout_weight="0.05">
 
             <TextView
@@ -89,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Sign"
+                android:textColor="@color/colourText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>
@@ -97,7 +96,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:divider="#1b1a1a"
             android:dividerHeight="1dip"
             android:padding="8dp"
             android:layout_weight="0.04">
@@ -109,6 +107,7 @@
                 android:layout_alignParentLeft="true"
                 android:fontFamily="sans-serif"
                 android:text="Sign action:"
+                android:textColor="@color/colourText"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
         </RelativeLayout>
@@ -126,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="Sign"
+                android:textColor="@color/colourText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>
@@ -143,9 +143,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:autoText="false"
                 android:fontFamily="sans-serif"
                 android:text="Facial + Body Language"
+                android:textColor="@color/colourText"
                 android:textSize="15sp"
                 android:textStyle="bold"/>
         </RelativeLayout>
@@ -164,6 +164,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="80dp"
                 android:text="Sign"
+                android:textColor="@color/colourText"
                 android:textSize="14sp"/>
 
         </RelativeLayout>

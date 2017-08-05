@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
@@ -31,6 +32,7 @@ public class FavouriteListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ListView mListView;
+    private TextView mTextView;
     private DBHandler mDBHandler;
     private List <String> mListData;
     private String signSelected;
@@ -47,11 +49,12 @@ public class FavouriteListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view  = inflater.inflate(R.layout.fragment_favourite_list, container, false);
+        mListView = (ListView) view.findViewById(R.id.favourite_list_view);
+        mTextView = (TextView) view.findViewById(R.id.text_Favourite);
+
         displayListView(view);
 
-        mListView = (ListView) view.findViewById(R.id.favourite_list_view);
-
-            //Implement a click action listener to move to another fragment.
+            //Implement a click action listener to move to SignMaterialActivity.
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -69,7 +72,7 @@ public class FavouriteListFragment extends Fragment {
 
 
 
-    public void displayListView(View view) {
+    public List displayListView(View view) {
         mListView = (ListView) view.findViewById(R.id.favourite_list_view);
 
         mDBHandler = new DBHandler(getActivity());
@@ -82,6 +85,9 @@ public class FavouriteListFragment extends Fragment {
         while(cursor.moveToNext()) {
             if(Integer.parseInt(cursor.getString(10)) > 0) {
                 mListData.add(cursor.getString(2));
+                /*if(!mListData.contains(cursor.getString(2))) {
+
+                }*/
             }
         }
 
@@ -90,6 +96,7 @@ public class FavouriteListFragment extends Fragment {
                     android.R.layout.simple_list_item_activated_1, mListData);
             mListView.setAdapter(adapter);
 
+        return mListData;
     }
 
 

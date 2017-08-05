@@ -1,29 +1,35 @@
 package com.example.davidalaw.bsllearningtool;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.support.design.widget.AppBarLayout;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.mAdapters.SectionPageAdapter;
 import com.example.davidalaw.bsllearningtool.mFragments.BSLNotationFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.CategoryListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment;
+import com.example.davidalaw.bsllearningtool.mFragments.ResourcesFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.SignData;
-
-import org.w3c.dom.Text;
 
 public class SignMaterialActivity extends AppCompatActivity {
 
@@ -31,8 +37,12 @@ public class SignMaterialActivity extends AppCompatActivity {
     private SectionPageAdapter mSectionPageAdapter;
     private ViewPager mViewPager;
     private DBHandler mDBHandler;;
-    private static String signSelected;
+    private static String signSelected, fragmentSelected;
 
+    private TabLayout mToptabLayout;
+    private BottomNavigationView mBottomNavigationView;
+
+    private Class fragmentClass = null;
     private TextView mTextView;
     private CheckBox mCheckBox;
 
@@ -49,10 +59,8 @@ public class SignMaterialActivity extends AppCompatActivity {
 
         mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
-
         mTextView = (TextView) findViewById(R.id.toolbar_title);
         mTextView.setText(signSelected);
-
 
         setUpViewPager(mViewPager);
 
@@ -60,18 +68,55 @@ public class SignMaterialActivity extends AppCompatActivity {
         mCheckBox.setOnCheckedChangeListener(new myCheckBoxChangeClicker());
         checkstate();
 
+        mToptabLayout = (TabLayout) findViewById(R.id.tabs);
+        mToptabLayout.setupWithViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        setBottomNavigationView();
 
     }
 
     private void setUpViewPager(ViewPager viewPager) {
-        SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
-        adapter.addFragment(new VideoViewFragment(signSelected), "Video");
-        adapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
-        viewPager.setAdapter(adapter);
+            mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
+            mSectionPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
+            mSectionPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
+            mSectionPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
+            viewPager.setAdapter(mSectionPageAdapter);
+
+    }
+
+    public void setBottomNavigationView(){
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Intent intent = new Intent(SignMaterialActivity.this, MainActivity.class);
+
+                Fragment fragment = null;
+                switch(item.getItemId()) {
+                    case R.id.home_nav:
+                        fragmentSelected = (String) item.getTitle();
+                        intent.putExtra("fragment", fragmentSelected);
+                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        break;
+                    case R.id.favourites_nav:
+                        checkstate();
+                        fragmentSelected = (String) item.getTitle();
+                        intent.putExtra("fragment", fragmentSelected);
+                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        break;
+                    case R.id.about_us_nav:
+                        fragmentSelected = (String) item.getTitle();
+                        intent.putExtra("fragment", fragmentSelected);
+                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        break;
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                startActivity(intent);
+                return false;
+            }
+        });
 
     }
 
@@ -101,6 +146,7 @@ public class SignMaterialActivity extends AppCompatActivity {
         if(state == true) {
             favourite = 1;
         }
+
         while(cursor.moveToNext()) {
             if(signSelected.equals(cursor.getString(2))) {
                mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
@@ -117,7 +163,6 @@ public class SignMaterialActivity extends AppCompatActivity {
         while(cursor.moveToNext()) {
             if (signSelected.equals(cursor.getString(2)) && Integer.parseInt(cursor.getString(10)) == 1) {
                 mCheckBox.setChecked(true);
-
             }
         }
     }

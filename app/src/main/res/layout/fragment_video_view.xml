@@ -1,25 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:paddingBottom="8dp"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:paddingTop="8dp"
-              android:weightSum="1"
-              tools:context="com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment"
-              android:id="@+id/container"
-              android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+    <LinearLayout android:id="@+id/linear_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:paddingBottom="8dp"
+                  android:paddingLeft="8dp"
+                  android:paddingRight="8dp"
+                  android:paddingTop="8dp"
+                  android:weightSum="1">
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
+        android:layout_height="25dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Speed:"
+            android:textColor="@color/colourText"
             android:textIsSelectable="false"
             android:textSize="18sp"/>
     </RelativeLayout>
@@ -27,48 +30,57 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:animateLayoutChanges="false"
             android:padding="8dp">
-            <TableRow>
-            <CheckBox
-                android:id="@+id/pointtwofivespeed"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="0.25x"/>
 
-            <CheckBox
-                android:id="@+id/pointfivespeed"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:text="0.5x"/>
+            <TableRow android:layout_gravity="center"
+                android:gravity="center_horizontal">
 
-            <CheckBox
-                android:id="@+id/pointSevenFivespeed"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:text="0.75x"/>
+                <CheckBox
+                    android:id="@+id/pointtwofivespeed"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="0.25x"
+                    android:textColor="@color/colourText"/>
 
-            <CheckBox
-                android:id="@+id/fullspeed"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:text="1.0x"/>
+                <CheckBox
+                    android:id="@+id/pointfivespeed"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="0.5x"
+                    android:textColor="@color/colourText"/>
+
+                <CheckBox
+                    android:id="@+id/pointSevenFivespeed"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="0.75x"
+                    android:textColor="@color/colourText"/>
+
+                <CheckBox
+                    android:id="@+id/fullspeed"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:foregroundGravity="center_vertical|center_horizontal"
+                    android:text="1.0x"
+                    android:textColor="@color/colourText"/>
             </TableRow>
         </TableLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:layout_marginBottom="5dp">
 
     <net.protyposis.android.mediaplayer.VideoView
         android:id="@+id/videoView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_centerHorizontal="true"/>
 
     <ProgressBar
         android:id="@+id/progress"
@@ -80,4 +92,20 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bsl_text"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/colourText"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

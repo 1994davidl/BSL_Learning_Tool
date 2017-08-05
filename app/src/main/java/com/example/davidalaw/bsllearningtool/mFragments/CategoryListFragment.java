@@ -90,7 +90,6 @@ public class CategoryListFragment extends Fragment {
      */
     private void displayListView(View view) {
                 listview = (ListView) view.findViewById(R.id.category_list_view);
-                listview.setCacheColorHint(Color.BLACK);
 
                 mDBHandler = new DBHandler(getActivity());
                 Cursor cursor = mDBHandler.getAllData();

@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.davidalaw.bsllearningtool.MainActivity">
-
+    
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -30,6 +31,7 @@
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:background="@color/colorPrimaryDark"
         android:padding="8dp">
+
 
     </FrameLayout>
 

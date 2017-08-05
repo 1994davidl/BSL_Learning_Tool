@@ -49,12 +49,10 @@ public class SignListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sign_list, container, false);
+        listview = (ListView) view.findViewById(R.id.sign_list_view);
 
         categorySelected= getArguments().getString("Category");
-        Log.d(TAG, "Category Selected: StrText " + categorySelected);
         populateSignListView(view);
-
-        listview = (ListView) view.findViewById(R.id.sign_list_view);
 
         //Implement a click action listener to move to another fragment.
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

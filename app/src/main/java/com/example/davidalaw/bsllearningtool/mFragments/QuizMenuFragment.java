@@ -56,10 +56,8 @@ public class QuizMenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_quiz_menu, container, false);
         readFileAddQuestions();
         displayCategoryOptions(view);
-        populateDropDown(view);
 
         listview = (ListView) view.findViewById(R.id.quiz_categories_list);
-        mSpinner = (Spinner) view.findViewById(R.id.spinner);
         mButton = (Button) view.findViewById(R.id.start_button);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -70,21 +68,13 @@ public class QuizMenuFragment extends Fragment {
             }
         });
 
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                numberSelected = mSpinner.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                numberSelected = mSpinner.toString();
-            }
-        });
-
         mButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if(!listview.isSelected()) {
+                    listview.requestFocus();
+                }
 
                 QuizFragment mQuiz = new QuizFragment();
 
@@ -98,33 +88,18 @@ public class QuizMenuFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 //get selected category name and pass it to Quiz fragment Class
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("Category", selectedFromList);
                 fragment.setArguments(bundle1);
-
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
-
                 return false;
             }
         });
 
 
         return view ;
-    }
-
-    public void populateDropDown(View view) {
-        Spinner sItems = (Spinner) view.findViewById(R.id.spinner);
-        spinnerList = new ArrayList<>();
-        for(int i =5; i <=10; i++) {
-            spinnerList.add(Integer.toString(i));
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sItems.setAdapter(adapter);
     }
 
 

@@ -8,6 +8,7 @@
               android:paddingRight="8dp"
               android:paddingTop="8dp"
               android:weightSum="1"
+
              tools:context="com.example.davidalaw.bsllearningtool.mFragments.QuizFragment">
 
         <net.protyposis.android.mediaplayer.VideoView
@@ -15,14 +16,12 @@
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:layout_marginTop="15dp"
-            android:layout_centerHorizontal="true"
             android:padding="12dp"/>
 
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             style="@android:style/Widget.Holo.ProgressBar.Large"
             android:visibility="gone"/>
 
@@ -30,22 +29,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_weight="0.26">
+        android:layout_weight="0.26"
+        >
 
         <TextView
             android:id="@+id/score_textview"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="Score:"
+            android:text="@string/score"
+            android:textColor="@color/colourText"
             android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/score_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textSize="20sp"/>
 
@@ -60,32 +60,31 @@
             android:id="@+id/radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true">
+            android:layout_centerVertical="true">
 
             <RadioButton
                 android:id="@+id/choiceA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Answer A"/>
+                android:textColor="@color/colourText"/>
 
             <RadioButton
                 android:id="@+id/choiceB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Answer B"/>
+                android:textColor="@color/colourText"/>
 
             <RadioButton
                 android:id="@+id/choiceC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Answer C"/>
+                android:textColor="@color/colourText"/>
 
             <RadioButton
                 android:id="@+id/choiceD"
                 android:layout_width="199dp"
                 android:layout_height="wrap_content"
-                android:text="Answer D"/>
+                android:textColor="@color/colourText"/>
 
 
         </RadioGroup>
@@ -102,7 +101,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Next"/>
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFF"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="@string/next"/>
 
     </RelativeLayout>
 

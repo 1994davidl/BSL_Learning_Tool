@@ -43,7 +43,8 @@ public class QuizFragment extends Fragment {
     private TextView mTextView;
     private Button mButton;
 
-    private String VideoURL;
+    private String VideoURL, mAnswer;
+
 
     private Uri mVideoURI;
     private int mVideoPosition;
@@ -98,6 +99,9 @@ public class QuizFragment extends Fragment {
                 Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
                 mVideoPlaying = false;
                 mMediaSource = null;
+                if(mRadioGroup.isSelected()){
+                    Log.d(TAG, "onClick: " + mRadioGroup.isSelected());
+                }
                 refreshView();
             }
         });
@@ -248,4 +252,18 @@ public class QuizFragment extends Fragment {
         initPlayer();
         populateRadioButtons();
     }
+
+    public String getAnswer() {
+        mDBHandler = new DBHandler(getActivity());
+        Cursor cursor = mDBHandler.getAllQuestions();
+
+        while (cursor.moveToNext()) {
+            if (mArrayList.get(0).equals(cursor.getString(0))) {
+                mAnswer = cursor.getString(7);
+            }
+        }
+        return mAnswer;
+    }
+
+
 }

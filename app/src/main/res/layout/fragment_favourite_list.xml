@@ -4,11 +4,16 @@
              android:layout_height="match_parent"
              tools:context="com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/text_Favourite"
+        android:layout_gravity="center"
+        android:textSize="18sp"/>
+
     <ListView
         android:id="@+id/favourite_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="#cacaca"
-        android:dividerHeight="1dip" />
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>

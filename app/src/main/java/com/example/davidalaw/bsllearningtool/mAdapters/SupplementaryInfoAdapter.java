@@ -1,20 +1,30 @@
 package com.example.davidalaw.bsllearningtool.mAdapters;
 
 
-public class ResourcesAdapter {
+import com.example.davidalaw.bsllearningtool.mSQLiteHandler.FAQuestions;
+import com.example.davidalaw.bsllearningtool.mSQLiteHandler.Resources;
 
-    Resources resources;
-    FAQuestions faQuestions;
+public class SupplementaryInfoAdapter {
+
+    private Resources resources;
+
+    private FAQuestions faQuestions;
 
     private Resources [ ] mResources;
-    private FAQuestions [ ] mFAQuestionses;
-    private final int SIZE = 5;
 
-    public ResourcesAdapter() {
+    private FAQuestions [ ] mFAQuestionses;
+
+    private final int SIZE = 6;
+
+    public SupplementaryInfoAdapter() {
         mResources = new Resources[SIZE];
         mFAQuestionses = new FAQuestions [SIZE];
     }
 
+    /**
+     *
+     * @param line
+     */
     public void populateResourcesObjArray(String line) {
 
         resources = new Resources(line);
@@ -26,6 +36,10 @@ public class ResourcesAdapter {
         }
     }
 
+    /**
+     *
+     * @param line
+     */
     public void populateFAQuestionObjArray(String line ) {
 
         faQuestions = new FAQuestions(line);
@@ -33,6 +47,7 @@ public class ResourcesAdapter {
         for(int i = 0; i < mResources.length; i++) {
             if(mFAQuestionses[i] == null) {
                 mFAQuestionses[i] = faQuestions;
+                return;
             }
         }
 

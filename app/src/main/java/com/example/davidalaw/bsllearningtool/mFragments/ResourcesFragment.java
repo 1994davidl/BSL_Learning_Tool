@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.ResourcesAdapter;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.QuestionBank;
+import com.example.davidalaw.bsllearningtool.mAdapters.SupplementaryInfoAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +25,7 @@ public class ResourcesFragment extends Fragment {
     private static final String TAG = ResourcesFragment.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
-    private ResourcesAdapter mResourcesAdapter;
+    private SupplementaryInfoAdapter mSupplementaryInfoAdapter;
 
     private TextView mWhatBSL;
 
@@ -50,7 +48,7 @@ public class ResourcesFragment extends Fragment {
     }
 
     public void populateTextView() {
-        mWhatBSL.setText(mResourcesAdapter.getInformation(0));
+        mWhatBSL.setText(mSupplementaryInfoAdapter.getInformation(0));
 
     }
 
@@ -77,7 +75,7 @@ public class ResourcesFragment extends Fragment {
 
         InputStream input; // To load text file
         Scanner in; //To read through text file
-        mResourcesAdapter = new ResourcesAdapter();
+        mSupplementaryInfoAdapter = new SupplementaryInfoAdapter();
 
         try {
             input = assetManager.open("resources.txt");
@@ -86,7 +84,7 @@ public class ResourcesFragment extends Fragment {
             while(in.hasNextLine()) {
 
                 String word = in.nextLine();
-                mResourcesAdapter.populateResourcesObjArray(word);
+                mSupplementaryInfoAdapter.populateResourcesObjArray(word);
             }
             in.close(); //close scanner and file.
         } catch (IOException e) {

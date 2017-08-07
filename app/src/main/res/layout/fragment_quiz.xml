@@ -3,35 +3,17 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
               android:orientation="vertical"
-              android:paddingBottom="8dp"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:paddingTop="8dp"
+              android:paddingBottom="4dp"
+              android:paddingLeft="4dp"
+              android:paddingRight="4dp"
+              android:paddingTop="4dp"
               android:weightSum="1"
 
              tools:context="com.example.davidalaw.bsllearningtool.mFragments.QuizFragment">
 
-        <net.protyposis.android.mediaplayer.VideoView
-            android:id="@+id/videoView"
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="15dp"
-            android:padding="12dp"/>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.Holo.ProgressBar.Large"
-            android:visibility="gone"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_weight="0.26"
-        >
-
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/score_textview"
             android:layout_width="100dp"
@@ -39,7 +21,7 @@
             android:layout_centerVertical="true"
             android:text="@string/score"
             android:textColor="@color/colourText"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/score_number"
@@ -48,45 +30,44 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textSize="20sp"/>
-
     </RelativeLayout>
 
+        <net.protyposis.android.mediaplayer.VideoView
+            android:id="@+id/videoView"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp"/>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="141dp"
-        android:layout_weight="0.45">
-
+        android:layout_height="133dp">
         <RadioGroup
             android:id="@+id/radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
-
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
             <RadioButton
                 android:id="@+id/choiceA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colourText"/>
-
             <RadioButton
                 android:id="@+id/choiceB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colourText"/>
-
             <RadioButton
                 android:id="@+id/choiceC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colourText"/>
-
             <RadioButton
                 android:id="@+id/choiceD"
                 android:layout_width="199dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colourText"/>
-
-
         </RadioGroup>
     </RelativeLayout>
 
@@ -99,13 +80,14 @@
             android:id="@+id/next_button"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:background="@color/colorPrimary"
             android:textColor="#FFFF"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:text="@string/next"/>
+            android:text="@string/next"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 

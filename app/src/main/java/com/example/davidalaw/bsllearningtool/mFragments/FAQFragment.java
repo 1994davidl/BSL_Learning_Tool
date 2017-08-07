@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.ResourcesAdapter;
-
-import org.w3c.dom.Text;
+import com.example.davidalaw.bsllearningtool.mAdapters.SupplementaryInfoAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,9 +23,9 @@ public class FAQFragment extends Fragment {
     private static final String TAG = FAQFragment.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
-    private ResourcesAdapter mResourcesAdapter;
+    private SupplementaryInfoAdapter mSupplementaryInfoAdapter;
 
-    private TextView mTextView1, mTextView2;
+    private TextView [] mTextView;
 
     public FAQFragment() {
         // Required empty public constructor
@@ -38,20 +36,26 @@ public class FAQFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
-        mTextView1 = (TextView) view.findViewById(R.id.why_BSL_uppercase);
-        mTextView2 = (TextView) view.findViewById(R.id.why_mouth_signs);
+
+        mTextView = new TextView[6];
+        mTextView[0] = (TextView) view.findViewById(R.id.why_BSL_uppercase);
+        mTextView[1] = (TextView) view.findViewById(R.id.why_mouth_signs);
+        mTextView[2] = (TextView) view.findViewById(R.id.sign_location);
+        mTextView[3] = (TextView) view.findViewById(R.id.sign_config);
+        mTextView[4] = (TextView) view.findViewById(R.id.sign_action);
+        mTextView[5] = (TextView) view.findViewById(R.id.sign_synonym);
+
         readResourceFile();
         populateTextView();
-
 
         return view;
     }
 
-    public void populateTextView() {
-        mTextView1.setText(mResourcesAdapter.getFAQuestions(0));
-        mTextView2.setText(mResourcesAdapter.getFAQuestions(1));
-
-
+    public void populateTextView()
+    {
+       for(int i = 0; i < mTextView.length; i++) {
+           mTextView[i].setText(mSupplementaryInfoAdapter.getFAQuestions(i));
+       }
     }
 
     public void readResourceFile () {
@@ -59,7 +63,7 @@ public class FAQFragment extends Fragment {
 
         InputStream input; // To load text file
         Scanner in; //To read through text file
-        mResourcesAdapter = new ResourcesAdapter();
+        mSupplementaryInfoAdapter = new SupplementaryInfoAdapter();
 
         try {
             input = assetManager.open("FAQ.txt");
@@ -67,13 +71,14 @@ public class FAQFragment extends Fragment {
 
             while(in.hasNextLine()) {
                 String word = in.nextLine();
-                mResourcesAdapter.populateFAQuestionObjArray(word);
+                mSupplementaryInfoAdapter.populateFAQuestionObjArray(word);
             }
             in.close(); //close scanner and file.
         } catch (IOException e) {
             Log.e(TAG, "Exception Error " + e);
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -93,16 +98,6 @@ public class FAQFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

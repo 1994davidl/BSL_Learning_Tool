@@ -6,11 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.database.Cursor;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,9 +18,9 @@ import android.widget.Toast;
 
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
-import com.example.davidalaw.bsllearningtool.Utils;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
+
+import com.example.davidalaw.bsllearningtool.mAdapters.Utils;
+import com.example.davidalaw.bsllearningtool.mAdapters.SignMaterialAdapter;
 
 import net.protyposis.android.mediaplayer.MediaSource;
 import net.protyposis.android.mediaplayer.MediaPlayer;
@@ -33,7 +30,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
     private static final String TAG = VideoViewFragment.class.getSimpleName();
 
-    private DBHandler mDBHandler;
+    private SignMaterialAdapter mSignMaterialAdapter;
 
     private MediaController.MediaPlayerControl mMediaPlayerControl;
 
@@ -41,8 +38,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private VideoView mVideoView;
     private TextView mTextView;
 
-    private String VideoURL;
-    private String signSelected;
+    private String signSelected, mVideoURL;
 
     private Uri mVideoURI;
     private int mVideoPosition;
@@ -67,24 +63,29 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_view, container, false);
-        getVideoURL(); //Get the video of the sign the user has selected
-
         mVideoView = (VideoView)view.findViewById(R.id.videoView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mTextView =(TextView) view.findViewById(R.id.bsl_text);
-        getBSLSignOrder();
 
+        getVideoURL();//Get the video of the sign the user has selected
+        getBSLSignOrder(); //Display the BSL interpretation in text form
+        videoplaySettingsOnCreate();
+        checkBoxesStates(view);
+
+        return view;
+    }
+
+    public void videoplaySettingsOnCreate(){
         mMediaPlayerControl = mVideoView;
         mProgressBar.setVisibility(View.VISIBLE);
 
-        mVideoURI = Uri.parse(VideoURL);
+        mVideoURI = Uri.parse(mVideoURL);
         mVideoPosition =0;
         mVideoPlaybackSpeed = 1;
         mVideoPlaying = true;
-
-        checkBoxesStates(view);
-        return view;
     }
+
+
 
     @Override
     public void onResume() {
@@ -109,6 +110,8 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
+
+
         //Display toast message and disable the media controller in the event
         //that the video is unable to load
         mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -121,32 +124,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 return true;
             }
         });
-
-        /**
-         * Get information of video status
-
-        mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mMediaPlayer, int i, int extra) {
-                String infoListener = "";
-                switch (i) {
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        infoListener = "MEDIA_INFO_BUFFERING_END";
-                        break;
-                    case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                        infoListener = "MEDIA_INFO_BUFFERING_START";
-                        break;
-                    case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                        infoListener = "MEDIA_INFO_VIDEO_RENDERING_START";
-                        break;
-                    case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                        infoListener = "MEDIA_INFO_VIDEO_TRACK_LAGGING";
-                        break;
-                }
-                Log.d(TAG, "onInfo " + infoListener);
-                return false;
-            }
-        }); */
 
         /**
          *
@@ -254,40 +231,27 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         }
     }
 
-
-    private void getVideoURL() {
-
+    /**
+     *
+     */
+    public void getVideoURL() {
         Log.d(TAG, "Populate BSL Notation View");
-        mDBHandler = new DBHandler(getActivity());
-        Cursor cursor = mDBHandler.getAllData();
-        while (cursor.moveToNext()) {
-            if (getSignSelected().equals(cursor.getString(2))) {
-                if (cursor.getString(9).equals("http://youtube.com")) {
-                    VideoURL = "http://content.jwplatform.com/videos/PSYPYEXC-6B5j5ITm.mp4";
-                } else {
-                    VideoURL = cursor.getString(9);
-                }
-            }
-        }
+        mSignMaterialAdapter = new SignMaterialAdapter();
+        mVideoURL = mSignMaterialAdapter.getVideoURL(getContext(), signSelected);
+
     }
 
-    private void getBSLSignOrder() {
+    /**
+     *
+     */
+    public void getBSLSignOrder() {
         Log.d(TAG, "Populate BSL Notation View");
-        mDBHandler = new DBHandler(getActivity());
-        Cursor cursor = mDBHandler.getAllData();
-        while (cursor.moveToNext()) {
-            if (getSignSelected().equals(cursor.getString(2))) {
-               mTextView.setText(cursor.getString(3));
-            }
-        }
+        mSignMaterialAdapter = new SignMaterialAdapter();
+        mTextView.setText(mSignMaterialAdapter.getBSLSignOrder(getContext(), signSelected));
     }
 
     public String getSignSelected() {
         return signSelected;
-    }
-
-    public void setSignSelected(String signSelected) {
-        this.signSelected = signSelected;
     }
 
     public interface OnFragmentInteractionListener {

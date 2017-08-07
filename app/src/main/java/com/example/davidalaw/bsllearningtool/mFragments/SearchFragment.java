@@ -27,6 +27,8 @@ public class SearchFragment extends Fragment {
 
     private String mSignSelected;
 
+    private  AutoCompleteTextView mAutoCompleteTextView;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -37,20 +39,26 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_search, container, false);
 
-        AutoCompleteTextView autoComplete = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
+        mAutoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
+
         DBHandler mDBHandler = new DBHandler(getActivity());
         //Get a list of all names
         final ArrayList<String> allSignNames = mDBHandler.getAllSignNames();
         //Create array adapater to make selection available
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allSignNames);
         //Make the adapter available through the autocomplete name;
-        autoComplete.setAdapter(stringArrayAdapter);
+        mAutoCompleteTextView.setAdapter(stringArrayAdapter);
 
 
         mSignSelected = getArguments().getString("Category");
         Log.d(TAG, "Category Selected: StrText " + mSignSelected);
 
-        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteActionListener();
+        return view;
+    }
+
+    public void autoCompleteActionListener() {
+        mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mSignSelected = adapterView.getItemAtPosition(i).toString();
@@ -63,9 +71,9 @@ public class SearchFragment extends Fragment {
             }
         });
 
-
-        return view;
     }
+
+
 
     @Override
     public void onAttach(Context context) {

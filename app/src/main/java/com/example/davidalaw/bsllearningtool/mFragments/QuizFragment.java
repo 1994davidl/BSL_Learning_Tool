@@ -1,6 +1,5 @@
 package com.example.davidalaw.bsllearningtool.mFragments;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.Utils;
+import com.example.davidalaw.bsllearningtool.mAdapters.Utils;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
 import net.protyposis.android.mediaplayer.MediaPlayer;
@@ -26,7 +24,6 @@ import net.protyposis.android.mediaplayer.MediaSource;
 import net.protyposis.android.mediaplayer.VideoView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class QuizFragment extends Fragment {
@@ -81,7 +78,6 @@ public class QuizFragment extends Fragment {
         //initialise GUI components
         mTextView = (TextView) view.findViewById(R.id.score_number); mTextView.setText("0");
         mVideoView = (VideoView) view.findViewById(R.id.videoView);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mRadioGroup = (RadioGroup) view.findViewById(R.id.radiogroup);
             mRadioButton1 = (RadioButton) view.findViewById(R.id.choiceA);
             mRadioButton2 = (RadioButton) view.findViewById(R.id.choiceB);
@@ -113,11 +109,22 @@ public class QuizFragment extends Fragment {
      *
      */
     private void videoSettingsOnCreate() {
-        mProgressBar.setVisibility(View.VISIBLE);
         mVideoURI = Uri.parse(VideoURL);
         mVideoPosition = 0;
         mVideoPlaybackSpeed = 1;
         mVideoPlaying = true;
+    }
+
+    /**
+     *
+     */
+    private void refreshView ()
+    {
+        Collections.rotate(mArrayList, -1); //Send first array list item to the back.
+        getVideoURL();
+        videoSettingsOnCreate();
+        initPlayer();
+        populateRadioButtons();
     }
 
     /**
@@ -139,7 +146,6 @@ public class QuizFragment extends Fragment {
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                mProgressBar.setVisibility(View.GONE);
                 mp.setLooping(true); //Loop video continously
             }
         });
@@ -229,7 +235,6 @@ public class QuizFragment extends Fragment {
 
         mDBHandler = new DBHandler(getActivity());
         Cursor cursor = mDBHandler.getAllQuestions();
-
         while (cursor.moveToNext()) {
             if (mArrayList.get(0).equals(cursor.getString(0))) {
                 mRadioButton1.setText(cursor.getString(3));
@@ -241,17 +246,6 @@ public class QuizFragment extends Fragment {
         }
     }
 
-    /**
-     *
-     */
-    private void refreshView ()
-    {
-        Collections.rotate(mArrayList, -1); //Send first array list item to the back.
-        getVideoURL();
-        videoSettingsOnCreate();
-        initPlayer();
-        populateRadioButtons();
-    }
 
     public String getAnswer() {
         mDBHandler = new DBHandler(getActivity());

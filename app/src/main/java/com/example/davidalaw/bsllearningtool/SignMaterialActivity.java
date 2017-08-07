@@ -1,15 +1,11 @@
 package com.example.davidalaw.bsllearningtool;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -19,14 +15,10 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.davidalaw.bsllearningtool.mAdapters.SectionPageAdapter;
+import com.example.davidalaw.bsllearningtool.mAdapters.TabbedPageAdapter;
 import com.example.davidalaw.bsllearningtool.mFragments.BSLNotationFragment;
-import com.example.davidalaw.bsllearningtool.mFragments.CategoryListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment;
-import com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment;
-import com.example.davidalaw.bsllearningtool.mFragments.ResourcesFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
@@ -34,7 +26,7 @@ import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 public class SignMaterialActivity extends AppCompatActivity {
 
     private static final String TAG = "FragmentsMainActivity";
-    private SectionPageAdapter mSectionPageAdapter;
+    private TabbedPageAdapter mTabbedPageAdapter;
     private ViewPager mViewPager;
     private DBHandler mDBHandler;;
     private static String signSelected, fragmentSelected;
@@ -57,7 +49,7 @@ public class SignMaterialActivity extends AppCompatActivity {
         signSelected = intent.getStringExtra("sign");
         Log.d(TAG, "Sign Selected pass: " + signSelected);
 
-        mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mTextView = (TextView) findViewById(R.id.toolbar_title);
         mTextView.setText(signSelected);
@@ -77,11 +69,11 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(ViewPager viewPager) {
-            mSectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
-            mSectionPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
-            mSectionPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
-            mSectionPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
-            viewPager.setAdapter(mSectionPageAdapter);
+            mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
+            mTabbedPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
+            mTabbedPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
+            mTabbedPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
+            viewPager.setAdapter(mTabbedPageAdapter);
 
     }
 

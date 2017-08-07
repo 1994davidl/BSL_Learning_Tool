@@ -1,4 +1,4 @@
-package com.example.davidalaw.bsllearningtool.mAdapters;
+package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
 
 /**
  * Created by DavidALaw on 04/08/2017.
@@ -12,8 +12,7 @@ public class FAQuestions {
         mFAQquestions = FAQquestions;
     }
 
-    public FAQuestions() {
-    }
+    public FAQuestions() {}
 
     public String getFAQquestions() {
         return mFAQquestions;

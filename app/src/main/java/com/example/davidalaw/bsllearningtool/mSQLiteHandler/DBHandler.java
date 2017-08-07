@@ -51,6 +51,8 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+
     /**
      * These is where we need to write create table statements.
      * This is called when database is created.

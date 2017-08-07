@@ -2,14 +2,11 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +16,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.davidalaw.bsllearningtool.mAdapters.MainPageAdapter;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
-import com.example.davidalaw.bsllearningtool.MainActivity;
 import com.example.davidalaw.bsllearningtool.R;
 
 import java.util.ArrayList;
@@ -31,6 +28,7 @@ public class CategoryListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private MainPageAdapter mMainPageAdapter;
     private Class fragmentClass = null;
     private DBHandler mDBHandler;
     private ListView listview;
@@ -45,39 +43,10 @@ public class CategoryListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
-        this.displayListView(view); //helper method to display category content
-
         listview = (ListView) view.findViewById(R.id.category_list_view);
 
-        //Implement a click action listener to move to another fragment.
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), listData.get(i), Toast.LENGTH_SHORT).show();
-                SignListFragment mSign = new SignListFragment();
-
-                //Open Sign List Fragment
-                Fragment fragment = null;
-                fragmentClass = null;
-                fragmentClass = SignListFragment.class;
-
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                //get selected category name and pass it to signlistfragment Class
-                String category = listData.get(i);
-                Bundle bundle = new Bundle();
-                bundle.putString("Category", category);
-                fragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
-
-            }
-        });
+        displayListView(view);
+        listViewActionListener();
 
         return view;
     }
@@ -89,26 +58,45 @@ public class CategoryListFragment extends Fragment {
      * @param view
      */
     private void displayListView(View view) {
-                listview = (ListView) view.findViewById(R.id.category_list_view);
+        listview = (ListView) view.findViewById(R.id.category_list_view);
+        mMainPageAdapter = new MainPageAdapter();
 
-                mDBHandler = new DBHandler(getActivity());
-                Cursor cursor = mDBHandler.getAllData();
+        //create the list adapter
+        ListAdapter adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectDistinctCategories(getContext()));
+        listview.setAdapter(adapter);
+    }
 
-                listData = new ArrayList<>();
+    /**
+     *
+     */
+    public void listViewActionListener() {
+        //Implement a click action listener to move to another fragment.
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), mMainPageAdapter.getSelectedCategory(i), Toast.LENGTH_SHORT).show();
+                SignListFragment mSign = new SignListFragment();
 
-                //get the value from the database from column 1 (Category name)
-                //if Arraylist already contains the category then do not add to display
-                while(cursor.moveToNext()) {
-                    if(!listData.contains(cursor.getString(1))) {
-                        listData.add(cursor.getString(1));
-                    }
+                //Open Sign List Fragment
+                Fragment fragment = null;
+                fragmentClass = null;
+                fragmentClass = SignListFragment.class;
+
+                try {
+                    //get selected category name and pass it to signlistfragment Class
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Category", mMainPageAdapter.getSelectedCategory(i));
+                    fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-                //create the list adapter
-                ListAdapter adapter = new ArrayAdapter<>(getActivity(),
-                        android.R.layout.simple_list_item_activated_1, listData);
-                listview.setAdapter(adapter);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
             }
+        });
+    }
 
 
     public void onButtonPressed(Uri uri) {

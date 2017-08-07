@@ -2,11 +2,9 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,30 +16,24 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
+import com.example.davidalaw.bsllearningtool.mAdapters.MainPageAdapter;
 import com.example.davidalaw.bsllearningtool.R;
-
-import java.util.ArrayList;
 
 
 public class SignListFragment extends Fragment {
 
-    private static final String TAG = "SignListFragment";
+    private static final String TAG = SignListFragment.class.getSimpleName();
+
     private OnFragmentInteractionListener mListener;
 
-    private DBHandler mDBHandler;
-    private ListView listview;
+    private MainPageAdapter mMainPageAdapter;
 
-    private static String categorySelected, signSelected;
-    private ArrayList<String> listData;
-    private Class fragmentClass = null;
+    private ListView mListView;
+
+    private static String categorySelected;
 
     public SignListFragment() {
         // Required empty public constructor
-    }
-
-    public SignListFragment(String mCategorySelected) {
-        this.categorySelected = mCategorySelected;
     }
 
     @Override
@@ -49,54 +41,36 @@ public class SignListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sign_list, container, false);
-        listview = (ListView) view.findViewById(R.id.sign_list_view);
+        categorySelected = getArguments().getString("Category");
 
-        categorySelected= getArguments().getString("Category");
-        populateSignListView(view);
+        mListView= (ListView) view.findViewById(R.id.sign_list_view);
+        populateSignListView();
+        listViewActionListener();
 
-        //Implement a click action listener to move to another fragment.
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), listData.get(i), Toast.LENGTH_SHORT).show();
-
-                signSelected = listData.get(i);
-
-                Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign", signSelected);
-                Log.d(TAG,"Sign Selected: " + signSelected);
-                startActivity(intent);
-            }
-        });
         return view;
     }
 
-            private void populateSignListView (View view) {
-                Log.d(TAG, "Populate Sign List View ");
+    private void populateSignListView () {
+        Log.d(TAG, "Populate Sign List View ");
+        mMainPageAdapter = new MainPageAdapter();
+        //create the list adapter
+        ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectSignsFromSelectedCategory(getContext(), categorySelected));
+        mListView.setAdapter(adapter);
+    }
 
-                ListView mListView = (ListView) view.findViewById(R.id.sign_list_view);
-
-                mDBHandler = new DBHandler(getActivity());
-                Cursor cursor = mDBHandler.getAllData();
-
-                listData = new ArrayList<>();
-
-                while(cursor.moveToNext()) {
-                    //get the value from the database from column 2 (Sign Name)
-                    //then add it to the array list
-                    if(categorySelected.equals(cursor.getString(1))) {
-                        if(!listData.contains(cursor.getString(2))) {
-                            listData.add(cursor.getString(2));
-                        }
-                    } else {
-                        continue;
-                    }
-
-                }
-                //create the list adapter
-                ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, listData);
-                mListView.setAdapter(adapter);
+    public void listViewActionListener() {
+        //Implement a click action listener to move to another fragment.
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(), mMainPageAdapter.getSignSelected(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
+                intent.putExtra("sign",  mMainPageAdapter.getSignSelected(i));
+                Log.d(TAG,"Sign Selected: " +  mMainPageAdapter.getSignSelected(i));
+                startActivity(intent);
             }
+        });
+    }
 
     @Override
     public void onAttach(Context context) {

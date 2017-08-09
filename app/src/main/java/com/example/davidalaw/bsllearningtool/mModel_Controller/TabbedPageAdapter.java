@@ -1,14 +1,8 @@
-package com.example.davidalaw.bsllearningtool.mAdapters;
+package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.TextView;
-
-import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +40,5 @@ public class TabbedPageAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return mFragmentList.size();
     }
-
-
 
 }

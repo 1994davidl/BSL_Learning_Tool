@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class SearchFragment extends Fragment {
 
     private static final String TAG = "SearchFragment";
+
     private OnFragmentInteractionListener mListener;
 
     private String mSignSelected;

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.res.AssetManager;
@@ -18,9 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.mFragments.CategoryListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.FAQFragment;
@@ -61,7 +58,6 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<String> listCategory;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,31 +67,31 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         doDBCheck();
-         //Read Text to populate database.
+        //Read Text to populate database.
         setOpeningScreenDisplay(savedInstanceState);
 
         Intent intent = getIntent();
         mFragmentSelected = intent.getStringExtra("fragment");
-        if(mFragmentSelected != null) {
+        if (mFragmentSelected != null) {
             Log.d(TAG, "FRAGMENT SELECTED " + mFragmentSelected);
             backFromSignMaterialActivity();
         }
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-            setBottomNavigationView();
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        setBottomNavigationView();
 
     }
 
-    public void setOpeningScreenDisplay (Bundle savedInstanceState) {
+    public void setOpeningScreenDisplay(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Fragment fragment = null;
             fragmentClass = CategoryListFragment.class;
@@ -109,20 +105,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void setBottomNavigationView(){
+    public void setBottomNavigationView() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.home_nav:
                         fragmentClass = CategoryListFragment.class;
                         break;
                     case R.id.favourites_nav:
                         fragmentClass = FavouriteListFragment.class;
                         break;
-                    case R.id.about_us_nav:
-                        fragmentClass = FAQFragment.class;
+                    case R.id.quiz_menu_nav:
+                        fragmentClass = QuizMenuFragment.class;
                         break;
                 }
 
@@ -142,13 +138,13 @@ public class MainActivity extends AppCompatActivity
     public void backFromSignMaterialActivity() {
 
         Fragment fragment = null;
-       if (mFragmentSelected.equals("Home")) {
-           fragmentClass = CategoryListFragment.class;
-       } else if (mFragmentSelected.equals("Favourites")) {
-           fragmentClass = FavouriteListFragment.class;
-       } else {
-           fragmentClass = FAQFragment.class;
-       }
+        if (mFragmentSelected.equals("Home")) {
+            fragmentClass = CategoryListFragment.class;
+        } else if (mFragmentSelected.equals("Favourites")) {
+            fragmentClass = FavouriteListFragment.class;
+        } else {
+            fragmentClass = QuizMenuFragment.class;
+        }
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -161,16 +157,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     //TODO: solve db reduplication
-    private void doDBCheck()
-    {
-        try{
+    private void doDBCheck() {
+        try {
             File file = new File(DB_PATH);
-            if(!file.exists()) {
+            //file.delete();
+            if (!file.exists()) {
                 this.readFileAddData();
             } else {
                 return;
             }
-        }catch(Exception ex) {
+        } catch (Exception ex) {
 
         }
     }
@@ -194,7 +190,6 @@ public class MainActivity extends AppCompatActivity
     /**
      * Navigate the user to the next UI fragment depending on what they've selected
      *
-     *
      * @param item
      * @return
      */
@@ -213,17 +208,17 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = SearchFragment.class;
         } else if (id == R.id.nav_Home) {
             fragmentClass = CategoryListFragment.class;
-        }  else if (id == R.id.nav_favourite) {
+        } else if (id == R.id.nav_favourite) {
             fragmentClass = FavouriteListFragment.class;
-        }else if (id == R.id.nav_fingerspelling) {
+        } else if (id == R.id.nav_fingerspelling) {
             category = listCategory.get(0);
             fragmentClass = SignListFragment.class;
-        }else if (id == R.id.nav_numbers) {
+        } else if (id == R.id.nav_numbers) {
             category = listCategory.get(1);
             fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_colours) {
             category = listCategory.get(2);
-            fragmentClass =SignListFragment.class;
+            fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_greetings) {
             category = listCategory.get(3);
             fragmentClass = SignListFragment.class;
@@ -232,7 +227,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_family_members) {
             category = listCategory.get(5);
-            fragmentClass =SignListFragment.class;
+            fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_interest) {
             fragmentClass = SignListFragment.class;
         } else if (id == R.id.nav_food) {
@@ -241,13 +236,13 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = QuizMenuFragment.class;
         } else if (id == R.id.nav_progress) {
             fragmentClass = ProgressFragment.class;
-
-        }  else if (id == R.id.nav_bsl_info) {
+        } else if (id == R.id.nav_bsl_info) {
             fragmentClass = ResourcesFragment.class;
-        } else if (id == R.id.nav_share) {
+        }  else if (id == R.id.FAQ){
+            fragmentClass = FAQFragment.class;
+        }else if (id == R.id.nav_share) {
 
         }
-
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
@@ -272,7 +267,7 @@ public class MainActivity extends AppCompatActivity
      * string object is send to the model class (SignData) for the line to be tokenised suitable
      * and then afterward inserted into the database
      */
-    public void readFileAddData () {
+    public void readFileAddData() {
         AssetManager assetManager = getAssets();
         mDBHandler = new DBHandler(this);
 
@@ -283,7 +278,7 @@ public class MainActivity extends AppCompatActivity
             input = assetManager.open("SignList.txt");
             in = new Scanner(input);
 
-            while(in.hasNextLine()) {
+            while (in.hasNextLine()) {
 
                 String word = in.nextLine();
                 mSignData = new SignData(word);
@@ -310,15 +305,13 @@ public class MainActivity extends AppCompatActivity
 
         //get the value from the database from column 1 (Category name)
         //if Arraylist already contains the category then do not add to display
-        while(cursor.moveToNext()) {
-            if(!listCategory.contains(cursor.getString(1))) {
+        while (cursor.moveToNext()) {
+            if (!listCategory.contains(cursor.getString(1))) {
                 listCategory.add(cursor.getString(1));
             }
         }
-       return listCategory;
+        return listCategory;
     }
-
-
 
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.davidalaw.bsllearningtool.mAdapters;
+package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
 
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.FAQuestions;
@@ -10,7 +10,7 @@ public class SupplementaryInfoAdapter {
 
     private FAQuestions faQuestions;
 
-    private Resources [ ] mResources;
+    private Resources [ ] mResources; 
 
     private FAQuestions [ ] mFAQuestionses;
 
@@ -50,7 +50,6 @@ public class SupplementaryInfoAdapter {
                 return;
             }
         }
-
     }
 
     public String getFAQuestions(int i) {

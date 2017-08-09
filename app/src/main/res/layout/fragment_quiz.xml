@@ -52,22 +52,26 @@
                 android:id="@+id/choiceA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colourText"/>
+                android:textColor="@color/colourText"
+                android:textSize="16sp"/>
             <RadioButton
                 android:id="@+id/choiceB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colourText"/>
+                android:textColor="@color/colourText"
+                android:textSize="16sp"/>
             <RadioButton
                 android:id="@+id/choiceC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colourText"/>
+                android:textColor="@color/colourText"
+                android:textSize="16sp"/>
             <RadioButton
                 android:id="@+id/choiceD"
                 android:layout_width="199dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colourText"/>
+                android:textColor="@color/colourText"
+                android:textSize="16sp"/>
         </RadioGroup>
     </RelativeLayout>
 

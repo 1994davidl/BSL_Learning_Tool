@@ -47,7 +47,7 @@ public class SignData {
     }
 
     public SignData(String line) {
-        String [] tokens = line.split(";");
+        String[] tokens = line.split(";");
 
         categoryName = tokens[0];
         signName = tokens[1];

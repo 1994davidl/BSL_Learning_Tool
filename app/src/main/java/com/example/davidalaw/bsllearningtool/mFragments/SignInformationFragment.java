@@ -1,6 +1,5 @@
 package com.example.davidalaw.bsllearningtool.mFragments;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.SignMaterialAdapter;
-import com.example.davidalaw.bsllearningtool.mAdapters.TabbedPageAdapter;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.SignMaterialAdapter;
 
-import java.util.ArrayList;
 /**
  * Created by DavidALaw on 21/07/2017.
  */

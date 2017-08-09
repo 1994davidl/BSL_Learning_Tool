@@ -1,12 +1,14 @@
 package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,16 +38,24 @@ public class QuizMenuFragment extends Fragment {
     private static final String TAG = QuizMenuFragment.class.getSimpleName();
 
     private DBHandler mDBHandler;
+
     private ListView listview;
-    private Spinner mSpinner;
+
     private Button mButton;
-    private ArrayList<String> mListData, spinnerList;
-    private Class fragmentClass = null;
-    private String selectedFromList, numberSelected;
+
+    private ArrayList<String> mListData;
+
+    private String selectedFromList;
+
     private QuestionBank mQuestionBank;
 
     private OnFragmentInteractionListener mListener;
 
+    private Class fragmentClass = null;
+
+    private NumberPicker numberPicker;
+
+    private int selected_num_picker =1;
     public QuizMenuFragment() {
         // Required empty public constructor
     }
@@ -52,13 +63,13 @@ public class QuizMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quiz_menu, container, false);
-        readFileAddQuestions();
-        displayCategoryOptions(view);
 
         listview = (ListView) view.findViewById(R.id.quiz_categories_list);
         mButton = (Button) view.findViewById(R.id.start_button);
+
+        readFileAddQuestions();
+        displayCategoryOptions(view);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,29 +82,7 @@ public class QuizMenuFragment extends Fragment {
         mButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if(!listview.isSelected()) {
-                    listview.requestFocus();
-                }
-
-                QuizFragment mQuiz = new QuizFragment();
-
-                //Open Sign List Fragment
-                Fragment fragment = null;
-                fragmentClass = null;
-                fragmentClass = QuizFragment.class;
-
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                //get selected category name and pass it to Quiz fragment Class
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("Category", selectedFromList);
-                fragment.setArguments(bundle1);
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
+                selectNumberOfQuestions(view);
                 return false;
             }
         });
@@ -102,6 +91,58 @@ public class QuizMenuFragment extends Fragment {
         return view ;
     }
 
+    public void selectNumberOfQuestions(View view) {
+
+        final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(view.getContext());
+        View mdialog = getActivity().getLayoutInflater().inflate(R.layout.quiz_dialog, null);
+
+        numberPicker = (NumberPicker) mdialog.findViewById(R.id.num_picker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(10);
+
+        alertBuilder.setView(mdialog);
+
+        alertBuilder.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selected_num_picker = numberPicker.getValue();
+                openQuizFragment(selected_num_picker);
+                dialogInterface.cancel();
+            }
+        });
+
+        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertBuilder.create();
+        alertBuilder.show();
+    }
+
+    public void openQuizFragment(int numberPicked) {
+        QuizFragment mQuiz = new QuizFragment();
+
+        //Open Sign List Fragment
+        Fragment fragment = null;
+        fragmentClass = null;
+        fragmentClass = QuizFragment.class;
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+            Bundle bundle1 = new Bundle();
+            bundle1.putString("Category", selectedFromList);
+            bundle1.putString("Question",  String.valueOf(numberPicked));
+            fragment.setArguments(bundle1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
+    }
 
     @Override
     public void onAttach(Context context) {

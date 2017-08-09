@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
-import com.example.davidalaw.bsllearningtool.mAdapters.MainPageAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 import com.example.davidalaw.bsllearningtool.R;
 
 

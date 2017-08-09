@@ -12,7 +12,8 @@ public class FAQuestions {
         mFAQquestions = FAQquestions;
     }
 
-    public FAQuestions() {}
+    public FAQuestions() {
+    }
 
     public String getFAQquestions() {
         return mFAQquestions;

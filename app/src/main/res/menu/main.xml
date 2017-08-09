@@ -14,8 +14,8 @@
         android:icon="@drawable/ic_checked_favourite"/>
 
     <item
-        android:id="@+id/about_us_nav"
-        android:title="FAQ"
+        android:id="@+id/quiz_menu_nav"
+        android:title="Quiz"
         android:icon="@drawable/ic_faq"/>
 
 

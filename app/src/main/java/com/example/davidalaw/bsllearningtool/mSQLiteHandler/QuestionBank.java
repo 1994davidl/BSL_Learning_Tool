@@ -12,18 +12,6 @@ public class QuestionBank {
     public QuestionBank() {
     }
 
-    public QuestionBank(int id, String category, String videoURI, String answerA, String answerB,
-                        String answerC, String answerD, String correctAnswer) {
-        this.id = id;
-        this.category = category;
-        this.videoURI = videoURI;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-        this.correctAnswer = correctAnswer;
-    }
-
     public QuestionBank(String category, String videoURI, String answerA, String answerB,
                         String answerC, String answerD, String correctAnswer) {
         this.category = category;
@@ -36,8 +24,7 @@ public class QuestionBank {
     }
 
     public QuestionBank(String line) {
-        String [] tokens = line.split(";");
-
+        String[] tokens = line.split(";");
         category = tokens[0];
         videoURI = tokens[1];
         answerA = tokens[2];
@@ -45,11 +32,7 @@ public class QuestionBank {
         answerC = tokens[4];
         answerD = tokens[5];
         correctAnswer = tokens[6];
-
     }
-
-
-
 
     public int getId() {
         return id;

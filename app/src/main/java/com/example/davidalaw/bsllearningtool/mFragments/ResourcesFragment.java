@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.SupplementaryInfoAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.SupplementaryInfoAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +38,9 @@ public class ResourcesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_resources, container, false);
-        readResourceFile();
-
-
         mWhatBSL = (TextView) view.findViewById(R.id.what_BSL);
+
+        readResourceFile();
         populateTextView();
 
         return view;
@@ -49,26 +48,7 @@ public class ResourcesFragment extends Fragment {
 
     public void populateTextView() {
         mWhatBSL.setText(mSupplementaryInfoAdapter.getInformation(0));
-
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
 
     public void readResourceFile () {
         AssetManager assetManager = getActivity().getAssets();
@@ -92,6 +72,26 @@ public class ResourcesFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

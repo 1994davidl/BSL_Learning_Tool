@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
 
-import com.example.davidalaw.bsllearningtool.mAdapters.Utils;
-import com.example.davidalaw.bsllearningtool.mAdapters.SignMaterialAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.Utils;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.SignMaterialAdapter;
 
 import net.protyposis.android.mediaplayer.MediaSource;
 import net.protyposis.android.mediaplayer.MediaPlayer;
@@ -32,20 +32,27 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
     private SignMaterialAdapter mSignMaterialAdapter;
 
-    private MediaController.MediaPlayerControl mMediaPlayerControl;
-
     private ProgressBar mProgressBar;
+
     private VideoView mVideoView;
+
     private TextView mTextView;
 
     private String signSelected, mVideoURL;
 
     private Uri mVideoURI;
+
     private int mVideoPosition;
+
     private float mVideoPlaybackSpeed;
+
     private boolean mVideoPlaying;
+
     private MediaSource mMediaSource;
+
     private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4;
+
+    private MediaController.MediaPlayerControl mMediaPlayerControl;
 
     //Constructor
     public VideoViewFragment(String signSelected) {
@@ -63,6 +70,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_view, container, false);
+
         mVideoView = (VideoView)view.findViewById(R.id.videoView);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mTextView =(TextView) view.findViewById(R.id.bsl_text);
@@ -80,7 +88,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         mProgressBar.setVisibility(View.VISIBLE);
 
         mVideoURI = Uri.parse(mVideoURL);
-        mVideoPosition =0;
+        mVideoPosition = 0;
         mVideoPlaybackSpeed = 1;
         mVideoPlaying = true;
     }
@@ -106,7 +114,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 mProgressBar.setVisibility(View.GONE);
                 mp.setPlaybackSpeed(1.0f);
                 mp.setLooping(true); //Loop video continously
-
             }
         });
 
@@ -238,7 +245,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         Log.d(TAG, "Populate BSL Notation View");
         mSignMaterialAdapter = new SignMaterialAdapter();
         mVideoURL = mSignMaterialAdapter.getVideoURL(getContext(), signSelected);
-
     }
 
     /**

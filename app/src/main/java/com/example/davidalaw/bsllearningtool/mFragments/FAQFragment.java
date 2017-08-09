@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.SupplementaryInfoAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.SupplementaryInfoAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +23,7 @@ public class FAQFragment extends Fragment {
     private static final String TAG = FAQFragment.class.getSimpleName();
 
     private OnFragmentInteractionListener mListener;
+
     private SupplementaryInfoAdapter mSupplementaryInfoAdapter;
 
     private TextView [] mTextView;

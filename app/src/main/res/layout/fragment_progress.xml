@@ -1,13 +1,197 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.example.davidalaw.bsllearningtool.mFragments.ProgressFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Progress Fragment"/>
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="8dp">
 
-</FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Progress"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="These statistics are based on your results from the quizzes"
+                android:textAlignment="center"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Overall Score: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/top_score"
+                android:layout_alignParentRight="true"
+                android:text="N/A"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best Round: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/best_round"
+                android:layout_alignParentRight="true"
+                android:text="N/A"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Round Score: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/last_round_score"
+                android:layout_alignParentRight="true"
+                android:text="N/A"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Round Category: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/last_round_category"
+                android:text="N/A"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Category: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/top_category"
+                android:text="N/A"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Category to work on: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/worst_category"
+                android:text="N/A"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="No. of Quizzes Attempted: "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/attempted_quizzes"
+                android:textSize="18sp"
+                android:text="N/A"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

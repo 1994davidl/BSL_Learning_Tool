@@ -1,4 +1,4 @@
-package com.example.davidalaw.bsllearningtool.mAdapters;
+package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,7 +6,6 @@ import android.database.Cursor;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * controllor/model class to retreive data from database and pass to view classes
@@ -32,6 +31,7 @@ public class MainPageAdapter {
         mCategoryList = new ArrayList();
         mDBHandler = new DBHandler(mContext);
         Cursor cursor = mDBHandler.getAllData();
+        mCategoryList.add("All Signs");
 
         //get the value from the database from column 1 (Category name)
         //if Arraylist already contains the category then do not add to display
@@ -67,6 +67,10 @@ public class MainPageAdapter {
         while(cursor.moveToNext()) {
             //get the value from the database from column 2 (Sign Name)
             //then add it to the array list
+            if(categorySelected == "All Signs") {
+                mSignsList.add(cursor.getString(2));
+                
+            }
             if(categorySelected.equals(cursor.getString(1))) {
                 if(!mSignsList.contains(cursor.getString(2))) {
                     mSignsList.add(cursor.getString(2));

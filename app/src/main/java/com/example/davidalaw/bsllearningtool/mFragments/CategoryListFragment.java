@@ -16,11 +16,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.davidalaw.bsllearningtool.mAdapters.MainPageAdapter;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 import com.example.davidalaw.bsllearningtool.R;
-
-import java.util.ArrayList;
 
 public class CategoryListFragment extends Fragment {
 
@@ -29,10 +26,10 @@ public class CategoryListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private MainPageAdapter mMainPageAdapter;
+
     private Class fragmentClass = null;
-    private DBHandler mDBHandler;
+
     private ListView listview;
-    private ArrayList<String> listData;
 
     public CategoryListFragment() {
         // Required empty public constructor
@@ -68,7 +65,7 @@ public class CategoryListFragment extends Fragment {
     }
 
     /**
-     *
+     * Action listener to listen to user request when they select a chosen category and open the sign list fragment
      */
     public void listViewActionListener() {
         //Implement a click action listener to move to another fragment.

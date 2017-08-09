@@ -16,7 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.example.davidalaw.bsllearningtool.mAdapters.TabbedPageAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.TabbedPageAdapter;
 import com.example.davidalaw.bsllearningtool.mFragments.BSLNotationFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
@@ -28,13 +28,13 @@ public class SignMaterialActivity extends AppCompatActivity {
     private static final String TAG = "FragmentsMainActivity";
     private TabbedPageAdapter mTabbedPageAdapter;
     private ViewPager mViewPager;
-    private DBHandler mDBHandler;;
+    private DBHandler mDBHandler;
+    ;
     private static String signSelected, fragmentSelected;
 
     private TabLayout mToptabLayout;
     private BottomNavigationView mBottomNavigationView;
 
-    private Class fragmentClass = null;
     private TextView mTextView;
     private CheckBox mCheckBox;
 
@@ -69,15 +69,15 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(ViewPager viewPager) {
-            mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
-            mTabbedPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
-            mTabbedPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
-            mTabbedPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
-            viewPager.setAdapter(mTabbedPageAdapter);
+        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
+        mTabbedPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
+        mTabbedPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
+        mTabbedPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
+        viewPager.setAdapter(mTabbedPageAdapter);
 
     }
 
-    public void setBottomNavigationView(){
+    public void setBottomNavigationView() {
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -86,25 +86,25 @@ public class SignMaterialActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignMaterialActivity.this, MainActivity.class);
 
                 Fragment fragment = null;
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.home_nav:
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
                     case R.id.favourites_nav:
                         checkstate();
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
-                    case R.id.about_us_nav:
+                    case R.id.quiz_menu_nav:
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG,"Fragment Selected: " + fragmentSelected);
+                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return false;
             }
@@ -120,7 +120,7 @@ public class SignMaterialActivity extends AppCompatActivity {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
 
-            if(compoundButton.isChecked() == true) {
+            if (compoundButton.isChecked() == true) {
                 Log.d(TAG, "Sign Favourited: " + signSelected + " State: " + state);
                 changeSignDataFavourite(state);
             } else {
@@ -135,15 +135,15 @@ public class SignMaterialActivity extends AppCompatActivity {
         Cursor cursor = mDBHandler.getAllData();
 
         int favourite = 0;
-        if(state == true) {
+        if (state == true) {
             favourite = 1;
         }
 
-        while(cursor.moveToNext()) {
-            if(signSelected.equals(cursor.getString(2))) {
-               mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
-                       cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),
-                       cursor.getString(6), cursor.getString(7), cursor.getString(8),cursor.getString(9),favourite);
+        while (cursor.moveToNext()) {
+            if (signSelected.equals(cursor.getString(2))) {
+                mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
+                        cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),
+                        cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), favourite);
             }
         }
     }
@@ -152,7 +152,7 @@ public class SignMaterialActivity extends AppCompatActivity {
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
         mDBHandler = new DBHandler(this);
         Cursor cursor = mDBHandler.getAllData();
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             if (signSelected.equals(cursor.getString(2)) && Integer.parseInt(cursor.getString(10)) == 1) {
                 mCheckBox.setChecked(true);
             }

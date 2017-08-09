@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
 import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
-import com.example.davidalaw.bsllearningtool.mAdapters.MainPageAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 
 
 public class FavouriteListFragment extends Fragment {
@@ -37,7 +37,6 @@ public class FavouriteListFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,10 +54,14 @@ public class FavouriteListFragment extends Fragment {
     public void displayListView(View view) {
         mMainPageAdapter = new MainPageAdapter();
 
-        //create the list adapter
-        ListAdapter adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectAllFavouriteSigns(getContext()));
-        mListView.setAdapter(adapter);
+        if (mMainPageAdapter.collectAllFavouriteSigns(getContext()).isEmpty()) {
+            mTextView.setText("No Current Favourites");
+        } else {
+            //create the list adapter
+            ListAdapter adapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectAllFavouriteSigns(getContext()));
+            mListView.setAdapter(adapter);
+        }
     }
 
     public void listViewActionListener() {

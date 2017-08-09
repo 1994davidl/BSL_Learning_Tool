@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mAdapters.Utils;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.Utils;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
 import net.protyposis.android.mediaplayer.MediaPlayer;
@@ -31,17 +32,19 @@ public class QuizFragment extends Fragment {
     private static final String TAG = QuizFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
 
-
     private DBHandler mDBHandler;
-    private ProgressBar mProgressBar;
     private VideoView mVideoView;
     private RadioGroup mRadioGroup;
-    private RadioButton mRadioButton1, mRadioButton2, mRadioButton3, mRadioButton4;
+
+    private final int SIZE = 4;
+
+    private Class fragmentClass = null;
+
     private TextView mTextView;
     private Button mButton;
+    private RadioButton mRButton;
 
     private String VideoURL, mAnswer;
-
 
     private Uri mVideoURI;
     private int mVideoPosition;
@@ -49,17 +52,20 @@ public class QuizFragment extends Fragment {
     private boolean mVideoPlaying;
     private MediaSource mMediaSource;
 
-
-    private String categorySelected;
+    private String categorySelected, number_of_questions;
     private ArrayList<String> mArrayList;
+
+    private int score = 0;
+    private int numOfQuestions = 0;
+    private int setNumberofQuestions = 1;
+    private int number_wrong = 0;
+
 
     public QuizFragment() {
         // Required empty public constructor
     }
 
     /**
-     *
-     *
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -72,35 +78,26 @@ public class QuizFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
 
-        categorySelected = getArguments().getString("Category"); Log.d(TAG, " CATEGORY SELECTED " + categorySelected);
+        categorySelected = getArguments().getString("Category");
+
+        number_of_questions = getArguments().getString("Question");
+
+
+        Log.d(TAG, " CATEGORY SELECTED " + categorySelected + " QUESTIONS SELECTED " + number_of_questions);
+        setNumberofQuestions = Integer.parseInt(number_of_questions);
+
         getCategorySelectedInfo();
 
         //initialise GUI components
-        mTextView = (TextView) view.findViewById(R.id.score_number); mTextView.setText("0");
+        mTextView = (TextView) view.findViewById(R.id.score_number);
+        mTextView.setText(String.valueOf(score) + "/" + String.valueOf(setNumberofQuestions));
         mVideoView = (VideoView) view.findViewById(R.id.videoView);
-        mRadioGroup = (RadioGroup) view.findViewById(R.id.radiogroup);
-            mRadioButton1 = (RadioButton) view.findViewById(R.id.choiceA);
-            mRadioButton2 = (RadioButton) view.findViewById(R.id.choiceB);
-            mRadioButton3 = (RadioButton) view.findViewById(R.id.choiceC);
-            mRadioButton4 = (RadioButton) view.findViewById(R.id.choiceD);
         mButton = (Button) view.findViewById(R.id.next_button);
 
         //Call helper methods
+        radioButtonGroupListener(view);
         populateRadioButtons();
         videoSettingsOnCreate();
-
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
-                mVideoPlaying = false;
-                mMediaSource = null;
-                if(mRadioGroup.isSelected()){
-                    Log.d(TAG, "onClick: " + mRadioGroup.isSelected());
-                }
-                refreshView();
-            }
-        });
 
         return view;
     }
@@ -115,11 +112,81 @@ public class QuizFragment extends Fragment {
         mVideoPlaying = true;
     }
 
+
+    /**
+     *
+     * @param view
+     */
+    public void radioButtonGroupListener(View view) {
+
+        mRadioGroup = (RadioGroup) view.findViewById(R.id.radiogroup);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                numOfQuestions++;
+                mVideoPlaying = false;
+                mMediaSource = null;
+
+                RadioButton selectedRButton = (RadioButton) mRadioGroup.getChildAt(getSelectedRadioButtonID());
+
+                if (selectedRButton.getText().equals(getAnswer())) {
+                    Toast.makeText(getActivity(), "Correct Answer: " + selectedRButton.getText(),
+                            Toast.LENGTH_SHORT).show();
+                    score += 1;
+                    mTextView.setText(String.valueOf(score) + " / " + String.valueOf(setNumberofQuestions));
+                } else {
+                    Toast.makeText(getActivity(), "Wrong Answer: " + selectedRButton.getText() +
+                            "\n The answer was: " + getAnswer(), Toast.LENGTH_LONG).show();
+                    number_wrong++;
+                }
+
+                if (numOfQuestions == setNumberofQuestions) {
+                    Toast.makeText(getActivity(), "Quiz Completed. You scored: " + score + " out of " + setNumberofQuestions,
+                            Toast.LENGTH_SHORT).show();
+                    writeProgressStateToDB();
+                    endOfQuizMoveToProgressFrag();
+                }
+                refreshView();
+            }
+        });
+    }
+
+    public int getSelectedRadioButtonID(){
+        int id = mRadioGroup.getCheckedRadioButtonId();
+        View rb = mRadioGroup.findViewById(id);
+        int radioID = mRadioGroup.indexOfChild(rb);
+
+        return radioID;
+    }
+
+    public void endOfQuizMoveToProgressFrag() {
+        ProgressFragment progress = new ProgressFragment();
+        //Open Sign List Fragment
+        Fragment fragment = null;
+        fragmentClass = null;
+        fragmentClass = ProgressFragment.class;
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
+    }
+
+    public void writeProgressStateToDB() {
+        mDBHandler = new DBHandler(getActivity());
+        mDBHandler.AddProgress(categorySelected, score, number_wrong);
+    }
+
+
+
+
     /**
      *
      */
-    private void refreshView ()
-    {
+    private void refreshView() {
         Collections.rotate(mArrayList, -1); //Send first array list item to the back.
         getVideoURL();
         videoSettingsOnCreate();
@@ -147,6 +214,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true); //Loop video continously
+                mVideoPlaying = true;
             }
         });
 
@@ -160,12 +228,10 @@ public class QuizFragment extends Fragment {
                 mVideoView.setVideoSource(mediaSource);
                 mVideoView.seekTo(mVideoPosition);
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
-
                 if (mVideoPlaying) {
                     mVideoView.start();
                 }
             }
-
             @Override
             public void onException(Exception e) {
                 Log.e(TAG, "error loading video", e);
@@ -206,10 +272,10 @@ public class QuizFragment extends Fragment {
     private String getVideoURL() {
         mDBHandler = new DBHandler(getActivity());
         Cursor cursor = mDBHandler.getAllQuestions();
-
         while (cursor.moveToNext()) {
             if (mArrayList.get(0).equals(cursor.getString(0))) {
-                VideoURL = cursor.getString(2); Log.d(TAG, "Video URL to be shown: " + VideoURL);
+                VideoURL = cursor.getString(2);
+                Log.d(TAG, "Video URL to be shown: " + VideoURL);
             }
         }
         return VideoURL;
@@ -220,27 +286,22 @@ public class QuizFragment extends Fragment {
      */
     private void shuffleQuestions() {
         Collections.shuffle(mArrayList);
+        for(int i = 0; i < mArrayList.size(); i++)
+        Log.d(TAG, "Questions Shuffled: " + mArrayList.get(i));
     }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
 
     /**
      * Call get all questions from DBhandler class and populate the radio buttons appropriately.
      */
     private void populateRadioButtons() {
-
         mDBHandler = new DBHandler(getActivity());
         Cursor cursor = mDBHandler.getAllQuestions();
         while (cursor.moveToNext()) {
             if (mArrayList.get(0).equals(cursor.getString(0))) {
-                mRadioButton1.setText(cursor.getString(3));
-                mRadioButton2.setText(cursor.getString(4));
-                mRadioButton3.setText(cursor.getString(5));
-                mRadioButton4.setText(cursor.getString(6));
+                for (int i = 0; i < 4; i++) {
+                    mRButton = (RadioButton) mRadioGroup.getChildAt(i);
+                    mRButton.setText(cursor.getString(i + 3));
+                }
                 return;
             }
         }
@@ -259,5 +320,9 @@ public class QuizFragment extends Fragment {
         return mAnswer;
     }
 
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
 
 }

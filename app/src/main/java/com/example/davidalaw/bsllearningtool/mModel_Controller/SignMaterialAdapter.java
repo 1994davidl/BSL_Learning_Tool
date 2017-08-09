@@ -1,9 +1,8 @@
-package com.example.davidalaw.bsllearningtool.mAdapters;
+package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
 import java.util.ArrayList;

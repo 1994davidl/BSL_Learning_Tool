@@ -69,7 +69,7 @@ public class MainPageAdapter {
             //then add it to the array list
             if(categorySelected == "All Signs") {
                 mSignsList.add(cursor.getString(2));
-                
+
             }
             if(categorySelected.equals(cursor.getString(1))) {
                 if(!mSignsList.contains(cursor.getString(2))) {

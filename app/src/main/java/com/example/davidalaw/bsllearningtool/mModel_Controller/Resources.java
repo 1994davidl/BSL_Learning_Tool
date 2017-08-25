@@ -1,4 +1,4 @@
-package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
+package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
 /**
  * Created by DavidALaw on 01/08/2017.
@@ -6,11 +6,13 @@ package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
 
 public class Resources {
 
+    //Initialise instance variables
     private String mResources;
 
-    public Resources() {
-    }
+    //Default constructor
+    public Resources() {}
 
+    //Non default constructor
     public Resources(String resources) {
         mResources = resources;
     }

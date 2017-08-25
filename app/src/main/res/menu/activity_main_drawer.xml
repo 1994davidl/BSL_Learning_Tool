@@ -51,13 +51,23 @@
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Family Members" />
             <item
-                android:id="@+id/nav_interest"
+                android:id="@+id/nav_work"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Interest" />
+                android:title="Work" />
+
             <item
-                android:id="@+id/nav_food"
+                android:id="@+id/nav_personal_info"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Food + Drink" />
+                android:title="Personal Information" />
+            <item
+                android:id="@+id/nav_day"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Days + Time" />
+            <item
+                android:id="@+id/regional_signs"
+                android:icon="@android:drawable/ic_dialog_map"
+                android:title="Regional Signs"/>
+
         </group>
         </menu>
     </item>
@@ -66,11 +76,11 @@
         <menu>
             <item
                 android:id="@+id/nav_quiz"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@drawable/ic_faq"
                 android:title="Quiz" />
             <item
                 android:id="@+id/nav_progress"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@android:drawable/ic_menu_info_details"
                 android:title="Progress" />
         </menu>
     </item>
@@ -79,11 +89,11 @@
         <menu>
             <item
                 android:id="@+id/nav_bsl_info"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@android:drawable/ic_menu_info_details"
                 android:title="BSL Awareness" />
             <item
                 android:id="@+id/FAQ"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@android:drawable/ic_menu_help"
                 android:title="FAQ" />
         </menu>
     </item>

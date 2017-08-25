@@ -6,13 +6,17 @@ package com.example.davidalaw.bsllearningtool.mSQLiteHandler;
 
 public class FAQuestions {
 
+    //Initialise instance variables
     private String mFAQquestions;
 
-    public FAQuestions(String FAQquestions) {
-        mFAQquestions = FAQquestions;
+    //Default constructor
+    public FAQuestions() {
+
     }
 
-    public FAQuestions() {
+    //Non default constructor
+    public FAQuestions(String FAQquestions) {
+        mFAQquestions = FAQquestions;
     }
 
     public String getFAQquestions() {

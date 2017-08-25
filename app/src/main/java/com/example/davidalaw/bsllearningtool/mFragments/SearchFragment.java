@@ -2,7 +2,6 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,20 +15,25 @@ import android.widget.Toast;
 
 import com.example.davidalaw.bsllearningtool.R;
 import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
-import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 
-import java.util.ArrayList;
 
+/**
+ * The type Search fragment.
+ */
 public class SearchFragment extends Fragment {
 
-    private static final String TAG = "SearchFragment";
-
-    private OnFragmentInteractionListener mListener;
+    private static final String TAG = SearchFragment.class.getSimpleName();
 
     private String mSignSelected;
 
-    private  AutoCompleteTextView mAutoCompleteTextView;
+    private MainPageAdapter mMainPageAdapter; //model class
 
+    private  AutoCompleteTextView mAutoCompleteTextView; //suggest sign names that are similar to what the user is currently typing
+
+    /**
+     * Instantiates a new Search fragment.
+     */
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -40,33 +44,36 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_search, container, false);
 
-        mAutoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
+        mAutoCompleteTextView = view.findViewById(R.id.autoCompleteTextView); //initialise listview
 
-        DBHandler mDBHandler = new DBHandler(getActivity());
-        //Get a list of all names
-        final ArrayList<String> allSignNames = mDBHandler.getAllSignNames();
-        //Create array adapater to make selection available
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, allSignNames);
-        //Make the adapter available through the autocomplete name;
-        mAutoCompleteTextView.setAdapter(stringArrayAdapter);
-
-
-        mSignSelected = getArguments().getString("Category");
-        Log.d(TAG, "Category Selected: StrText " + mSignSelected);
-
-        autoCompleteActionListener();
+        setAutoCompleteTextView (); //get sign names from model class and display
+        autoCompleteActionListener(); //Action listener move to SignMaterialActivity on click.
         return view;
     }
 
-    public void autoCompleteActionListener() {
+    private void setAutoCompleteTextView() {
+        mMainPageAdapter = new MainPageAdapter();//instantiate ModelClass.
+        //Create array adapater to make selection available
+        ArrayAdapter<String> stringArrayAdapter =
+                new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
+                        mMainPageAdapter.getSearchableSigns(getContext()));
+        //Make the adapter available through the autocomplete name;
+        mAutoCompleteTextView.setAdapter(stringArrayAdapter);
+    }
+
+    /**
+     * Auto complete action listener.
+     */
+    private void autoCompleteActionListener() {
         mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mSignSelected = adapterView.getItemAtPosition(i).toString();
+                mMainPageAdapter.getSearchableSignsID(getContext(),mSignSelected);
                 Toast.makeText(getActivity(), mSignSelected, Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign", mSignSelected);
+                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(0));
+                intent.putExtra("name", mSignSelected);
                 Log.d(TAG,"Sign Selected: " + mSignSelected);
                 startActivity(intent);
             }
@@ -74,27 +81,20 @@ public class SearchFragment extends Fragment {
 
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
+    /**
+     * The interface On fragment interaction listener.
+     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
     }
 }

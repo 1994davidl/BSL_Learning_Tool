@@ -9,7 +9,7 @@ import net.protyposis.android.mediaplayer.MediaSource;
 import net.protyposis.android.mediaplayer.UriSource;
 
 /**
- * Code is sourced from Protyposis Mediaplayer library: https://github.com/protyposis/MediaPlayer-Extended
+ * @Link: **REFERENCE** Protyposis Mediaplayer library: https://github.com/protyposis/MediaPlayer-Extended
  *
  * This class is primarily used to Convert the Video URL into a media source in order to play the
  * video file in the media player.
@@ -21,12 +21,24 @@ public class Utils {
 
     private static final String TAG = Utils.class.getSimpleName();
 
-    public static MediaSource uriToMediaSource(Context context, Uri uri) {
-        MediaSource source = null;
+    /**
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
+    private static MediaSource uriToMediaSource(Context context, Uri uri) {
+        MediaSource source;
         source = new UriSource(context, uri);
         return source;
     }
 
+    /**
+     *
+     * @param context
+     * @param uri
+     * @param callback
+     */
     public static void uriToMediaSourceAsync(final Context context, Uri uri, MediaSourceAsyncCallbackHandler callback) {
         LoadMediaSourceAsyncTask loadingTask = new LoadMediaSourceAsyncTask(context, callback);
 
@@ -37,6 +49,9 @@ public class Utils {
         }
     }
 
+    /**
+     *
+     */
     private static class LoadMediaSourceAsyncTask extends AsyncTask<Uri, Void, MediaSource> {
 
         private Context mContext;
@@ -70,7 +85,7 @@ public class Utils {
         }
     }
 
-    public static interface MediaSourceAsyncCallbackHandler {
+    public interface MediaSourceAsyncCallbackHandler {
         void onMediaSourceLoaded(MediaSource mediaSource);
         void onException(Exception e);
     }

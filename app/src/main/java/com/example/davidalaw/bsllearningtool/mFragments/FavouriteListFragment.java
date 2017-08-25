@@ -2,7 +2,6 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -42,36 +41,44 @@ public class FavouriteListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_favourite_list, container, false);
-        mListView = (ListView) view.findViewById(R.id.favourite_list_view);
-        mTextView = (TextView) view.findViewById(R.id.text_Favourite);
+        String TITLE_HANDLER = "Favourites";
+        getActivity().setTitle(TITLE_HANDLER);
 
-        displayListView(view);
+        mListView = view.findViewById(R.id.favourite_list_view);
+        mTextView = view.findViewById(R.id.text_Favourite);
+
+        displayListView();
         listViewActionListener();
 
         return view;
     }
 
-    public void displayListView(View view) {
+    private void displayListView() {
         mMainPageAdapter = new MainPageAdapter();
 
         if (mMainPageAdapter.collectAllFavouriteSigns(getContext()).isEmpty()) {
-            mTextView.setText("No Current Favourites");
+            mTextView.setText("No Current Favourites"); //display textview if user has yet to favourite any signs.
         } else {
-            //create the list adapter
+            //create a list adapter of the user favourite signs.
             ListAdapter adapter = new ArrayAdapter<>(getActivity(),
                     android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectAllFavouriteSigns(getContext()));
-            mListView.setAdapter(adapter);
+            mListView.setAdapter(adapter); //set & display.
         }
     }
 
-    public void listViewActionListener() {
+    /**
+     * On Click action listener. when user clicks a favourite sign they will be navigated to that
+     * particular sign learning material in the SignMaterialActivity class.
+     */
+    private void listViewActionListener() {
         //Implement a click action listener to move to SignMaterialActivity.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), mMainPageAdapter.getFavouriteSign(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign",mMainPageAdapter.getFavouriteSign(i));
+                intent.putExtra("sign",mMainPageAdapter.getSignIDSelected(i)) ;
+                intent.putExtra("name", mMainPageAdapter.getFavouriteSign(i));
                 Log.d(TAG, "Sign Selected: " + mMainPageAdapter.getFavouriteSign(i));
                 startActivity(intent);
             }
@@ -97,7 +104,5 @@ public class FavouriteListFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

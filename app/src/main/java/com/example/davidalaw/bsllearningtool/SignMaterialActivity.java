@@ -1,44 +1,48 @@
 package com.example.davidalaw.bsllearningtool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.davidalaw.bsllearningtool.mModel_Controller.TabbedPageAdapter;
 import com.example.davidalaw.bsllearningtool.mFragments.BSLNotationFragment;
-import com.example.davidalaw.bsllearningtool.mFragments.FavouriteListFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.SignInformationFragment;
 import com.example.davidalaw.bsllearningtool.mFragments.VideoViewFragment;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.SignMaterialAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.TabbedPageAdapter;
 import com.example.davidalaw.bsllearningtool.mSQLiteHandler.DBHandler;
 
+
+/**
+ * The type Sign material activity.
+ */
 public class SignMaterialActivity extends AppCompatActivity {
 
     private static final String TAG = "FragmentsMainActivity";
+    private static String fragmentSelected, sign_name;
     private TabbedPageAdapter mTabbedPageAdapter;
-    private ViewPager mViewPager;
-    private DBHandler mDBHandler;
-    ;
-    private static String signSelected, fragmentSelected;
+    private SignMaterialAdapter mSignMaterialAdapter;
+    private int sign_selected_id;
 
-    private TabLayout mToptabLayout;
+    private DBHandler mDBHandler;
     private BottomNavigationView mBottomNavigationView;
 
-    private TextView mTextView;
     private CheckBox mCheckBox;
+    private ImageButton mShareButton, mBackButton;
 
-    private FavouriteListFragment mFavouriteListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,38 +50,88 @@ public class SignMaterialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_material);
 
         Intent intent = getIntent();
-        signSelected = intent.getStringExtra("sign");
-        Log.d(TAG, "Sign Selected pass: " + signSelected);
+        sign_selected_id = Integer.valueOf(intent.getStringExtra("sign"));
+        sign_name = intent.getStringExtra("name");
+        Log.d(TAG, "Sign Selected: " + sign_selected_id);
 
         mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mTextView = (TextView) findViewById(R.id.toolbar_title);
-        mTextView.setText(signSelected);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        setUpViewPager(viewPager);
 
-        setUpViewPager(mViewPager);
+        //set title of container
 
+        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        textView.setText(sign_name);
+
+        //Favourite button
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
         mCheckBox.setOnCheckedChangeListener(new myCheckBoxChangeClicker());
         checkstate();
 
-        mToptabLayout = (TabLayout) findViewById(R.id.tabs);
-        mToptabLayout.setupWithViewPager(mViewPager);
+        //Back button initialised and action listener called.
+        mBackButton = (ImageButton) findViewById(R.id.back);
+        backButtonActionListner();
+
+        //share button initialised and action listener called.
+        mShareButton = (ImageButton) findViewById(R.id.share);
+        shareButtonActionListener();
+
+        TabLayout toptabLayout = (TabLayout) findViewById(R.id.tabs);
+        toptabLayout.setupWithViewPager(viewPager);
 
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         setBottomNavigationView();
 
     }
 
-    private void setUpViewPager(ViewPager viewPager) {
-        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
-        mTabbedPageAdapter.addFragment(new SignInformationFragment(signSelected), "Sign Info");
-        mTabbedPageAdapter.addFragment(new VideoViewFragment(signSelected), "Video");
-        mTabbedPageAdapter.addFragment(new BSLNotationFragment(signSelected), "Notation");
-        viewPager.setAdapter(mTabbedPageAdapter);
+    private void backButtonActionListner(){
 
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
-    public void setBottomNavigationView() {
+    /**
+     * Image button action listener.
+     */
+    private void shareButtonActionListener() {
+
+        mShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSignMaterialAdapter = new SignMaterialAdapter();
+                Context context = SignMaterialActivity.this;
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BSLearn App: A BSL Learning Tool");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "I'm learning British Sign Language.\nSign: " + sign_name
+                        + "\nVideo Link: " +  mSignMaterialAdapter.getVideoURL(context, sign_selected_id));
+                startActivity(Intent.createChooser(shareIntent, "Share via: "));
+            }
+        });
+    }
+
+
+    /**
+     * Sets up view pager.
+     *
+     * @param viewPager the view pager
+     */
+    private void setUpViewPager(ViewPager viewPager) {
+        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
+        mTabbedPageAdapter.addFragment(new SignInformationFragment(sign_selected_id), "Sign Info");
+        mTabbedPageAdapter.addFragment(new VideoViewFragment(sign_selected_id), "Video");
+        mTabbedPageAdapter.addFragment(new BSLNotationFragment(sign_selected_id), "Notation");
+        viewPager.setAdapter(mTabbedPageAdapter);
+    }
+
+    /**
+     * Sets bottom navigation view.
+     */
+    private void setBottomNavigationView() {
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -85,7 +139,6 @@ public class SignMaterialActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SignMaterialActivity.this, MainActivity.class);
 
-                Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.home_nav:
                         fragmentSelected = (String) item.getTitle();
@@ -113,63 +166,43 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     /**
-     * Action listeners for the checkbox (favourite) button
+     * Change sign data favourite.
+     *
+     * @param state the state
      */
-    class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener {
-
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
-
-            if (compoundButton.isChecked() == true) {
-                Log.d(TAG, "Sign Favourited: " + signSelected + " State: " + state);
-                changeSignDataFavourite(state);
-            } else {
-                Log.d(TAG, "Sign favourite removed: " + signSelected + " State: " + state);
-                changeSignDataFavourite(state);
-            }
-        }
-    }
-
-    public void changeSignDataFavourite(boolean state) {
+    private void changeSignDataFavourite(boolean state) {
         mDBHandler = new DBHandler(this);
         Cursor cursor = mDBHandler.getAllData();
 
         int favourite = 0;
-        if (state == true) {
+        if (state) {
             favourite = 1;
         }
 
         while (cursor.moveToNext()) {
-            if (signSelected.equals(cursor.getString(2))) {
+            if (sign_selected_id == Integer.valueOf(cursor.getString(0))) {
                 mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
                         cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),
-                        cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), favourite);
+                        cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9),
+                        favourite, Integer.parseInt(cursor.getString(11)));
             }
         }
     }
 
-    public void checkstate() {
+
+    /**
+     * Checkstate.
+     */
+    private void checkstate() {
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
         mDBHandler = new DBHandler(this);
         Cursor cursor = mDBHandler.getAllData();
         while (cursor.moveToNext()) {
-            if (signSelected.equals(cursor.getString(2)) && Integer.parseInt(cursor.getString(10)) == 1) {
+
+            if (sign_selected_id == Integer.valueOf(cursor.getString(0)) && Integer.parseInt(cursor.getString(10)) == 1) {
                 mCheckBox.setChecked(true);
             }
         }
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
     }
 
     @Override
@@ -179,19 +212,23 @@ public class SignMaterialActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    /**
+     * Action listeners for the checkbox (favourite) button
+     */
+    private class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
+
+            if (compoundButton.isChecked() == true) {
+                Log.d(TAG, "Sign Favourited: " + sign_selected_id + " State: " + state);
+                changeSignDataFavourite(state);
+            } else {
+                Log.d(TAG, "Sign favourite removed: " + sign_selected_id + " State: " + state);
+                changeSignDataFavourite(state);
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
 
 }

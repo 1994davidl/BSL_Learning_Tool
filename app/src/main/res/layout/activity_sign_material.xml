@@ -16,8 +16,6 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         >
 
-
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -32,23 +30,39 @@
                 android:layout_height="75dp"
                 android:padding="8dp">
                 <TableRow>
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@color/colorPrimary"
+                android:gravity="left"
+                android:layout_gravity="left"/>
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.82"
-                android:gravity="center"
                 android:text="BSLearn"
+                android:maxLines="1"
+                android:gravity="center_horizontal"
                 android:textAllCaps="false"
                 android:textColor="#FFFF"
                 android:textSize="18sp"/>
-
-                    <CheckBox
-                        android:id="@+id/favourite"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:button="@drawable/favourite"
-                        android:gravity="left"/>
+                <ImageButton
+                    android:id="@+id/share"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_share_white"
+                    android:background="@color/colorPrimary"
+                    android:gravity="left"/>
+                <CheckBox
+                    android:id="@+id/favourite"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:button="@drawable/favourite"
+                    android:layout_gravity="right"
+                    android:gravity="left"/>
                 </TableRow>
             </TableLayout>
 

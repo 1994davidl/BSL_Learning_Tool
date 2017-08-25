@@ -2,7 +2,6 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mModel_Controller.SupplementaryInfoAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,10 +23,10 @@ public class ResourcesFragment extends Fragment {
 
     private static final String TAG = ResourcesFragment.class.getSimpleName();
 
-    private OnFragmentInteractionListener mListener;
-    private SupplementaryInfoAdapter mSupplementaryInfoAdapter;
+    private MainPageAdapter mMainPageAdapter;
 
-    private TextView mWhatBSL;
+    private TextView [ ] mTextView;
+
 
     public ResourcesFragment() {
         // Required empty public constructor
@@ -38,33 +37,42 @@ public class ResourcesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_resources, container, false);
-        mWhatBSL = (TextView) view.findViewById(R.id.what_BSL);
+        String titleHandler = "BSL & Deaf Awareness";
+        getActivity().setTitle(titleHandler);
 
-        readResourceFile();
+        mTextView = new TextView[4];
+        mTextView[0] = view.findViewById(R.id.what_BSL);
+        mTextView[1] = view.findViewById(R.id.what_fingerspelling);
+        mTextView[2] = view.findViewById(R.id.text_deaf_culture);
+        mTextView[3] = view.findViewById(R.id.text_misconceptions);
+
+
+        readInitResourceFile();
         populateTextView();
-
         return view;
     }
 
-    public void populateTextView() {
-        mWhatBSL.setText(mSupplementaryInfoAdapter.getInformation(0));
+    private void populateTextView() {
+        for(int i = 0; i < mTextView.length; i++) {
+            mTextView[i].setText(mMainPageAdapter.getInformation(i));
+        }
+
     }
 
-    public void readResourceFile () {
-        AssetManager assetManager = getActivity().getAssets();
+    private void readInitResourceFile() {
+        AssetManager assetManager = getActivity().getAssets(); //collect txt file from Asset Folder
 
         InputStream input; // To load text file
         Scanner in; //To read through text file
-        mSupplementaryInfoAdapter = new SupplementaryInfoAdapter();
+        mMainPageAdapter = new MainPageAdapter();
 
         try {
-            input = assetManager.open("resources.txt");
+            input = assetManager.open("Resources.txt");
             in = new Scanner(input);
 
             while(in.hasNextLine()) {
-
                 String word = in.nextLine();
-                mSupplementaryInfoAdapter.populateResourcesObjArray(word);
+                mMainPageAdapter.populateResourcesObjArray(word); //pass to model class
             }
             in.close(); //close scanner and file.
         } catch (IOException e) {
@@ -77,24 +85,13 @@ public class ResourcesFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-
-
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
     }
 }

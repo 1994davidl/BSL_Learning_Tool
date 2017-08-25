@@ -1,6 +1,4 @@
 
-
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linear_layout"
@@ -17,7 +15,7 @@
             android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="Search"/>
+            android:hint="Search"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,25 +26,6 @@
             android:dividerHeight="1dip">
 
         </RelativeLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="400dp"
-                android:layout_weight="1.14"
-                android:padding="8dp">
-
-                <ListView
-                    android:layout_width="wrap_content"
-                    android:layout_height="500dp"/>
-
-            </RelativeLayout>
-
-        </ScrollView>
     </LinearLayout>
 
 

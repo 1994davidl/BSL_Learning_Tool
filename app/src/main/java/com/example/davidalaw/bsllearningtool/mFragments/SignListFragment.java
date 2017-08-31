@@ -2,7 +2,6 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,23 +14,26 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.davidalaw.bsllearningtool.SignMaterialActivity;
+import com.example.davidalaw.bsllearningtool.mActivities.SignMaterialActivity;
 import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 import com.example.davidalaw.bsllearningtool.R;
 
 
+/**
+ * The type Sign list fragment.
+ */
 public class SignListFragment extends Fragment {
 
     private static final String TAG = SignListFragment.class.getSimpleName();
-
-    private OnFragmentInteractionListener mListener;
+    private static String categorySelected;
 
     private MainPageAdapter mMainPageAdapter;
 
     private ListView mListView;
 
-    private static String categorySelected;
-
+    /**
+     * Instantiates a new Sign list fragment.
+     */
     public SignListFragment() {
         // Required empty public constructor
     }
@@ -41,32 +43,46 @@ public class SignListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sign_list, container, false);
-        categorySelected = getArguments().getString("Category");
 
-        mListView= (ListView) view.findViewById(R.id.sign_list_view);
+        String INTENTSTRING = "Category"; categorySelected = getArguments().getString(INTENTSTRING); //get category selected from bundle argument
+        getActivity().setTitle(categorySelected); //set title to the category selected
+
+        mListView = view.findViewById(R.id.sign_list_view);
+
+        //Call Helper methods
         populateSignListView();
         listViewActionListener();
 
         return view;
     }
 
-    private void populateSignListView () {
+
+    /**
+     * Populate sign list view.
+     */
+    private void populateSignListView() {
         Log.d(TAG, "Populate Sign List View ");
         mMainPageAdapter = new MainPageAdapter();
-        //create the list adapter
-        ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectSignsFromSelectedCategory(getContext(), categorySelected));
-        mListView.setAdapter(adapter);
+
+        ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1,
+                mMainPageAdapter.collectSignsFromSelectedCategory(getContext(), categorySelected));
+        mListView.setAdapter(adapter); //create the list view adapter
     }
 
-    public void listViewActionListener() {
+
+    /**
+     * List view action listener.
+     */
+    private void listViewActionListener() {
         //Implement a click action listener to move to another fragment.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), mMainPageAdapter.getSignSelected(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign",  mMainPageAdapter.getSignSelected(i));
-                Log.d(TAG,"Sign Selected: " +  mMainPageAdapter.getSignSelected(i));
+                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(i));
+                intent.putExtra("name", mMainPageAdapter.getSignSelected(i));
+                Log.d(TAG, "Sign Selected: " + mMainPageAdapter.getSignIDSelected(i));
                 startActivity(intent);
             }
         });
@@ -76,22 +92,18 @@ public class SignListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
+    /**
+     * The interface On fragment interaction listener.
+     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
     }
 
 }

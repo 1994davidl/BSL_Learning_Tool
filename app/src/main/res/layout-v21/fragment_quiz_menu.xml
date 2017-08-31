@@ -1,0 +1,69 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.davidalaw.bsllearningtool.mFragments.QuizMenuFragment">
+
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a Category: "
+                android:textSize="20sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="272dp"
+            android:layout_marginBottom="20dp"
+            android:padding="8dp">
+
+            <ListView
+                android:id="@+id/quiz_categories_list"
+                android:layout_width="match_parent"
+                android:layout_height="218dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_quick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="24dp">
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="#FFFF"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Start Quiz"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

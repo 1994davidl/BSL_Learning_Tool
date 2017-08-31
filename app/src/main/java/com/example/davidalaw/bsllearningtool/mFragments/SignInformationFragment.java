@@ -24,14 +24,12 @@ public class SignInformationFragment extends Fragment {
 
     private static final int SIZE = 3;
 
-    private String signSelected;
-
-    private SignMaterialAdapter mSignMaterialAdapter;
+    private int signSelected;
 
     public SignInformationFragment() {
     }
 
-    public SignInformationFragment(String signSelected) {
+    public SignInformationFragment(int signSelected) {
         this.signSelected = signSelected;
     }
 
@@ -41,9 +39,9 @@ public class SignInformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_info, container, false);
 
         mTextView = new TextView[SIZE];
-        mTextView[0] = (TextView) view.findViewById(R.id.english_name);
-        mTextView[1] = (TextView) view.findViewById(R.id.BSL_sign_order);
-        mTextView[2] = (TextView) view.findViewById(R.id.similar_signs);
+        mTextView[0] = view.findViewById(R.id.english_name);
+        mTextView[1] = view.findViewById(R.id.BSL_sign_order);
+        mTextView[2] = view.findViewById(R.id.similar_signs);
         populateSignInfoView();
 
         return view;
@@ -51,11 +49,11 @@ public class SignInformationFragment extends Fragment {
 
     private void populateSignInfoView () {
         Log.d(TAG, "Populate Sign List View ");
-        mSignMaterialAdapter = new SignMaterialAdapter();
-        mSignMaterialAdapter.populateSignInfoFrag(getContext(), signSelected);
+        SignMaterialAdapter signMaterialAdapter = new SignMaterialAdapter();
+        signMaterialAdapter.populateSignInfoFrag(getContext(), signSelected);
 
         for(int i =0; i < mTextView.length; i++) {
-            mTextView[i].setText(mSignMaterialAdapter.getSignInfo(i));
+            mTextView[i].setText(signMaterialAdapter.getSignInfo(i));
         }
     }
 }

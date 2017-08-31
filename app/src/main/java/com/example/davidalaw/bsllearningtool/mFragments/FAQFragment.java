@@ -2,7 +2,6 @@ package com.example.davidalaw.bsllearningtool.mFragments;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.davidalaw.bsllearningtool.R;
-import com.example.davidalaw.bsllearningtool.mModel_Controller.SupplementaryInfoAdapter;
+import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,9 +21,7 @@ public class FAQFragment extends Fragment {
 
     private static final String TAG = FAQFragment.class.getSimpleName();
 
-    private OnFragmentInteractionListener mListener;
-
-    private SupplementaryInfoAdapter mSupplementaryInfoAdapter;
+    private MainPageAdapter mMainPageAdapter;
 
     private TextView [] mTextView;
 
@@ -37,14 +34,16 @@ public class FAQFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
+        String TITLE_HANDLER = "Frequently Asked Questions (FAQ)";
+        getActivity().setTitle(TITLE_HANDLER);
 
         mTextView = new TextView[6];
-        mTextView[0] = (TextView) view.findViewById(R.id.why_BSL_uppercase);
-        mTextView[1] = (TextView) view.findViewById(R.id.why_mouth_signs);
-        mTextView[2] = (TextView) view.findViewById(R.id.sign_location);
-        mTextView[3] = (TextView) view.findViewById(R.id.sign_config);
-        mTextView[4] = (TextView) view.findViewById(R.id.sign_action);
-        mTextView[5] = (TextView) view.findViewById(R.id.sign_synonym);
+        mTextView[0] = view.findViewById(R.id.why_BSL_uppercase);
+        mTextView[1] = view.findViewById(R.id.why_mouth_signs);
+        mTextView[2] = view.findViewById(R.id.sign_location);
+        mTextView[3] = view.findViewById(R.id.sign_config);
+        mTextView[4] = view.findViewById(R.id.sign_action);
+        mTextView[5] = view.findViewById(R.id.sign_synonym);
 
         readResourceFile();
         populateTextView();
@@ -52,19 +51,19 @@ public class FAQFragment extends Fragment {
         return view;
     }
 
-    public void populateTextView()
+    private void populateTextView()
     {
        for(int i = 0; i < mTextView.length; i++) {
-           mTextView[i].setText(mSupplementaryInfoAdapter.getFAQuestions(i));
+           mTextView[i].setText(mMainPageAdapter.getFAQuestions(i));
        }
     }
 
-    public void readResourceFile () {
+    private void readResourceFile() {
         AssetManager assetManager = getActivity().getAssets();
 
         InputStream input; // To load text file
         Scanner in; //To read through text file
-        mSupplementaryInfoAdapter = new SupplementaryInfoAdapter();
+        mMainPageAdapter = new MainPageAdapter();
 
         try {
             input = assetManager.open("FAQ.txt");
@@ -72,7 +71,7 @@ public class FAQFragment extends Fragment {
 
             while(in.hasNextLine()) {
                 String word = in.nextLine();
-                mSupplementaryInfoAdapter.populateFAQuestionObjArray(word);
+                mMainPageAdapter.populateFAQuestionObjArray(word);
             }
             in.close(); //close scanner and file.
         } catch (IOException e) {
@@ -86,21 +85,12 @@ public class FAQFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

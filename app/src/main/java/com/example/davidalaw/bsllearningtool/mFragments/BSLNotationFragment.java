@@ -16,23 +16,18 @@ import com.example.davidalaw.bsllearningtool.mModel_Controller.SignMaterialAdapt
 /**
  * Created by DavidALaw on 21/07/2017.
  */
-
 public class BSLNotationFragment  extends Fragment {
 
     private static final String TAG = BSLNotationFragment.class.getSimpleName();
 
-    private SignMaterialAdapter mSignMaterialAdapter;
-
     private TextView [] mTextView;
 
-    private final int SIZE = 4;
-
-    private String signSelected;
+    private int signSelected;
 
     public BSLNotationFragment() {
     }
 
-    public BSLNotationFragment(String signSelected) {
+    public BSLNotationFragment(int signSelected) {
         this.signSelected = signSelected;
     }
 
@@ -41,11 +36,12 @@ public class BSLNotationFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bsl_notation_fragment, container, false);
 
+        int SIZE = 4;
         mTextView = new TextView[SIZE];
-        mTextView[0] = (TextView) view.findViewById(R.id.sign_occur_text);
-        mTextView[1]= (TextView) view.findViewById(R.id.sign_shape_text);
-        mTextView[2] = (TextView) view.findViewById(R.id.signs_action_text);
-        mTextView[3] = (TextView) view.findViewById(R.id.expression_text);
+        mTextView[0] = view.findViewById(R.id.sign_occur_text);
+        mTextView[1]= view.findViewById(R.id.sign_shape_text);
+        mTextView[2] = view.findViewById(R.id.signs_action_text);
+        mTextView[3] = view.findViewById(R.id.expression_text);
         populateSignInfoView();
 
         return view;
@@ -54,16 +50,13 @@ public class BSLNotationFragment  extends Fragment {
 
     private void populateSignInfoView () {
         Log.d(TAG, "Populate BSL Notation View ");
-        mSignMaterialAdapter = new SignMaterialAdapter();
-        mSignMaterialAdapter.populateBSLNotation(getContext(), signSelected);
+        SignMaterialAdapter signMaterialAdapter = new SignMaterialAdapter();
+        signMaterialAdapter.populateBSLNotation(getContext(), signSelected);
 
         for(int i = 0; i < mTextView.length; i++) {
-            mTextView[i].setText(mSignMaterialAdapter.getBSLNotation(i));
+            mTextView[i].setText(signMaterialAdapter.getBSLNotation(i));
         }
     }
 
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
 }

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,29 +32,22 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private SignMaterialAdapter mSignMaterialAdapter;
 
     private ProgressBar mProgressBar;
-
     private VideoView mVideoView;
-
     private TextView mTextView;
 
-    private String signSelected, mVideoURL;
-
-    private Uri mVideoURI;
-
     private int mVideoPosition;
-
+    private final int signSelected;
     private float mVideoPlaybackSpeed;
-
     private boolean mVideoPlaying;
-
-    private MediaSource mMediaSource;
+    private String mVideoURL;
 
     private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4;
 
-    private MediaController.MediaPlayerControl mMediaPlayerControl;
+    private Uri mVideoURI;
+    private MediaSource mMediaSource;
 
     //Constructor
-    public VideoViewFragment(String signSelected) {
+    public VideoViewFragment(int signSelected) {
         this.signSelected = signSelected;
     }
 
@@ -71,26 +63,27 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_view, container, false);
 
-        mVideoView = (VideoView)view.findViewById(R.id.videoView);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
-        mTextView =(TextView) view.findViewById(R.id.bsl_text);
+        mVideoView = view.findViewById(R.id.videoView);
+        mProgressBar = view.findViewById(R.id.progress);
+        mTextView = view.findViewById(R.id.bsl_text);
 
         getVideoURL();//Get the video of the sign the user has selected
         getBSLSignOrder(); //Display the BSL interpretation in text form
-        videoplaySettingsOnCreate();
-        checkBoxesStates(view);
+        videoplaySettingsOnCreate(); //video prerequisites
+        checkBoxesStates(view); //video speed adjustments intilialise gui components.
 
         return view;
     }
 
-    public void videoplaySettingsOnCreate(){
-        mMediaPlayerControl = mVideoView;
+    /**
+     * Preconfigurations the video settings.
+     */
+    private void videoplaySettingsOnCreate(){
         mProgressBar.setVisibility(View.VISIBLE);
-
-        mVideoURI = Uri.parse(mVideoURL);
-        mVideoPosition = 0;
-        mVideoPlaybackSpeed = 1;
-        mVideoPlaying = true;
+        mVideoURI = Uri.parse(mVideoURL); //Video URL
+        mVideoPosition = 0; //Position video will start playing at
+        mVideoPlaybackSpeed = 1; //the speed of the video
+        mVideoPlaying = true; //video is to be played immediately once fully loaded.
     }
 
 
@@ -103,21 +96,33 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         }
     }
 
-
-
+    /**
+     *
+     */
     private void initPlayer(){
-
         //Remove progress bar, begin media controllor process
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mProgressBar.setVisibility(View.GONE);
-                mp.setPlaybackSpeed(1.0f);
-                mp.setLooping(true); //Loop video continously
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             }
         });
 
-
+        //A mp.setLooping(true) would be more efficenct but some mp4 metadata does
+        //not respond well to method and therefore the video is reset at the end
+        //of each completion.
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.seekTo(mVideoPosition);
+                mProgressBar.setVisibility(View.GONE);
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
+                if (mVideoPlaying) {
+                    mVideoView.start();
+                }
+            }
+        });
 
         //Display toast message and disable the media controller in the event
         //that the video is unable to load
@@ -132,30 +137,27 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
-        /**
-         *
-         */
         mVideoView.setOnSeekListener(new MediaPlayer.OnSeekListener() {
             @Override
             public void onSeek(MediaPlayer mp) {
                 Log.d(TAG, "onSeek");
-                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE); //Still to load
             }
         });
 
-        /**
-         *
+        /*
+          Upon completion of video load, then the progress bar will no longer display.
          */
         mVideoView.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
                 Log.d(TAG, "onSeekComplete");
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE); //finished seek.
             }
         });
 
-        /**
-         * Abstract method
+        /*
+          Abstract method converts the URL of the video into Mediasource.
          */
         Utils.MediaSourceAsyncCallbackHandler mMediaSourceAsyncCallbackHandler = new Utils.MediaSourceAsyncCallbackHandler() {
             @Override
@@ -171,7 +173,9 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
             @Override
             public void onException(Exception e) {
-                Log.e(TAG, "error loading video", e);
+                Toast.makeText(getActivity(),
+                        "Cannot play the video for " + getSignSelected() + "Please try another sign",
+                        Toast.LENGTH_LONG).show();Log.e(TAG, "error loading video", e);
             }
         };
 
@@ -186,51 +190,61 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    public void checkBoxesStates(View view) {
-        mCheckBox1 = (CheckBox) view.findViewById(R.id.pointtwofivespeed);
+    /**
+     * Initialises the checkbox for the playback speeds.
+     *
+     * @param view
+     */
+    private void checkBoxesStates(View view) {
+        mCheckBox1 = view.findViewById(R.id.pointtwofivespeed);
         mCheckBox1.setOnCheckedChangeListener(VideoViewFragment.this);
-        mCheckBox2 = (CheckBox) view.findViewById(R.id.pointfivespeed);
+        mCheckBox2 = view.findViewById(R.id.pointfivespeed);
         mCheckBox2.setOnCheckedChangeListener(VideoViewFragment.this);
-        mCheckBox3 = (CheckBox) view.findViewById(R.id.pointSevenFivespeed);
+        mCheckBox3 = view.findViewById(R.id.pointSevenFivespeed);
         mCheckBox3.setOnCheckedChangeListener(VideoViewFragment.this);
-        mCheckBox4 = (CheckBox) view.findViewById(R.id.fullspeed);
+        mCheckBox4 = view.findViewById(R.id.fullspeed);
         mCheckBox4.setOnCheckedChangeListener(VideoViewFragment.this);
         mCheckBox4.setChecked(true);
     }
 
+    /**
+     * Adjust the speed of the video playback while also changing the state of the checkboxes accordingly.
+     *
+     * @param compoundButton
+     * @param state
+     */
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
 
-        if(compoundButton.isChecked() == true) {
+        if(compoundButton.isChecked()) {
             if(compoundButton == mCheckBox1){
                 mCheckBox2.setChecked(false);
                 mCheckBox3.setChecked(false);
                 mCheckBox4.setChecked(false);
                 mCheckBox1.setChecked(true);
-                mVideoView.setPlaybackSpeed(0.25f);
+                mVideoPlaybackSpeed = 0.25f;
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else if (compoundButton == mCheckBox2) {
                 mCheckBox1.setChecked(false);
                 mCheckBox3.setChecked(false);
                 mCheckBox4.setChecked(false);
                 mCheckBox2.setChecked(true);
-                mVideoView.setPlaybackSpeed(0.50f);
+                mVideoPlaybackSpeed = 0.5f;
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else if (compoundButton == mCheckBox3) {
                 mCheckBox1.setChecked(false);
                 mCheckBox2.setChecked(false);
                 mCheckBox4.setChecked(false);
                 mCheckBox3.setChecked(true);
-                mVideoView.setPlaybackSpeed(0.75f);
+                mVideoPlaybackSpeed = 0.75f;
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else {
                 mCheckBox1.setChecked(false);
                 mCheckBox2.setChecked(false);
                 mCheckBox3.setChecked(false);
                 mCheckBox4.setChecked(true);
-                mVideoView.setPlaybackSpeed(1.00f);
+                mVideoPlaybackSpeed = 1.00f;
+                mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             }
         } else {
             Log.d(TAG, "Speed undone " + compoundButton + " State: " + state);
@@ -239,30 +253,29 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     }
 
     /**
-     *
+     * Retreive the video URL from the model class to be converted by the external library into
+     * a media source.
      */
-    public void getVideoURL() {
-        Log.d(TAG, "Populate BSL Notation View");
+    private void getVideoURL() {
         mSignMaterialAdapter = new SignMaterialAdapter();
         mVideoURL = mSignMaterialAdapter.getVideoURL(getContext(), signSelected);
     }
 
     /**
-     *
+     * Populate the textview below the video which display the BSL gloss of the sign.
      */
-    public void getBSLSignOrder() {
+    private void getBSLSignOrder() {
         Log.d(TAG, "Populate BSL Notation View");
         mSignMaterialAdapter = new SignMaterialAdapter();
-        mTextView.setText(mSignMaterialAdapter.getBSLSignOrder(getContext(), signSelected));
+        mTextView.setText(mSignMaterialAdapter.getBSLOrderName(getContext(), signSelected));
     }
 
-    public String getSignSelected() {
+    /* Get the sign selected by the end user */
+    private int getSignSelected() {
         return signSelected;
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
 }

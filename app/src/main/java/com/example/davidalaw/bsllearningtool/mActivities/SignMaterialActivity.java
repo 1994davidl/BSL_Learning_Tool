@@ -28,7 +28,16 @@ import com.example.davidalaw.bsllearningtool.mModel_Controller.DBHandler;
 
 
 /**
- * The type Sign material activity.
+ * This is the second activity of the project. This activity and it corresponding fragments displays
+ * the different learning resources for a single sign which has been selected by the end user.
+ *
+ * Which consists of three main fragments:
+ *          - SignInformationFragment
+ *          - VideoViewFragment
+ *          - BSLNotationSystem
+ *
+ * The primary navigation design pattern implemented is an tab layout.
+ * Which is created by TabbedPageAdapter
  */
 public class SignMaterialActivity extends AppCompatActivity {
 
@@ -51,18 +60,16 @@ public class SignMaterialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_material);
 
         Intent intent = getIntent();
-        sign_selected_id = Integer.valueOf(intent.getStringExtra("sign"));
-        sign_name = intent.getStringExtra("name");
+        sign_selected_id = Integer.valueOf(intent.getStringExtra("sign")); //obtain sign id
+        sign_name = intent.getStringExtra("name"); //obtain sign name
         Log.d(TAG, "Sign Selected: " + sign_selected_id);
 
         mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(viewPager);
 
-        //set title of container
-
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
-        textView.setText(sign_name);
+        textView.setText(sign_name); //set title of container
 
         //Favourite button
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
@@ -83,10 +90,15 @@ public class SignMaterialActivity extends AppCompatActivity {
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         setBottomNavigationView();
 
+
+
     }
 
+    /**
+     * back pressed Image button action listener.
+     * Upon request the user while be sent to the previous screen they were on.
+     */
     private void backButtonActionListner(){
-
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,20 +108,25 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     /**
-     * Image button action listener.
+     * Share Image button action listener.
+     *
+     * Subject of share is the title of the app with short slogan.
+     *
+     * The main text of the share content is the name of sign that the user is sharing followed
+     * by the video link which the receiver can watch online.
      */
     private void shareButtonActionListener() {
 
         mShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSignMaterialAdapter = new SignMaterialAdapter();
+                mSignMaterialAdapter = new SignMaterialAdapter(); //init model controller class
                 Context context = SignMaterialActivity.this;
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BSLearn App: A BSL Learning Tool");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BSLearn App: A BSL Learning Tool"); //Subject header
                 shareIntent.putExtra(Intent.EXTRA_TEXT, "I'm learning British Sign Language.\nSign: " + sign_name
-                        + "\nVideo Link: " +  mSignMaterialAdapter.getVideoURL(context, sign_selected_id));
+                        + "\nVideo Link: " +  mSignMaterialAdapter.getVideoURL(context, sign_selected_id)); //main body
                 startActivity(Intent.createChooser(shareIntent, "Share via: "));
             }
         });
@@ -123,14 +140,21 @@ public class SignMaterialActivity extends AppCompatActivity {
      */
     private void setUpViewPager(ViewPager viewPager) {
         mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
-        mTabbedPageAdapter.addFragment(new SignInformationFragment(sign_selected_id), "Sign Info");
-        mTabbedPageAdapter.addFragment(new VideoViewFragment(sign_selected_id), "Video");
-        mTabbedPageAdapter.addFragment(new BSLNotationFragment(sign_selected_id), "Notation");
-        viewPager.setAdapter(mTabbedPageAdapter);
+        mTabbedPageAdapter.addFragment(new SignInformationFragment(sign_selected_id), "Sign Info"); //Tab 1 (left)
+        mTabbedPageAdapter.addFragment(new VideoViewFragment(sign_selected_id), "Video"); //Tab 2 (middle)
+        mTabbedPageAdapter.addFragment(new BSLNotationFragment(sign_selected_id), "Notation"); //Tab 3 (right)
+        viewPager.setAdapter(mTabbedPageAdapter); //create tabs
     }
 
     /**
-     * Sets bottom navigation view.
+     *  Another navigation design pattern implemented is the bottom navigation view.
+     *
+     *  intent method is called with the transfer from signmaterialactivity to mainactivity begins.
+     *
+     *  The title of navigation option is place in an the putExtra() intent method to store the fragment name
+     *  the user wishes to navigate to.
+     *
+     *  Afterwards, the transaction back to the mainactivity is started with it argument.
      */
     private void setBottomNavigationView() {
 
@@ -167,43 +191,29 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     /**
-     * Change sign data favourite.
+     * Change sign data favourite. update favourite status in model/controller class.
      *
      * @param state the state
      */
     private void changeSignDataFavourite(boolean state) {
-        mDBHandler = new DBHandler(this);
-        Cursor cursor = mDBHandler.getAllData();
-
+        mSignMaterialAdapter = new SignMaterialAdapter(); //init model controller class
         int favourite = 0;
         if (state) {
             favourite = 1;
-        }
-
-        while (cursor.moveToNext()) {
-            if (sign_selected_id == Integer.valueOf(cursor.getString(0))) {
-                mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),
-                        cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9),
-                        favourite, Integer.parseInt(cursor.getString(11)));
-            }
+            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
+        } else {
+            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
         }
     }
 
 
     /**
-     * Checkstate.
+     *
      */
     private void checkstate() {
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
-        mDBHandler = new DBHandler(this);
-        Cursor cursor = mDBHandler.getAllData();
-        while (cursor.moveToNext()) {
-
-            if (sign_selected_id == Integer.valueOf(cursor.getString(0)) && Integer.parseInt(cursor.getString(10)) == 1) {
-                mCheckBox.setChecked(true);
-            }
-        }
+        mSignMaterialAdapter = new SignMaterialAdapter();
+        mCheckBox.setChecked(mSignMaterialAdapter.checkStateofFavourite(this,sign_selected_id));
     }
 
     @Override
@@ -214,7 +224,8 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     /**
-     * Action listeners for the checkbox (favourite) button
+     * Action listeners for the checkbox (favourite) button. If check box state changes the process to change the icon
+     * is begin and the database it updated.
      */
     private class myCheckBoxChangeClicker implements CheckBox.OnCheckedChangeListener {
 

@@ -3,27 +3,43 @@ package com.example.davidalaw.bsllearningtool.mData;
 /**
  * Created by DavidALaw on 04/08/2017.
  */
-
 public class FAQuestions {
 
     //Initialise instance variables
-    private String mFAQquestions;
+    private String mFAQ;
 
-    //Default constructor
+    /**
+     * Instantiates a new Fa questions.
+     */
+//Default constructor
     public FAQuestions() {
-
     }
 
-    //Non default constructor
-    public FAQuestions(String FAQquestions) {
-        mFAQquestions = FAQquestions;
+    /**
+     * Instantiates a new Fa questions.
+     *
+     * @param FAQ the fa qquestions
+     */
+//Non default constructor
+    public FAQuestions(String FAQ) {
+        mFAQ = FAQ;
     }
 
-    public String getFAQquestions() {
-        return mFAQquestions;
+    /**
+     * Gets fAQs
+     *
+     * @return the faq
+     */
+    public String getFAQ() {
+        return mFAQ;
     }
 
-    public void setFAQquestions(String FAQquestions) {
-        mFAQquestions = FAQquestions;
+    /**
+     * Sets fa qquestions.
+     *
+     * @param FAQ the fa qquestions
+     */
+    public void setFAQ(String FAQ) {
+        mFAQ = FAQ;
     }
 }

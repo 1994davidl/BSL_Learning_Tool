@@ -7,8 +7,6 @@ package com.example.davidalaw.bsllearningtool.mData;
  */
 
 public class Regions {
-
-
     private int region_id;
     private String region_name;
     private float longitude, latitude;

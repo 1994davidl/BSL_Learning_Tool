@@ -25,9 +25,30 @@ public class SignMaterialAdapter {
 
     /////////////////// SignMaterialActivity /////////////////////////
 
+    public void changeFavouriteState(Context context, int sign_selected_id, int favourite) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllData();
+        while (cursor.moveToNext()) {
+            if (sign_selected_id == Integer.valueOf(cursor.getString(0))) {
+                mDBHandler.updateSignFavourite(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
+                        cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),
+                        cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9),
+                        favourite, Integer.parseInt(cursor.getString(11)));
+            }
+        }
+    }
 
-
-
+    public boolean checkStateofFavourite(Context context, int sign_selected_id) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllData();
+        Boolean favourite = false;
+        while (cursor.moveToNext()) {
+            if (sign_selected_id == Integer.valueOf(cursor.getString(0)) && Integer.parseInt(cursor.getString(10)) == 1) {
+                favourite = true;
+            }
+        }
+        return favourite;
+    }
 
     //////////////////// SignInfoFragment ////////////////////////////
 

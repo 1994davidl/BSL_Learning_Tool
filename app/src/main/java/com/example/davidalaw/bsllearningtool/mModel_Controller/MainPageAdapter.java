@@ -2,6 +2,7 @@ package com.example.davidalaw.bsllearningtool.mModel_Controller;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.davidalaw.bsllearningtool.mData.FAQuestions;
 import com.example.davidalaw.bsllearningtool.mData.Resources;
@@ -33,8 +34,11 @@ public class MainPageAdapter {
     private ArrayList<String> RegionSignsList;
     private ArrayList<String> mCategorySelectedQuestionsList;
     private ArrayList<String> mRadioButtonsList;
+    private ArrayList<String> mProgressList;
 
     private String mQuizCategorySelected;
+
+
 
     /**
      * Instantiates a new Main page adapter.
@@ -502,9 +506,116 @@ public class MainPageAdapter {
         return answer;
     }
 
+
     //////////////////// ProgressFragment /////////////////////////
+    private int totalScore = 0;
+    private int totalRounds =0;
+    private int bestRound = 0;
+    private int num_of_rounds = 0;
+    private int best = 0;
+
+    public void getallProgressInfo(Context context) {
+        mProgressList = new ArrayList<>();
+        Log.d(TAG, "working ");
+        mProgressList.add(getTotalScore(context));
+        mProgressList.add(getBestRound(context));
+        mProgressList.add(getLastRoundScore(context));
+        mProgressList.add(getTopCategory(context));
+        mProgressList.add(getCategoryToImproveOn(context));
+        mProgressList.add(getTotalNumberofQuizAttempts(context));
+
+    }
+
+    public String getProgressList(int index) {
+        return mProgressList.get(index);
+    }
+
+    private String getTotalScore(Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllProgress();
+        String totalS = "";
+
+        while(cursor.moveToNext()) {
+            totalScore += Integer.parseInt(cursor.getString(2));
+            totalRounds +=  Integer.parseInt(cursor.getString(4));
+            totalS =String.valueOf(totalScore) + "/" + String.valueOf(totalRounds);
+        }
+        return totalS;
+    }
+    /**
+     * Get the quiz attempt where the user scored the best round.
+     *
+     * @param context
+     */
+    private String getBestRound (Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllProgress();
+        String bestR = "";
+
+        while (cursor.moveToNext()) {
+            if (Integer.parseInt(cursor.getString(2)) > bestRound) {
+                bestRound = Integer.parseInt(cursor.getString(2));
+                num_of_rounds = Integer.parseInt(cursor.getString(4));
+                bestR = String.valueOf(bestRound) + "/" + String.valueOf(num_of_rounds);
+            }
+        }
+        return bestR;
+    }
+
+    private String getLastRoundScore(Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllProgress();
+        String lastR = "";
+
+        while (cursor.moveToNext()) {
+            if (cursor.getCount() > 1) {
+                cursor.moveToPosition(cursor.getCount() - 1); //move to last round
+                lastR = cursor.getString(2) + "/" + cursor.getString(4);
+
+            } else {
+                lastR = cursor.getString(2) + "/" + cursor.getString(4);
+            }
+        }
+        return lastR;
+    }
 
 
+
+    private String getTopCategory(Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getDistinctSumValues();
+        String topCategory = "";
+
+        while (cursor.moveToNext()) {
+            if (Integer.parseInt(cursor.getString(1)) > best) {
+                best = Integer.parseInt(cursor.getString(1));
+                topCategory = cursor.getString(0);
+            }
+        }
+        return topCategory;
+    }
+
+    private String getCategoryToImproveOn (Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getDistinctSumValues();
+        String worstCategory = "";
+        int worst = best;
+        while (cursor.moveToNext()) {
+            if (Integer.parseInt(cursor.getString(1)) < worst) {
+                worst = Integer.parseInt(cursor.getString(1));
+                worstCategory = cursor.getString(0);
+            }
+        }
+        return worstCategory;
+    }
+
+    private String getTotalNumberofQuizAttempts (Context context) {
+        mDBHandler = new DBHandler(context);
+        Cursor cursor = mDBHandler.getAllProgress();
+        String count= "";
+        count = String.valueOf(cursor.getCount());
+        return count;
+    }
 
 
     /////////////////// Resources & FAQ Model ////////////////////
@@ -531,7 +642,7 @@ public class MainPageAdapter {
      * @return the FAQ
      */
     public String getFAQuestions(int index) {
-        return mFAQuestionses[index].getFAQquestions();
+        return mFAQuestionses[index].getFAQ();
     }
 
     /**

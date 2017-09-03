@@ -89,8 +89,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        doDBCheck();
-        //Read Text to populate database.
+        doDBCheck(); //Read Text to populate database.
         setMainPageDisplay(savedInstanceState);
 
         Intent intent = getIntent();
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * if the database file exist do not insert text again.
+     * if the database file exist do not init text files again.
      */
     private void doDBCheck() {
         try {
@@ -123,6 +122,7 @@ public class MainActivity extends AppCompatActivity
             //file.delete();
 
             //If db file already exist, do not read the textfiles again.
+            //else if it first time installed then call helper methods.
             if (!file.exists()) {
                 readInitRegionTxtFile();
                 readInitFileAddData();
@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    ///////////////////////////////////// Overide methods ///////////////////////////////////////////
+    ///////////////////////////////////// Override methods ///////////////////////////////////////////
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -350,11 +350,10 @@ public class MainActivity extends AppCompatActivity
         navigationCategories();
         int id = item.getItemId();
 
-        Fragment fragment = null;
+        Fragment fragment = null; //init fragment
         fragmentClass = null;
 
-        String category = "";
-
+        String category = ""; //empty string, populate with category selected
         /*
          * Navigate to the fragment upon user request.
          */
@@ -427,17 +426,16 @@ public class MainActivity extends AppCompatActivity
 
         try {
             fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
-            //Add which of the categories were selected.
-            Bundle bundle = new Bundle();
-            bundle.putString("Category", category);
+            Bundle bundle = new Bundle(); //store data
+            bundle.putString("Category", category); //Add which of the categories were selected.
             assert fragment != null;
-            fragment.setArguments(bundle);
+            fragment.setArguments(bundle); //add bundle argument
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit(); //start transaction to navigation option selected
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -147,6 +147,32 @@ public class SignMaterialActivity extends AppCompatActivity {
     }
 
     /**
+     * Change sign data favourite. update favourite status in model/controller class.
+     *
+     * @param state the state
+     */
+    private void changeSignDataFavourite(boolean state) {
+        mSignMaterialAdapter = new SignMaterialAdapter(); //init model controller class
+        int favourite = 0;
+        if (state) {
+            favourite = 1;
+            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
+        } else {
+            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
+        }
+    }
+
+
+    /**
+     *
+     */
+    private void checkstate() {
+        mCheckBox = (CheckBox) findViewById(R.id.favourite);
+        mSignMaterialAdapter = new SignMaterialAdapter();
+        mCheckBox.setChecked(mSignMaterialAdapter.checkStateofFavourite(this,sign_selected_id));
+    }
+
+    /**
      *  Another navigation design pattern implemented is the bottom navigation view.
      *
      *  intent method is called with the transfer from signmaterialactivity to mainactivity begins.
@@ -188,39 +214,6 @@ public class SignMaterialActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    /**
-     * Change sign data favourite. update favourite status in model/controller class.
-     *
-     * @param state the state
-     */
-    private void changeSignDataFavourite(boolean state) {
-        mSignMaterialAdapter = new SignMaterialAdapter(); //init model controller class
-        int favourite = 0;
-        if (state) {
-            favourite = 1;
-            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
-        } else {
-            mSignMaterialAdapter.changeFavouriteState(this, sign_selected_id, favourite);
-        }
-    }
-
-
-    /**
-     *
-     */
-    private void checkstate() {
-        mCheckBox = (CheckBox) findViewById(R.id.favourite);
-        mSignMaterialAdapter = new SignMaterialAdapter();
-        mCheckBox.setChecked(mSignMaterialAdapter.checkStateofFavourite(this,sign_selected_id));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_material, menu);
-        return true;
     }
 
     /**

@@ -178,16 +178,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                         Toast.LENGTH_LONG).show();Log.e(TAG, "error loading video", e);
             }
         };
-
-        if(mMediaSource == null) {
-            // Convert uri to media source asynchronously to avoid UI blocking
-            // It could take a while, e.g. if it's a DASH source and needs to be preprocessed
-            Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
-            Log.d(TAG, "PLAYER URI: ." + mVideoURI);
-        } else {
-            // Media source is already here, just use it
-            mMediaSourceAsyncCallbackHandler.onMediaSourceLoaded(mMediaSource);
-        }
+        Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
     }
 
     /**

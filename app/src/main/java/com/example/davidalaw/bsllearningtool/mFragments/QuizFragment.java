@@ -251,14 +251,8 @@ public class QuizFragment extends Fragment {
             }
         };
 
-        if (mMediaSource == null) {
-            // Convert uri to media source asynchronously to avoid UI blocking
-            Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
-            Log.d(TAG, "PLAYER URI: ." + mVideoURI);
-        } else {
-            // Media source is already here, just use it
-            mMediaSourceAsyncCallbackHandler.onMediaSourceLoaded(mMediaSource);
-        }
+        Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
+
     }
 
 

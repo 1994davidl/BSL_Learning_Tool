@@ -30,7 +30,7 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:animateLayoutChanges="false"
             android:padding="8dp">
@@ -73,14 +73,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="220dp"
         android:layout_marginBottom="5dp">
 
     <net.protyposis.android.mediaplayer.VideoView
         android:id="@+id/videoView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+            />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -94,13 +99,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="75dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/bsl_text"
             android:textAlignment="center"
+            android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/colourText"
             android:textStyle="bold"/>

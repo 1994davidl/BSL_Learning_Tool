@@ -11,8 +11,7 @@ import net.protyposis.android.mediaplayer.UriSource;
 /**
  * @Link: **REFERENCE** Protyposis Mediaplayer library: https://github.com/protyposis/MediaPlayer-Extended
  *
- * This class is primarily used to Convert the Video URL into a media source in order to play the
- * video file in the media player.
+ * This class is primarily used to loads, decodes and enables the play of the Video URL
  *
  * Created by DavidALaw on 24/07/2017.
  */
@@ -20,17 +19,6 @@ import net.protyposis.android.mediaplayer.UriSource;
 public class Utils {
 
     private static final String TAG = Utils.class.getSimpleName();
-
-    /**
-     * @param context
-     * @param uri
-     * @return
-     */
-    private static MediaSource uriToMediaSource(Context context, Uri uri) {
-        MediaSource source;
-        source = new UriSource(context, uri);
-        return source;
-    }
 
     /**
      *
@@ -47,6 +35,17 @@ public class Utils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
+    }
+
+    /**
+     * @param context
+     * @param uri
+     * @return
+     */
+    private static MediaSource uriToMediaSource(Context context, Uri uri) {
+        MediaSource source;
+        source = new UriSource(context, uri);
+        return source;
     }
 
     /**

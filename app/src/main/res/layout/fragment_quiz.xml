@@ -32,12 +32,27 @@
             android:textSize="20sp"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+
     <net.protyposis.android.mediaplayer.VideoView
         android:id="@+id/videoView"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:layout_marginTop="15dp"
         android:padding="8dp"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:visibility="gone"/>
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="133dp">

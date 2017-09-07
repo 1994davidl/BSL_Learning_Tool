@@ -86,7 +86,13 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         mVideoPlaying = true; //video is to be played immediately once fully loaded.
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(!mVideoView.isPlaying()) {
+            initPlayer();
+        }
+    }
 
     @Override
     public void onResume() {
@@ -109,7 +115,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
-        //A mp.setLooping(true) would be more efficenct but some mp4 metadata does
+        //A mp.setLooping(true) would be more efficent but some mp4 metadata does
         //not respond well to method and therefore the video is reset at the end
         //of each completion.
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -124,14 +130,26 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
+
+        mVideoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mVideoView.isPlaying()) {
+                    mVideoView.start();
+                }
+            }
+        });
+
+
         //Display toast message and disable the media controller in the event
         //that the video is unable to load
         mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mMediaPlayer, int what, int extra) {
-                 Toast.makeText(getActivity(),
+                Toast.makeText(getActivity(),
                         "Cannot play the video for " + getSignSelected() + "Please try another sign",
                         Toast.LENGTH_LONG).show();
+
                 mProgressBar.setVisibility(View.GONE);
                 return true;
             }
@@ -178,7 +196,16 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                         Toast.LENGTH_LONG).show();Log.e(TAG, "error loading video", e);
             }
         };
-        Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
+
+        if(mMediaSource == null) {
+            // Convert uri to media source asynchronously to avoid UI blocking
+            // It could take a while, e.g. if it's a DASH source and needs to be preprocessed
+            Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
+            Log.d(TAG, "PLAYER URI: ." + mVideoURI);
+        } else {
+            // Media source is already here, just use it
+            mMediaSourceAsyncCallbackHandler.onMediaSourceLoaded(mMediaSource);
+        }
     }
 
     /**

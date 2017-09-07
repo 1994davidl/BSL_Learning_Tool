@@ -24,10 +24,21 @@ public class Utils {
      *
      * @param context
      * @param uri
+     * @return
+     */
+    private static MediaSource uriToMediaSource(Context context, Uri uri) {
+        MediaSource source;
+        source = new UriSource(context, uri);
+        return source;
+    }
+
+    /**
+     *
+     * @param context
+     * @param uri
      * @param callback
      */
     public static void uriToMediaSourceAsync(final Context context, Uri uri, MediaSourceAsyncCallbackHandler callback) {
-
         LoadMediaSourceAsyncTask loadingTask = new LoadMediaSourceAsyncTask(context, callback);
 
         try {
@@ -35,17 +46,6 @@ public class Utils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
-    }
-
-    /**
-     * @param context
-     * @param uri
-     * @return
-     */
-    private static MediaSource uriToMediaSource(Context context, Uri uri) {
-        MediaSource source;
-        source = new UriSource(context, uri);
-        return source;
     }
 
     /**

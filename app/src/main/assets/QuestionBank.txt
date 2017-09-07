@@ -29,7 +29,7 @@ Son;Man;Father;Boyfriend;Man;78
 Friend;Girlfriend;Boyfriend;Boy;Boyfriend;82
 Lady;Man;Mother;Father;Lady;79
 Sister;Brother;Father;Son;Son;74
-Friend;Grandfather;Father;Boy;Father;77
+Friend;Grandfather;Father;Boy;Father;71
 Grandmother;Grandad;Friend;Family;Grandad;76
 Female;Sister;Friend;Girlfriend;Girlfriend;83
 Nurse;Doctor;Teacher;Interpreter;Teacher;84

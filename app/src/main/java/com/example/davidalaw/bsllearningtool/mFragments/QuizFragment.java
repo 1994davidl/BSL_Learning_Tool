@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class QuizFragment extends Fragment {
     private TextView mTextView;
     private Button mButton;
 
+
     private String VideoURL;
 
     private Uri mVideoURI;
@@ -46,6 +48,7 @@ public class QuizFragment extends Fragment {
     private float mVideoPlaybackSpeed;
     private boolean mVideoPlaying;
     private MediaSource mMediaSource;
+    private ProgressBar mProgressBar;
 
     private String categorySelected;
 
@@ -83,6 +86,7 @@ public class QuizFragment extends Fragment {
         mTextView = view.findViewById(R.id.score_number);
         mTextView.setText(String.valueOf(score) + "/" + String.valueOf(setNumberofQuestions));
         mVideoView = view.findViewById(R.id.videoView);
+        mProgressBar = view.findViewById(R.id.progress);
        // mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mRadioGroup = view.findViewById(R.id.radiogroup);
         mButton = view.findViewById(R.id.next_button);
@@ -100,10 +104,13 @@ public class QuizFragment extends Fragment {
      * initialise video settings.
      */
     private void videoSettingsOnCreate() {
+        mProgressBar.setVisibility(View.VISIBLE);
         mVideoURI = Uri.parse(VideoURL);
         mVideoPosition = 0;
         mVideoPlaybackSpeed = 0.80f;
         mVideoPlaying = true;
+        mRadioGroup.setEnabled(false);
+        mButton.setEnabled(false);
     }
 
 
@@ -120,6 +127,8 @@ public class QuizFragment extends Fragment {
                 numOfQuestions++;
                 mVideoPlaying = false;
                 mMediaSource = null;
+                mRadioGroup.setEnabled(false);
+                mButton.setEnabled(false);
 
                 RadioButton selectedRButton = (RadioButton) mRadioGroup.getChildAt(getSelectedRadioButtonID()); //get index of selected radio button
                 if (selectedRButton.getText().equals(mMainPageAdapter.getQuestionAnswer(getContext()))) {
@@ -214,8 +223,10 @@ public class QuizFragment extends Fragment {
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                mProgressBar.setVisibility(View.GONE);
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
-                //mVideoPlaying = true; //play video
+                mRadioGroup.setEnabled(true);
+                mButton.setEnabled(true);
             }
         });
 
@@ -226,10 +237,43 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mVideoView.seekTo(mVideoPosition);
+                mProgressBar.setVisibility(View.GONE);
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
                 if (mVideoPlaying) {
                     mVideoView.start();
                 }
+            }
+        });
+
+        //Display toast message and disable the media controller in the event
+        //that the video is unable to load
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mMediaPlayer, int what, int extra) {
+                Toast.makeText(getActivity(),
+                        "Sorry, Cannot play the video",
+                        Toast.LENGTH_LONG).show();
+                mProgressBar.setVisibility(View.GONE);
+                return true;
+            }
+        });
+
+        mVideoView.setOnSeekListener(new MediaPlayer.OnSeekListener() {
+            @Override
+            public void onSeek(MediaPlayer mp) {
+                Log.d(TAG, "onSeek");
+                mProgressBar.setVisibility(View.VISIBLE); //Still to load
+            }
+        });
+
+         /*
+          Upon completion of video load, then the progress bar will no longer display.
+         */
+        mVideoView.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+            @Override
+            public void onSeekComplete(MediaPlayer mp) {
+                Log.d(TAG, "onSeekComplete");
+                mProgressBar.setVisibility(View.GONE); //finished seek.
             }
         });
 
@@ -251,7 +295,14 @@ public class QuizFragment extends Fragment {
             }
         };
 
-        Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
+        if(mMediaSource == null) {
+            // Convert uri to media source asynchronously to avoid UI blocking
+            Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
+            Log.d(TAG, "PLAYER URI: ." + mVideoURI);
+        } else {
+            // Media source is already here, just use it
+            mMediaSourceAsyncCallbackHandler.onMediaSourceLoaded(mMediaSource);
+        }
 
     }
 

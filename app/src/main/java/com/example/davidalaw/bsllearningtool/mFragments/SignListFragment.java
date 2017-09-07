@@ -47,6 +47,7 @@ public class SignListFragment extends Fragment {
         String INTENTSTRING = "Category"; categorySelected = getArguments().getString(INTENTSTRING); //get category selected from bundle argument
         getActivity().setTitle(categorySelected); //set title to the category selected
 
+        //instantiate ui element
         mListView = view.findViewById(R.id.sign_list_view);
 
         //Call Helper methods
@@ -61,12 +62,11 @@ public class SignListFragment extends Fragment {
      * Populate sign list view.
      */
     private void populateSignListView() {
-        Log.d(TAG, "Populate Sign List View ");
         mMainPageAdapter = new MainPageAdapter();
 
         ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1,
-                mMainPageAdapter.collectSignsFromSelectedCategory(getContext(), categorySelected));
-        mListView.setAdapter(adapter); //create the list view adapter
+                mMainPageAdapter.collectSignsFromSelectedCategory(getContext(), categorySelected)); //populate adapter
+        mListView.setAdapter(adapter); //display list of signs
     }
 
 
@@ -78,12 +78,11 @@ public class SignListFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), mMainPageAdapter.getSignSelected(i), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(i));
-                intent.putExtra("name", mMainPageAdapter.getSignSelected(i));
-                Log.d(TAG, "Sign Selected: " + mMainPageAdapter.getSignIDSelected(i));
-                startActivity(intent);
+                Toast.makeText(getActivity(), mMainPageAdapter.getSignSelected(i), Toast.LENGTH_SHORT).show(); //display message of sign selected to user
+                Intent intent = new Intent(getActivity(), SignMaterialActivity.class); //create intent object
+                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(i)); //store sign id
+                intent.putExtra("name", mMainPageAdapter.getSignSelected(i)); //store sign name
+                startActivity(intent); //move to sign material activity
             }
         });
     }

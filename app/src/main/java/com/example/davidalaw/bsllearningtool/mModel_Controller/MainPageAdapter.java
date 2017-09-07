@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * controllor/model class to retreive data from database and pass to view classes
+ * controllor/model class to retreive data from database and return to it appropriate view class
  * <p>
  * Created by DavidALaw on 07/08/2017.
  */
@@ -24,17 +24,18 @@ public class MainPageAdapter {
     private final Resources[ ] mResources; //object array
     private final FAQuestions [ ] mFAQuestionses; //object array
 
-    private ArrayList<String> mCategoryList;
-    private ArrayList<String> mSignsIDList;
-    private ArrayList<String> mSignsList;
-    private ArrayList<String> mFavouriteList;
-    private ArrayList<String> mRegionList;
-    private ArrayList<String> mLongitudeList;
-    private ArrayList<String> mLatitudeList;
-    private ArrayList<String> RegionSignsList;
-    private ArrayList<String> mCategorySelectedQuestionsList;
-    private ArrayList<String> mRadioButtonsList;
-    private ArrayList<String> mProgressList;
+    //initialise array lists
+    private ArrayList<String> mCategoryList; //list of all distinct category names
+    private ArrayList<String> mSignsIDList; // list of all sign ids available within a category
+    private ArrayList<String> mSignsList; //list of all sign names available within a category
+    private ArrayList<String> mFavouriteList; //list of all sign names that have been favourited by user
+    private ArrayList<String> mRegionList; //list of all region names
+    private ArrayList<String> mLongitudeList; //list of all regions longitude coordinates
+    private ArrayList<String> mLatitudeList; //list of all region latitude coordinates
+    private ArrayList<String> RegionSignsList; //list of all sign names available explictly in region
+    private ArrayList<String> mCategorySelectedQuestionsList; //list of all questions examinable from selected category
+    private ArrayList<String> mRadioButtonsList; //list of choices for a given question
+    private ArrayList<String> mProgressList; //list of progress figures
 
     private String mQuizCategorySelected;
 
@@ -508,6 +509,8 @@ public class MainPageAdapter {
 
 
     //////////////////// ProgressFragment /////////////////////////
+
+    //instance variables
     private int totalScore = 0;
     private int totalRounds =0;
     private int bestRound = 0;

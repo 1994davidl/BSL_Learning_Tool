@@ -48,10 +48,11 @@ public class RegionalSignListFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_regional_sign_list, container, false);
 
         String BUNDLE_STRING = "Region";
-        regionSelected = getArguments().getString(BUNDLE_STRING);
-        getActivity().setTitle(regionSelected);
+        regionSelected = getArguments().getString(BUNDLE_STRING); getActivity().setTitle(regionSelected); //set title to region selected name
 
-        mListView = view.findViewById(R.id.region_signs_list);
+        mListView = view.findViewById(R.id.region_signs_list); //instantiate ui element
+
+        //call helper methods
         populateRegionSignList();
         setListViewListener();
 
@@ -59,7 +60,7 @@ public class RegionalSignListFragment extends Fragment {
     }
 
     /**
-     * Populate region sign list.
+     * Populate & display region sign list.
      */
     private void populateRegionSignList() {
         mMainPageAdapter = new MainPageAdapter();
@@ -67,8 +68,8 @@ public class RegionalSignListFragment extends Fragment {
         //create the list adapter
         ListAdapter adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_activated_1,
-                mMainPageAdapter.getRegionSigns(getContext(), regionSelected));
-        mListView.setAdapter(adapter);
+                mMainPageAdapter.getRegionSigns(getContext(), regionSelected)); //populate
+        mListView.setAdapter(adapter); //display list
     }
 
     /**
@@ -83,10 +84,10 @@ public class RegionalSignListFragment extends Fragment {
                 Toast.makeText(getActivity(), regionSelected + " : " +  mMainPageAdapter.getRegionSingleSign(i),
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(i));
-                intent.putExtra("name", mMainPageAdapter.getRegionSingleSign(i));
+                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(i)); //store id
+                intent.putExtra("name", mMainPageAdapter.getRegionSingleSign(i)); //store sign name
                 Log.d(TAG, "Sign Selected: " + mMainPageAdapter.getRegionSingleSign(i));
-                startActivity(intent);
+                startActivity(intent); //move to sign material activity
             }
         });
     }

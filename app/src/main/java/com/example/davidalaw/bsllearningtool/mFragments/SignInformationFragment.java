@@ -39,14 +39,21 @@ public class SignInformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_info, container, false);
 
         mTextView = new TextView[SIZE];
+        //instantiate ui elements
         mTextView[0] = view.findViewById(R.id.english_name);
         mTextView[1] = view.findViewById(R.id.BSL_sign_order);
         mTextView[2] = view.findViewById(R.id.similar_signs);
+
+        //call helper method
         populateSignInfoView();
 
         return view;
     }
 
+
+    /**
+     * Populate list view
+     */
     private void populateSignInfoView () {
         Log.d(TAG, "Populate Sign List View ");
         SignMaterialAdapter signMaterialAdapter = new SignMaterialAdapter();

@@ -20,13 +20,13 @@ import java.util.Scanner;
 
 public class ResourcesFragment extends Fragment {
 
-
     private static final String TAG = ResourcesFragment.class.getSimpleName();
 
     private MainPageAdapter mMainPageAdapter;
 
     private TextView [ ] mTextView;
 
+    private final int SIZE = 4;
 
     public ResourcesFragment() {
         // Required empty public constructor
@@ -40,25 +40,22 @@ public class ResourcesFragment extends Fragment {
         String titleHandler = "BSL & Deaf Awareness";
         getActivity().setTitle(titleHandler);
 
-        mTextView = new TextView[4];
+        mTextView = new TextView[SIZE]; //set size of text view element array
+
+        //instantiate ui elements
         mTextView[0] = view.findViewById(R.id.what_BSL);
         mTextView[1] = view.findViewById(R.id.what_fingerspelling);
         mTextView[2] = view.findViewById(R.id.text_deaf_culture);
         mTextView[3] = view.findViewById(R.id.text_misconceptions);
 
-
+        //call helper methods
         readInitResourceFile();
         populateTextView();
+
         return view;
     }
 
-    private void populateTextView() {
-        for(int i = 0; i < mTextView.length; i++) {
-            mTextView[i].setText(mMainPageAdapter.getInformation(i));
-        }
-
-    }
-
+    //Read resource file and populate object array with content of text file
     private void readInitResourceFile() {
         AssetManager assetManager = getActivity().getAssets(); //collect txt file from Asset Folder
 
@@ -79,6 +76,14 @@ public class ResourcesFragment extends Fragment {
             Log.e(TAG, "Exception Error " + e);
             e.printStackTrace();
         }
+    }
+
+    //populate and display text views
+    private void populateTextView() {
+        for(int i = 0; i < mTextView.length; i++) {
+            mTextView[i].setText(mMainPageAdapter.getInformation(i));
+        }
+
     }
 
     @Override

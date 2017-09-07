@@ -170,7 +170,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Gets all regions.
+     * return all regions attributes data.
      *
      * @return the all regions
      */
@@ -183,7 +183,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     /**
-     * Gets region signs.
+     * return signs that are explictly used within an certain region
      *
      * @return the region signs
      */

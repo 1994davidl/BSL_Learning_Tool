@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class SignMaterialAdapter {
 
     private final ArrayList<String> mSignInfoList;
+
     private final ArrayList<String> mBSLNotationList;
+
     private DBHandler mDBHandler;
 
 
@@ -50,21 +52,21 @@ public class SignMaterialAdapter {
         return favourite;
     }
 
-    //////////////////// SignInfoFragment ////////////////////////////
+    //////////////////// SignInformationFragment ////////////////////////////
 
     /**
      * Populate sign info fragment array list.
      *
      * @param context      the context
-     * @param signSelected the sign selected
+     * @param signid the sign selected
      * @return the array list
      */
-    public void populateSignInfoFrag (Context context, int signSelected) {
+    public void populateSignInfoFrag (Context context, int signid) {
         mDBHandler = new DBHandler(context);
         Cursor cursor = mDBHandler.getAllData();
 
         while (cursor.moveToNext()) {
-            if (signSelected == Integer.valueOf(cursor.getString(0))) {
+            if (signid == Integer.valueOf(cursor.getString(0))) {
                 for (int i = 2; i <= 4; i++) {
                     mSignInfoList.add(i - 2, cursor.getString(i));
                 }
@@ -97,6 +99,7 @@ public class SignMaterialAdapter {
 
         while (cursor.moveToNext()) {
             if (signSelected == Integer.valueOf(cursor.getString(0))) {
+
                 for(int i = 5; i <= 8;i++) {
                     mBSLNotationList.add(i-5, cursor.getString(i));
                 }
@@ -120,28 +123,38 @@ public class SignMaterialAdapter {
      * Get video url string.
      *
      * @param context the context
-     * @param sign    the sign
+     * @param signid    the sign
      * @return the string
      */
-    public String getVideoURL(Context context, int sign){
+    public String getVideoURL(Context context, int signid){
         String videoURL = "";
         mDBHandler = new DBHandler(context);
         Cursor cursor = mDBHandler.getAllData();
 
         while (cursor.moveToNext()) {
-            if (sign == Integer.valueOf(cursor.getString(0))) {
+            //return string of Video_http attribute if passed sign_id matches sign_id attribute
+            if (signid == Integer.valueOf(cursor.getString(0))) {
                 videoURL = cursor.getString(9);
             }
         }
         return videoURL;
     }
 
+    /**
+     * Return string of the BSL sign order with has the sign id
+     *
+     * @param context
+     * @param signid
+     * @return
+     */
     public String getBSLOrderName (Context context, int signid) {
-        String name = "";
+        String name = ""; //empty string
+
         mDBHandler = new DBHandler(context);
-        Cursor cursor = mDBHandler.getAllData();
+        Cursor cursor = mDBHandler.getAllData(); //call helper method
 
         while (cursor.moveToNext()) {
+            //If sign id matches sign_id attribute then return string with the value of bsl_order attribute
             if (signid == Integer.valueOf(cursor.getString(0))) {
                 name = cursor.getString(3);
             }

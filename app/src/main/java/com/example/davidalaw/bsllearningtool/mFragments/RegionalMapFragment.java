@@ -28,6 +28,8 @@ public class RegionalMapFragment extends Fragment implements OnMapReadyCallback 
 
     private Class fragmentClass = null;
 
+    private MainPageAdapter mMainPageAdapter;
+
     private GoogleMap mGoogleMap;
 
     /**
@@ -61,7 +63,7 @@ public class RegionalMapFragment extends Fragment implements OnMapReadyCallback 
         //Add marker
         AddMarkers();
         mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom
-                (new LatLng(54.5210815,-4.02099609), 5))); //UK coordinates zoom map camera 5x
+                (new LatLng(54.5210815,-4.02099609), 5))); //UK coordinates zoom map camera 5x zoom
 
 
         //Marker click action listener - replace RegionalMapFragment with RegionalSignListFragment
@@ -78,14 +80,14 @@ public class RegionalMapFragment extends Fragment implements OnMapReadyCallback 
                     //get selected region name and pass it to RegionalSignListFragment Class
                     fragment = (Fragment) fragmentClass.newInstance();
                     Bundle bundle = new Bundle();
-                    bundle.putString("Region", marker.getTitle());
-                    fragment.setArguments(bundle);
+                    bundle.putString("Region", marker.getTitle()); //store region name
+                    fragment.setArguments(bundle); //insert bundle argument to fragment transaction
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).addToBackStack(null).commit(); //move to regional sign list fragment
             }
         });
     }
@@ -94,17 +96,20 @@ public class RegionalMapFragment extends Fragment implements OnMapReadyCallback 
      * Add markers.
      */
     private void AddMarkers() {
-        MainPageAdapter mainPageAdapter = new MainPageAdapter();
-        mainPageAdapter.listAllLongitude(getContext());
-        mainPageAdapter.listAllLanitude(getContext());
-        mainPageAdapter.listAllRegions(getContext());
+
+        mMainPageAdapter = new MainPageAdapter(); //view controllor class object
+
+        //get three fields : region name, longitude and latitude
+        mMainPageAdapter.listAllLongitude(getContext());
+        mMainPageAdapter.listAllLanitude(getContext());
+        mMainPageAdapter.listAllRegions(getContext());
         MarkerOptions options = new MarkerOptions();
 
-        for(int i = 0; i < mainPageAdapter.getRegionCount(getContext()); i++)
+        for(int i = 0; i < mMainPageAdapter.getRegionCount(getContext()); i++)
         {
-            LatLng pp = new LatLng(Float.valueOf(mainPageAdapter.getLongitude(i)), Float.valueOf(mainPageAdapter.getLatitudeList(i)));
-            options.position(pp).title(mainPageAdapter.getRegionName(i));
-            mGoogleMap.addMarker(options);
+            LatLng pp = new LatLng(Float.valueOf(mMainPageAdapter.getLongitude(i)), Float.valueOf(mMainPageAdapter.getLatitudeList(i))); //position marker to region coordinates
+            options.position(pp).title(mMainPageAdapter.getRegionName(i)); //set marker title to region name
+            mGoogleMap.addMarker(options); //insert marker
         }
     }
 

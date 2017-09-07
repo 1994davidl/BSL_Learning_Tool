@@ -26,30 +26,31 @@ import net.protyposis.android.mediaplayer.MediaPlayer;
 import net.protyposis.android.mediaplayer.VideoView;
 
 /**
- *
- *
+ * @link : *** REFERENCES ** Protyposis Mediaplayer-Extended library: https://github.com/protyposis/MediaPlayer-Extended
  *
  */
 public class VideoViewFragment extends Fragment implements android.widget.CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = VideoViewFragment.class.getSimpleName();
 
-    private SignMaterialAdapter mSignMaterialAdapter;
+    private SignMaterialAdapter mSignMaterialAdapter; //view controller class
 
+    //initialise gui components
     private ProgressBar mProgressBar;
     private VideoView mVideoView;
     private TextView mTextView;
-
-    private int mVideoPosition;
-    private final int signSelected;
-    private float mVideoPlaybackSpeed;
-    private boolean mVideoPlaying;
-    private String mVideoURL;
-
     private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4;
 
-    private Uri mVideoURI;
-    private MediaSource mMediaSource;
+    //media player settings variables
+    private int mVideoPosition; //position of where video will seek to
+    private float mVideoPlaybackSpeed; //speed of the video playback
+    private boolean mVideoPlaying; //true (play) / false (pause)
+    private Uri mVideoURI; //URI of video http
+    private MediaSource mMediaSource; //media data
+
+    //data fields
+    private String mVideoURL;
+    private final int signSelected;
 
     //Constructor
     public VideoViewFragment(int signSelected) {
@@ -69,10 +70,12 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_view, container, false);
 
+        //instantiate ui elements
         mVideoView = view.findViewById(R.id.videoView);
         mProgressBar = view.findViewById(R.id.progress);
         mTextView = view.findViewById(R.id.bsl_text);
 
+        //call helper
         getVideoURL();//Get the video of the sign the user has selected
         getBSLSignOrder(); //Display the BSL interpretation in text form
         videoplaySettingsOnCreate(); //video prerequisites

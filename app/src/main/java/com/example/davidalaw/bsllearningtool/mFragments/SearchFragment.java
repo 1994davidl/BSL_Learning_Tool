@@ -27,9 +27,10 @@ public class SearchFragment extends Fragment {
 
     private String mSignSelected;
 
-    private MainPageAdapter mMainPageAdapter; //model class
+    private MainPageAdapter mMainPageAdapter; //view controllor/model class
 
-    private  AutoCompleteTextView mAutoCompleteTextView; //suggest sign names that are similar to what the user is currently typing
+    //suggest sign names that are similar to what the user is currently typing
+    private  AutoCompleteTextView mAutoCompleteTextView;
 
     /**
      * Instantiates a new Search fragment.
@@ -44,13 +45,19 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_search, container, false);
 
-        mAutoCompleteTextView = view.findViewById(R.id.autoCompleteTextView); //initialise listview
+        //instantiate gui component
+        mAutoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
 
+        //call helper methods
         setAutoCompleteTextView (); //get sign names from model class and display
         autoCompleteActionListener(); //Action listener move to SignMaterialActivity on click.
         return view;
     }
 
+
+    /**
+     * Collect all signs available to suggest to user
+     */
     private void setAutoCompleteTextView() {
         mMainPageAdapter = new MainPageAdapter();//instantiate ModelClass.
         //Create array adapater to make selection available
@@ -70,12 +77,13 @@ public class SearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mSignSelected = adapterView.getItemAtPosition(i).toString();
                 mMainPageAdapter.getSearchableSignsID(getContext(),mSignSelected);
-                Toast.makeText(getActivity(), mSignSelected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), mSignSelected, Toast.LENGTH_SHORT).show(); //display message of sign selected
+
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(0));
-                intent.putExtra("name", mSignSelected);
-                Log.d(TAG,"Sign Selected: " + mSignSelected);
-                startActivity(intent);
+                intent.putExtra("sign", mMainPageAdapter.getSignIDSelected(0)); //get then store sign id
+                intent.putExtra("name", mSignSelected); //store sign name
+
+                startActivity(intent); //start sign material activity
             }
         });
 

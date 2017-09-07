@@ -1,12 +1,12 @@
 package com.example.davidalaw.bsllearningtool.mData;
 
 /**
- * Setters and getters for Regional object
+ * Setters and getters for Region object
  *
- * Created by DavidALaw on 10/08/2017.
  */
 
 public class Regions {
+
     private int region_id;
     private String region_name;
     private float longitude, latitude;

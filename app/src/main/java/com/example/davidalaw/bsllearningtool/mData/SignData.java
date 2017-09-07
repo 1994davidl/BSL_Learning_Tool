@@ -32,6 +32,12 @@ public class SignData {
         this.region_fk = region_fk;
     }
 
+    /**
+     * Contstructor that tokenises the string line into
+     * 11 different variables using a semi colon delimiter.
+     *
+     * @param line
+     */
     public SignData(String line) {
         String[] tokens = line.split(";");
 

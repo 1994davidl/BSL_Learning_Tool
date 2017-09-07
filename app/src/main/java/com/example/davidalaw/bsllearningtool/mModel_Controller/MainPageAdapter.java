@@ -514,6 +514,16 @@ public class MainPageAdapter {
     private int num_of_rounds = 0;
     private int best = 0;
 
+    public boolean checkifProgressTablePopulated(Context context) {
+
+        mDBHandler = new DBHandler(context);
+        if (mDBHandler.checkProgressTablePopulated()) {
+           return true;
+        }
+        return false;
+    }
+
+
     public void getallProgressInfo(Context context) {
         mProgressList = new ArrayList<>();
         Log.d(TAG, "working ");

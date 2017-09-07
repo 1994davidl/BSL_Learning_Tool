@@ -25,6 +25,8 @@ public class FAQFragment extends Fragment {
 
     private TextView [] mTextView;
 
+    private final int SIZE = 6;
+
     public FAQFragment() {
         // Required empty public constructor
     }
@@ -34,10 +36,11 @@ public class FAQFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_faq, container, false);
-        String TITLE_HANDLER = "Frequently Asked Questions (FAQ)";
-        getActivity().setTitle(TITLE_HANDLER);
 
-        mTextView = new TextView[6];
+        String TITLE_HANDLER = "FAQs"; getActivity().setTitle(TITLE_HANDLER); //set container title
+
+        mTextView = new TextView[SIZE];
+        //instantiate UI elements
         mTextView[0] = view.findViewById(R.id.why_BSL_uppercase);
         mTextView[1] = view.findViewById(R.id.why_mouth_signs);
         mTextView[2] = view.findViewById(R.id.sign_location);
@@ -45,6 +48,7 @@ public class FAQFragment extends Fragment {
         mTextView[4] = view.findViewById(R.id.sign_action);
         mTextView[5] = view.findViewById(R.id.sign_synonym);
 
+        //Call helper methods
         readResourceFile();
         populateTextView();
 
@@ -58,6 +62,7 @@ public class FAQFragment extends Fragment {
        }
     }
 
+    //Read text files where answers to questions have been reversed.
     private void readResourceFile() {
         AssetManager assetManager = getActivity().getAssets();
 
@@ -71,7 +76,7 @@ public class FAQFragment extends Fragment {
 
             while(in.hasNextLine()) {
                 String word = in.nextLine();
-                mMainPageAdapter.populateFAQuestionObjArray(word);
+                mMainPageAdapter.populateFAQuestionObjArray(word); //call controllor helper method.
             }
             in.close(); //close scanner and file.
         } catch (IOException e) {

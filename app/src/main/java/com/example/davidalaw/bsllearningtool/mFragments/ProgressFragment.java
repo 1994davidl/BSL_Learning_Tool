@@ -16,11 +16,11 @@ import com.example.davidalaw.bsllearningtool.mModel_Controller.MainPageAdapter;
 
 public class ProgressFragment extends Fragment {
 
-    private static final String TAG = ProgressFragment.class.getSimpleName();
-
     private TextView[] mTextViews;
-    private DBHandler mDBHandler;
-    private MainPageAdapter mMainPageAdapter;
+
+    private MainPageAdapter mMainPageAdapter; //view controllor class
+
+    private final int SIZE = 6;
 
     private OnFragmentInteractionListener mListener;
 
@@ -34,10 +34,11 @@ public class ProgressFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
-        getActivity().setTitle("Progress: Statistics");
+        getActivity().setTitle("Progress: Statistics"); //set title
 
-        int SIZE = 6;
         mTextViews = new TextView[SIZE];
+
+        //instantiate ui elements
         mTextViews[0] = view.findViewById(R.id.top_score);
         mTextViews[1] = view.findViewById(R.id.best_round);
         mTextViews[2] = view.findViewById(R.id.last_round_score);
@@ -45,22 +46,24 @@ public class ProgressFragment extends Fragment {
         mTextViews[4] = view.findViewById(R.id.worst_category);
         mTextViews[5] = view.findViewById(R.id.attempted_quizzes);
 
-        mMainPageAdapter = new MainPageAdapter();
+        mMainPageAdapter = new MainPageAdapter(); //create object
+
+        //called helper method
         changeTextViewsUponTablePopulate();
 
         return view;
     }
 
+    //Check that progress table is populated. else make no changes to template.
     private void changeTextViewsUponTablePopulate() {
 
-        mDBHandler = new DBHandler(getActivity());
-        if (mDBHandler.checkProgressTablePopulated()) {
+        if(mMainPageAdapter.checkifProgressTablePopulated(getContext())) {
             DisplayProgressInformation(); //call helper method
         }
     }
 
     /**
-     * Populate textviews
+     * Populate text views elements.
      */
     private void DisplayProgressInformation () {
 

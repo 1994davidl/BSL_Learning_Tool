@@ -25,6 +25,11 @@ import net.protyposis.android.mediaplayer.MediaSource;
 import net.protyposis.android.mediaplayer.MediaPlayer;
 import net.protyposis.android.mediaplayer.VideoView;
 
+/**
+ *
+ *
+ *
+ */
 public class VideoViewFragment extends Fragment implements android.widget.CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = VideoViewFragment.class.getSimpleName();
@@ -53,6 +58,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
 
     /**
+     * OnCreateView initialises GUI components and call helper methods
      *
      * @param inflater
      * @param container
@@ -81,7 +87,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     private void videoplaySettingsOnCreate(){
         mProgressBar.setVisibility(View.VISIBLE);
         mVideoURI = Uri.parse(mVideoURL); //Video URL
-        mVideoPosition = 0; //Position video will start playing at
+        mVideoPosition = 0; //Position video will start playing at 0 (start of video)
         mVideoPlaybackSpeed = 1; //the speed of the video
         mVideoPlaying = true; //video is to be played immediately once fully loaded.
     }
@@ -98,15 +104,16 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
     public void onResume() {
         super.onResume();
         if(!mVideoView.isPlaying()) {
-            initPlayer();
+            initPlayer(); //initialise media player
         }
     }
 
     /**
-     *
+     * Initialise video player.
      */
     private void initPlayer(){
-        //Remove progress bar, begin media controllor process
+
+        //Remove progress bar, begin media playback process
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -115,13 +122,11 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
-        //A mp.setLooping(true) would be more efficent but some mp4 metadata does
-        //not respond well to method and therefore the video is reset at the end
-        //of each completion.
+        //replay the video on completion.
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mVideoView.seekTo(mVideoPosition);
+                mVideoView.seekTo(mVideoPosition); //start at position 0
                 mProgressBar.setVisibility(View.GONE);
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
                 if (mVideoPlaying) {
@@ -130,12 +135,12 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
             }
         });
 
-
+        //video stops after share intent is called. click on video to resume play.
         mVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!mVideoView.isPlaying()) {
-                    mVideoView.start();
+                    mVideoView.start(); //
                 }
             }
         });
@@ -150,11 +155,12 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                         "Cannot play the video for " + getSignSelected() + "Please try another sign",
                         Toast.LENGTH_LONG).show();
 
-                mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE); // remove progress bar.
                 return true;
             }
         });
 
+        //
         mVideoView.setOnSeekListener(new MediaPlayer.OnSeekListener() {
             @Override
             public void onSeek(MediaPlayer mp) {
@@ -175,7 +181,7 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
         });
 
         /*
-          Abstract method converts the URL of the video into Mediasource.
+          Abstract method that fetches and decodes the URI into Mediasource by calling util helper methods.
          */
         Utils.MediaSourceAsyncCallbackHandler mMediaSourceAsyncCallbackHandler = new Utils.MediaSourceAsyncCallbackHandler() {
             @Override
@@ -199,7 +205,6 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
 
         if(mMediaSource == null) {
             // Convert uri to media source asynchronously to avoid UI blocking
-            // It could take a while, e.g. if it's a DASH source and needs to be preprocessed
             Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
             Log.d(TAG, "PLAYER URI: ." + mVideoURI);
         } else {
@@ -239,39 +244,39 @@ public class VideoViewFragment extends Fragment implements android.widget.Compou
                 mCheckBox2.setChecked(false);
                 mCheckBox3.setChecked(false);
                 mCheckBox4.setChecked(false);
-                mCheckBox1.setChecked(true);
-                mVideoPlaybackSpeed = 0.25f;
+                mCheckBox1.setChecked(true); //display tick
+                mVideoPlaybackSpeed = 0.25f; //change playback speed to 0.25x if checkbox 1 clicked
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else if (compoundButton == mCheckBox2) {
                 mCheckBox1.setChecked(false);
                 mCheckBox3.setChecked(false);
                 mCheckBox4.setChecked(false);
-                mCheckBox2.setChecked(true);
-                mVideoPlaybackSpeed = 0.5f;
+                mCheckBox2.setChecked(true); //display tick
+                mVideoPlaybackSpeed = 0.5f; //change playback speed to 0.5x if checkbox 2 clicked
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else if (compoundButton == mCheckBox3) {
                 mCheckBox1.setChecked(false);
                 mCheckBox2.setChecked(false);
                 mCheckBox4.setChecked(false);
-                mCheckBox3.setChecked(true);
-                mVideoPlaybackSpeed = 0.75f;
+                mCheckBox3.setChecked(true); //display tick
+                mVideoPlaybackSpeed = 0.75f; //change playback speed to 0.5 if checkbox 3 clicked
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             } else {
                 mCheckBox1.setChecked(false);
                 mCheckBox2.setChecked(false);
                 mCheckBox3.setChecked(false);
-                mCheckBox4.setChecked(true);
-                mVideoPlaybackSpeed = 1.00f;
+                mCheckBox4.setChecked(true); //display tick
+                mVideoPlaybackSpeed = 1.00f; //set to original speed of 1.0 if checkbox 4 clicked.
                 mVideoView.setPlaybackSpeed(mVideoPlaybackSpeed);
             }
         } else {
             Log.d(TAG, "Speed undone " + compoundButton + " State: " + state);
-            mVideoView.setPlaybackSpeed(1.00f);
+            mVideoView.setPlaybackSpeed(1.00f); //if no checkbox is checked, set speed to orginal speed.
         }
     }
 
     /**
-     * Retreive the video URL from the model class to be converted by the external library into
+     * Fetch the video URL from the model class to be converted by the external library into
      * a media source.
      */
     private void getVideoURL() {

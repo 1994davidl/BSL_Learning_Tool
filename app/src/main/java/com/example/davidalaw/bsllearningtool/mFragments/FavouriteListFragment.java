@@ -41,12 +41,13 @@ public class FavouriteListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_favourite_list, container, false);
-        String TITLE_HANDLER = "Favourites";
-        getActivity().setTitle(TITLE_HANDLER);
+        String TITLE_HANDLER = "Favourites"; getActivity().setTitle(TITLE_HANDLER); //set title container
 
+        //instantiate UI elements
         mListView = view.findViewById(R.id.favourite_list_view);
         mTextView = view.findViewById(R.id.text_Favourite);
 
+        //Call helper methods
         displayListView();
         listViewActionListener();
 
@@ -54,7 +55,7 @@ public class FavouriteListFragment extends Fragment {
     }
 
     private void displayListView() {
-        mMainPageAdapter = new MainPageAdapter();
+        mMainPageAdapter = new MainPageAdapter(); //create object
 
         if (mMainPageAdapter.collectAllFavouriteSigns(getContext()).isEmpty()) {
             mTextView.setText("No Current Favourites"); //display textview if user has yet to favourite any signs.
@@ -77,10 +78,10 @@ public class FavouriteListFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), mMainPageAdapter.getFavouriteSign(i), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SignMaterialActivity.class);
-                intent.putExtra("sign",mMainPageAdapter.getSignIDSelected(i)) ;
-                intent.putExtra("name", mMainPageAdapter.getFavouriteSign(i));
+                intent.putExtra("sign",mMainPageAdapter.getSignIDSelected(i)) ; //store sign id
+                intent.putExtra("name", mMainPageAdapter.getFavouriteSign(i)); //store sign name
                 Log.d(TAG, "Sign Selected: " + mMainPageAdapter.getFavouriteSign(i));
-                startActivity(intent);
+                startActivity(intent); //Move to Sign Material Activity
             }
 
         });

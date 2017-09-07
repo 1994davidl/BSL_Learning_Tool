@@ -20,8 +20,6 @@ import com.example.davidalaw.bsllearningtool.R;
 
 public class CategoryListFragment extends Fragment {
 
-    private static final String TAG = CategoryListFragment.class.getSimpleName();
-
     private MainPageAdapter mMainPageAdapter;
 
     private Class fragmentClass = null;
@@ -38,10 +36,11 @@ public class CategoryListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
 
-        String appName = "BSLearn"; getActivity().setTitle(appName);
+        String appName = "BSLearn"; getActivity().setTitle(appName); //set title to App name
 
-        listview = view.findViewById(R.id.category_list_view);
+        listview = view.findViewById(R.id.category_list_view); //init list view layout
 
+        //call helper methods
         displayListView(view);
         listViewActionListener();
 
@@ -49,8 +48,8 @@ public class CategoryListFragment extends Fragment {
     }
 
     /**
-     * This method primary use is to get all data from the db table: Sign
-     * then only display the Category names.
+     * This method primary use is to get all data from the sign entity
+     * then display the Category names once.
      *
      * @param view
      */
@@ -59,8 +58,9 @@ public class CategoryListFragment extends Fragment {
         mMainPageAdapter = new MainPageAdapter();
 
         //create the list adapter
-        ListAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectDistinctCategories(getContext()));
-        listview.setAdapter(adapter);
+        ListAdapter adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_activated_1, mMainPageAdapter.collectDistinctCategories(getContext()));
+        listview.setAdapter(adapter); //display available categories
     }
 
     /**
@@ -73,7 +73,7 @@ public class CategoryListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(), mMainPageAdapter.getSelectedCategory(i),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show(); //display to user the category they've selected
 
 
                 //Open Sign List Fragment
@@ -93,11 +93,10 @@ public class CategoryListFragment extends Fragment {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContent,
-                        fragment).addToBackStack(null).commit();
+                        fragment).addToBackStack(null).commit(); //start fragment transaction to sign list which are available in category selected.
             }
         });
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -108,8 +107,6 @@ public class CategoryListFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
-
 
     public interface OnFragmentInteractionListener {
 

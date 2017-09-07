@@ -33,16 +33,16 @@ public class QuizFragment extends Fragment {
     private static final String TAG = QuizFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
 
-    private MainPageAdapter mMainPageAdapter;
+    private MainPageAdapter mMainPageAdapter; //view controllor class
 
+    //UI components
     private VideoView mVideoView;
     private RadioGroup mRadioGroup;
     private TextView mTextView;
     private Button mButton;
 
-
+    //media player variables
     private String VideoURL;
-
     private Uri mVideoURI;
     private int mVideoPosition;
     private float mVideoPlaybackSpeed;
@@ -50,8 +50,10 @@ public class QuizFragment extends Fragment {
     private MediaSource mMediaSource;
     private ProgressBar mProgressBar;
 
+    //name of category selected
     private String categorySelected;
 
+    //score & stats variables
     private int score = 0;
     private int numOfQuestions = 0;
     private int setNumberofQuestions = 1;
@@ -124,22 +126,23 @@ public class QuizFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                numOfQuestions++;
-                mVideoPlaying = false;
-                mMediaSource = null;
-                mRadioGroup.setEnabled(false);
-                mButton.setEnabled(false);
+                numOfQuestions++; //increment no. of questions completed
+                mVideoPlaying = false; //stop video
+                mMediaSource = null; //media source reset
+
+                mRadioGroup.setEnabled(false); //disable
+                mButton.setEnabled(false); //disable
 
                 RadioButton selectedRButton = (RadioButton) mRadioGroup.getChildAt(getSelectedRadioButtonID()); //get index of selected radio button
                 if (selectedRButton.getText().equals(mMainPageAdapter.getQuestionAnswer(getContext()))) {
                     Toast.makeText(getActivity(), "Correct Answer: " + selectedRButton.getText(),
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show(); //display answer
                     score += 1; //increment score
                     mTextView.setText(String.valueOf(score) + " / " + String.valueOf(setNumberofQuestions)); //update score
                 } else {
                     Toast.makeText(getActivity(), "Wrong Answer: " + selectedRButton.getText() +
-                            "\n The answer was: " + mMainPageAdapter.getQuestionAnswer(getContext()), Toast.LENGTH_LONG).show();
-                    number_wrong++;
+                            "\n The answer was: " + mMainPageAdapter.getQuestionAnswer(getContext()), Toast.LENGTH_LONG).show(); //display answer solution
+                    number_wrong++; //increment number of questions wrong.
                 }
 
                 //end quiz if number of questions equate the fixed num of question set by user.
@@ -155,9 +158,7 @@ public class QuizFragment extends Fragment {
     }
 
     /**
-     * Get selected radio button id int.
-     *
-     * @return the int
+     * return id of selected radio button
      */
     private int getSelectedRadioButtonID(){
         int id = mRadioGroup.getCheckedRadioButtonId();
@@ -205,7 +206,7 @@ public class QuizFragment extends Fragment {
     }
 
     /**
-     * On resume.
+     * On resume. if video is not playing start media player init
      */
     @Override
     public void onResume() {
@@ -230,9 +231,7 @@ public class QuizFragment extends Fragment {
             }
         });
 
-        //A mp.setLooping(true) would be move efficency but some mp4 metadata does
-        //not respond well to method and therefore the video is reset at the end
-        //of each completion.
+        //on complete replay the video
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -251,7 +250,7 @@ public class QuizFragment extends Fragment {
             @Override
             public boolean onError(MediaPlayer mMediaPlayer, int what, int extra) {
                 Toast.makeText(getActivity(),
-                        "Sorry, Cannot play the video",
+                        "Sorry,video cannot be played",
                         Toast.LENGTH_LONG).show();
                 mProgressBar.setVisibility(View.GONE);
                 return true;
@@ -298,29 +297,26 @@ public class QuizFragment extends Fragment {
         if(mMediaSource == null) {
             // Convert uri to media source asynchronously to avoid UI blocking
             Utils.uriToMediaSourceAsync(getActivity(), mVideoURI, mMediaSourceAsyncCallbackHandler);
-            Log.d(TAG, "PLAYER URI: ." + mVideoURI);
         } else {
-            // Media source is already here, just use it
+            // Media source is already here, just load it
             mMediaSourceAsyncCallbackHandler.onMediaSourceLoaded(mMediaSource);
         }
 
     }
 
-
     /**
      * Gets category selected info.
      */
     private void getCategorySelectedInfo() {
-        mMainPageAdapter.getCategoryQuestions(getContext(), categorySelected);
-        mMainPageAdapter.shuffleQuestions();
-        getVideoURLToDisplay();
-        displayRadioButtonsChoices();
+        mMainPageAdapter.getCategoryQuestions(getContext(), categorySelected); //get questions that are available for category selected
+        mMainPageAdapter.shuffleQuestions(); //shuffle the questions.
+        getVideoURLToDisplay(); //call helper method
+        displayRadioButtonsChoices(); //display helper method.
     }
 
-
+    //Get the video uri to be decoded by media player
     private void getVideoURLToDisplay() {
-        VideoURL = mMainPageAdapter.getVideoURL(getContext());
-
+        VideoURL = mMainPageAdapter.getVideoURL(getContext()); //call controller helper method to get Video URL
     }
 
     /**
@@ -328,9 +324,9 @@ public class QuizFragment extends Fragment {
      */
     private void displayRadioButtonsChoices() {
         mMainPageAdapter.populateRadioButtonsQueue(getContext()); //populate the list of new radio button choices
-
+        int num_of_choices = 4; //number of radio buttons
         //Set text of radio buttons
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < num_of_choices; i++) {
             RadioButton RButton = (RadioButton) mRadioGroup.getChildAt(i);
             RButton.setText(mMainPageAdapter.getRadioButtonChild(i));
         }

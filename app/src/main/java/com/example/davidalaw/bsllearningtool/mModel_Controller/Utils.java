@@ -21,7 +21,6 @@ public class Utils {
     private static final String TAG = Utils.class.getSimpleName();
 
     /**
-     *
      * @param context
      * @param uri
      * @return

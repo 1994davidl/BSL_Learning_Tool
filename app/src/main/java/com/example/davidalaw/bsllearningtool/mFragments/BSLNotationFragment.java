@@ -14,19 +14,24 @@ import com.example.davidalaw.bsllearningtool.mModel_Controller.SignMaterialAdapt
 
 
 /**
- * Created by DavidALaw on 21/07/2017.
+ * BSL Notation view class. It utilise the Stokoe notation system
+ *
+ * This view consists of four separate text views. The name of the sign is passed in and then the
+ * controllor class helper method is called to collect the necessary data to populate text views.
+ *
  */
 public class BSLNotationFragment  extends Fragment {
 
-    private static final String TAG = BSLNotationFragment.class.getSimpleName();
+    private TextView [] mTextView; //GUI Components
 
-    private TextView [] mTextView;
+    private int signSelected; //name of size
 
-    private int signSelected;
+    private final int SIZE = 4; //number of notation parameters
 
     public BSLNotationFragment() {
     }
 
+    //Constructor - sign selected it passed to get appropriate info from controllor class.
     public BSLNotationFragment(int signSelected) {
         this.signSelected = signSelected;
     }
@@ -36,27 +41,26 @@ public class BSLNotationFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bsl_notation_fragment, container, false);
 
-        int SIZE = 4;
         mTextView = new TextView[SIZE];
+
+        //init ui components to xml IDs
         mTextView[0] = view.findViewById(R.id.sign_occur_text);
         mTextView[1]= view.findViewById(R.id.sign_shape_text);
         mTextView[2] = view.findViewById(R.id.signs_action_text);
         mTextView[3] = view.findViewById(R.id.expression_text);
-        populateSignInfoView();
+
+        populateSignInfoView(); //call helper method to populate text views
 
         return view;
     }
 
 
     private void populateSignInfoView () {
-        Log.d(TAG, "Populate BSL Notation View ");
-        SignMaterialAdapter signMaterialAdapter = new SignMaterialAdapter();
-        signMaterialAdapter.populateBSLNotation(getContext(), signSelected);
+        SignMaterialAdapter signMaterialAdapter = new SignMaterialAdapter(); //init view controllor class
+        signMaterialAdapter.populateBSLNotation(getContext(), signSelected);  //call controller helper method
 
         for(int i = 0; i < mTextView.length; i++) {
-            mTextView[i].setText(signMaterialAdapter.getBSLNotation(i));
+            mTextView[i].setText(signMaterialAdapter.getBSLNotation(i)); //populate
         }
     }
-
-
 }

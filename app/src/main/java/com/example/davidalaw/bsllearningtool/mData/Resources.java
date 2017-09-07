@@ -1,18 +1,13 @@
 package com.example.davidalaw.bsllearningtool.mData;
 
-/**
- * Created by DavidALaw on 01/08/2017.
- */
 
 public class Resources {
 
-    //Initialise instance variables
+    //instance variable
     private String mResources;
 
-    //Default constructor
     public Resources() {}
 
-    //Non default constructor
     public Resources(String resources) {
         mResources = resources;
     }

@@ -41,15 +41,15 @@ import com.example.davidalaw.bsllearningtool.mModel_Controller.DBHandler;
  */
 public class SignMaterialActivity extends AppCompatActivity {
 
-    private static final String TAG = "FragmentsMainActivity";
     private static String fragmentSelected, sign_name;
-    private TabbedPageAdapter mTabbedPageAdapter;
-    private SignMaterialAdapter mSignMaterialAdapter;
     private int sign_selected_id;
 
-    private DBHandler mDBHandler;
-    private BottomNavigationView mBottomNavigationView;
+    private TabbedPageAdapter mTabbedPageAdapter; //
+    private SignMaterialAdapter mSignMaterialAdapter; //activity's controllor class.
 
+    private BottomNavigationView mBottomNavigationView; //navigation design pattern init
+
+    //GUI components init
     private CheckBox mCheckBox;
     private ImageButton mShareButton, mBackButton;
 
@@ -62,12 +62,12 @@ public class SignMaterialActivity extends AppCompatActivity {
         Intent intent = getIntent();
         sign_selected_id = Integer.valueOf(intent.getStringExtra("sign")); //obtain sign id
         sign_name = intent.getStringExtra("name"); //obtain sign name
-        Log.d(TAG, "Sign Selected: " + sign_selected_id);
 
         mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         setUpViewPager(viewPager);
 
+        //Title of container
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(sign_name); //set title of container
 
@@ -78,15 +78,17 @@ public class SignMaterialActivity extends AppCompatActivity {
 
         //Back button initialised and action listener called.
         mBackButton = (ImageButton) findViewById(R.id.back);
-        backButtonActionListner();
+        backButtonActionListener();
 
         //share button initialised and action listener called.
         mShareButton = (ImageButton) findViewById(R.id.share);
         shareButtonActionListener();
 
+        //tab layout initialised, then call helper method to set up view pagerrs
         TabLayout toptabLayout = (TabLayout) findViewById(R.id.tabs);
         toptabLayout.setupWithViewPager(viewPager);
 
+        //init bottom navigation view
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         setBottomNavigationView();
 
@@ -96,9 +98,10 @@ public class SignMaterialActivity extends AppCompatActivity {
 
     /**
      * back pressed Image button action listener.
+     *
      * Upon request the user while be sent to the previous screen they were on.
      */
-    private void backButtonActionListner(){
+    private void backButtonActionListener(){
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +142,7 @@ public class SignMaterialActivity extends AppCompatActivity {
      * @param viewPager the view pager
      */
     private void setUpViewPager(ViewPager viewPager) {
-        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager());
+        mTabbedPageAdapter = new TabbedPageAdapter(getSupportFragmentManager()); //init helper class
         mTabbedPageAdapter.addFragment(new SignInformationFragment(sign_selected_id), "Sign Info"); //Tab 1 (left)
         mTabbedPageAdapter.addFragment(new VideoViewFragment(sign_selected_id), "Video"); //Tab 2 (middle)
         mTabbedPageAdapter.addFragment(new BSLNotationFragment(sign_selected_id), "Notation"); //Tab 3 (right)
@@ -164,7 +167,7 @@ public class SignMaterialActivity extends AppCompatActivity {
 
 
     /**
-     *
+     * Check whether the favourite icon is checked or unchecked (is it favourited or not?)
      */
     private void checkstate() {
         mCheckBox = (CheckBox) findViewById(R.id.favourite);
@@ -188,28 +191,26 @@ public class SignMaterialActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                //start intent operation to launch main activity from bottom nav bar
                 Intent intent = new Intent(SignMaterialActivity.this, MainActivity.class);
 
                 switch (item.getItemId()) {
-                    case R.id.home_nav:
+                    case R.id.home_nav: //navigate back to home screen
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
-                    case R.id.favourites_nav:
+                    case R.id.favourites_nav: //navigate to user favourites
                         checkstate();
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
-                    case R.id.quiz_menu_nav:
+                    case R.id.quiz_menu_nav: //navigate to quiz menu
                         fragmentSelected = (String) item.getTitle();
                         intent.putExtra("fragment", fragmentSelected);
-                        Log.d(TAG, "Fragment Selected: " + fragmentSelected);
                         break;
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP); //clear screen.
+                startActivity(intent); //start operation
                 return false;
             }
         });
@@ -224,14 +225,7 @@ public class SignMaterialActivity extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
-
-            if (compoundButton.isChecked() == true) {
-                Log.d(TAG, "Sign Favourited: " + sign_selected_id + " State: " + state);
-                changeSignDataFavourite(state);
-            } else {
-                Log.d(TAG, "Sign favourite removed: " + sign_selected_id + " State: " + state);
-                changeSignDataFavourite(state);
-            }
+            changeSignDataFavourite(state);
         }
     }
 

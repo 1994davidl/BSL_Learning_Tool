@@ -6,6 +6,9 @@ import android.database.Cursor;
 import java.util.ArrayList;
 
 /**
+ * Controller Class of Sign Material Activity view
+ *
+ *
  * Created by DavidALaw on 07/08/2017.
  */
 public class SignMaterialAdapter {
@@ -64,11 +67,13 @@ public class SignMaterialAdapter {
     public void populateSignInfoFrag (Context context, int signid) {
         mDBHandler = new DBHandler(context);
         Cursor cursor = mDBHandler.getAllData();
+        int start_attribute = 2; //attribute value 2 ---> sign name
+        int end_attribute = 4; //attribute value 4 ---> sign synonym
 
         while (cursor.moveToNext()) {
             if (signid == Integer.valueOf(cursor.getString(0))) {
-                for (int i = 2; i <= 4; i++) {
-                    mSignInfoList.add(i - 2, cursor.getString(i));
+                for (int i = start_attribute; i <= end_attribute; i++) {
+                    mSignInfoList.add(i - start_attribute, cursor.getString(i));
                 }
             }
         }
@@ -96,12 +101,14 @@ public class SignMaterialAdapter {
     public void populateBSLNotation(Context context, int signSelected) {
         mDBHandler = new DBHandler(context);
         Cursor cursor = mDBHandler.getAllData();
+        int start_attribute = 5; //attribute 5 of sign table ---> sign occur
+        int end_attribute = 8; //attribute 8 of sign table --> sign expression
 
         while (cursor.moveToNext()) {
             if (signSelected == Integer.valueOf(cursor.getString(0))) {
 
-                for(int i = 5; i <= 8;i++) {
-                    mBSLNotationList.add(i-5, cursor.getString(i));
+                for(int i = start_attribute; i <= end_attribute;i++) {
+                    mBSLNotationList.add(i-start_attribute, cursor.getString(i));
                 }
             }
         }

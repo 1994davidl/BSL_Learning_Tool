@@ -25,6 +25,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+
+/**
+ * UI test recorded to test the the share a sign
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ShareASigntTest {

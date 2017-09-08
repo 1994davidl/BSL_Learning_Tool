@@ -30,7 +30,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TABLE_REGION = "REGION";
 
     //Region tables columns
-    private static final String KEY_REGION_ID = "id";
+    private static final String KEY_REGION_ID = "sign_id";
     private static final String KEY_REGION = "region";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
@@ -359,6 +359,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /**
+     * INNER JOIN QUERY STATEMENT
+     *
+     * collect all attributes from both the sign and quiz bank table
+     *
+     * @return
+     */
     public Cursor joinQuestionAndSignsTable(){
         String query = "SELECT * FROM "+ TABLE_SIGN +" s JOIN "+ TABLE_QUIZ +" q ON s." + KEY_ID + " = q." + KEY_SIGN_FK;
         SQLiteDatabase db = this.getWritableDatabase();

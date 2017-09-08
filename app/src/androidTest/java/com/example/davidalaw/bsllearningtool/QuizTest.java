@@ -27,6 +27,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * recorded UI test to test the quiz user interactions
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class QuizTest {

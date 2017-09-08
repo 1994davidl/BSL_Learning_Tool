@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * controllor/model class to retreive data from database and return to it appropriate view class
+ * controllor class of Main Activity and its fragments views
+ *
+ * use primarily to fetch data from database and return to it appropriate view class
  * <p>
  * Created by DavidALaw on 07/08/2017.
  */

@@ -26,9 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 /**
- *
- *
- *
+ * UI test to naviagate to a sign material
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)

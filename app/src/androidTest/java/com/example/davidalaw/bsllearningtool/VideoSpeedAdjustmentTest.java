@@ -26,6 +26,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * UI Test to test the user interactions for changing the speed of videos playback
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class VideoSpeedAdjustmentTest {

@@ -47,9 +47,6 @@ public class Utils {
         }
     }
 
-    /**
-     *
-     */
     private static class LoadMediaSourceAsyncTask extends AsyncTask<Uri, Void, MediaSource> {
 
         private Context mContext;
